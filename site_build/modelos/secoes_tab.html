@@ -1,0 +1,15 @@
+<section>
+<h2>Mapa por zona e local de votação, com zoom por bairro</h2>
+<p class="sub">Áreas estimadas por proximidade ao local de votação, com o resultado do 1º turno de 2026 por local, por zona ou por seção (um quadrado por seção). São aproximações: não são os limites oficiais das zonas eleitorais. Os dados do 2º turno por seção entram aqui assim que o TSE publicar o CSV.</p>
+<div class="hctl">
+ <label>Estado<select id="s-uf"></select></label>
+ <label>Município<input id="s-mun" list="s-muns" placeholder="digite um município" autocomplete="off"><datalist id="s-muns"></datalist></label>
+ <label>A cor mostra<select id="s-met"><option value="l">Lula (% de Lula + Flávio Bolsonaro)</option><option value="f">Flávio Bolsonaro (% de Lula + Flávio Bolsonaro)</option><option value="m">Lula menos Flávio Bolsonaro (pontos)</option><option value="a">Abstenção (%)</option><option value="d">Atraso médio no fechamento (minutos)</option><option value="s">Seções por local</option></select></label>
+ <label>Camada<select id="s-cam"><option value="loc">Locais de votação</option><option value="zon">Zonas eleitorais</option><option value="sq">Quadrados das seções</option></select></label>
+</div>
+<div class="hwrap"><canvas id="s-cv" style="display:block;width:100%;height:min(72vh,660px);touch-action:none;cursor:grab" aria-label="Mapa de locais de votação do município"></canvas>
+ <div class="hbtn"><button id="s-mais" aria-label="Aproximar">+</button><button id="s-menos" aria-label="Afastar">−</button><button id="s-reset" aria-label="Reiniciar">⌂</button></div>
+ <div id="s-tip" class="htip" hidden></div><div id="s-msg" class="htip" style="left:12px;top:12px;max-width:440px" hidden></div></div>
+<div class="hleg"><span id="s-l0"></span><div class="hbar" id="s-bar"></div><span id="s-l1"></span></div>
+<p class="mute note" id="s-aviso">Áreas estimadas por proximidade ao local de votação (diagrama de Voronoi recortado pelo limite municipal do IBGE). Bordas tracejadas e cores mais claras indicam células grandes, onde a estimativa é menos confiável. Os quadrados são uma convenção visual, um por seção, em volta do ponto do local; não mostram a posição real das seções.</p>
+</section>

@@ -33,7 +33,7 @@ else:
 t=open(f'{M}/tpl2.html').read().replace('__ABSSIZE__',open(f'{D}/abst_size.json').read() if os.path.exists(f'{D}/abst_size.json') else 'null').replace('__COV__',open(f'{D}/cobertura.json').read() if os.path.exists(f'{D}/cobertura.json') else 'null')
 t=(t.replace('__FLUXO__',json.dumps(fluxo,ensure_ascii=False,separators=(',',':'))).replace('__BINS__',json.dumps(bins,separators=(',',':'))).replace('__CLOSE__',CL)
     .replace('__HORA__',time.strftime('%H:%M',time.localtime(time.time()-4*3600))).replace('__NSEC__',f"{nsec:,}".replace(',','.'))
-    .replace('__REPLICAR__',open(f'{M}/replicar_tab.html').read()).replace('__FECH__',fech).replace('__HEAT__',heat_html).replace('__HEATJS__',heat_js).replace('__CLOSEJS__',closejs))
+    .replace('__REPLICAR__',open(f'{M}/replicar_tab.html').read()).replace('__SECOES__',open(f'{M}/secoes_tab.html').read()).replace('__SECOESJS__',open(f'{M}/secoes_tab.js').read()).replace('__FECH__',fech).replace('__HEAT__',heat_html).replace('__HEATJS__',heat_js).replace('__CLOSEJS__',closejs))
 import subprocess
 subprocess.run([sys.executable,'i18n_dict.py'],check=True,capture_output=True,cwd=M)
 t=t.replace('__I18N__',open(f'{M}/i18n_tpl.js').read().replace('__I18N_DATA__',open(f'{M}/i18n_data.json').read()))
