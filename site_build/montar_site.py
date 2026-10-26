@@ -38,5 +38,8 @@ import subprocess
 subprocess.run([sys.executable,'i18n_dict.py'],check=True,capture_output=True,cwd=M)
 t=t.replace('__I18N__',open(f'{M}/i18n_tpl.js').read().replace('__I18N_DATA__',open(f'{M}/i18n_data.json').read()))
 t=t.replace('<header>\n','<header>\n<a class="back" href="../../">← Eleições Brasil</a>\n',1).replace('</style>','.back{display:inline-block;font-size:13px;color:var(--mute);margin-bottom:8px;text-decoration:none}</style>',1)
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+from envelope import envolver
+t=envolver(t)
 os.makedirs(os.path.dirname(OUT) or '.',exist_ok=True); open(OUT,'w').write(t)
 print(len(t)//1024,'KB')
