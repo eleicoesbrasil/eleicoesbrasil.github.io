@@ -84,10 +84,16 @@ PAIRS = [
  ('O 2º turno de 2026 só tem CSV por seção quando o TSE publicar o conjunto “Boletim de Urna” desse turno. Até lá, o painel usa os totais por município e uma amostra aleatória de boletins para os horários, e informa isso na própria aba.','The 2026 runoff only has section-level CSV once the TSE publishes that round’s “Ballot Report” dataset. Until then, the dashboard uses municipal totals and a random sample of reports for the times, and says so on the tab itself.'),
  ('Nos horários, “fora do horário previsto” é medido em relação às 17h de Brasília. Em 2026, a prorrogação decidida pelo ministro Zanin muda a referência para as urnas que estavam abertas na hora da decisão; o painel mostra as duas marcas.','For times, “outside the scheduled time” is measured against 5 pm Brasília time. In 2026, the extension decided by Justice Zanin changes the reference for the boxes that were still open at the time of the decision; the dashboard shows both marks.'),
  ('Dados do TSE têm licença Creative Commons Atribuição. O código deste repositório é MIT.','TSE data is licensed under Creative Commons Attribution. The code in this repository is MIT.'),
+ ('Dados parciais por enquanto.','Partial data for now.'),
+ ('O 2º turno de 2026 ainda não tem o CSV por seção do TSE. Os totais por município estão completos (','The 2026 runoff does not yet have the TSE section-level CSV. Municipal totals are complete ('),
+ (' seções apuradas), mas os dados por seção (como horário de fechamento e abstenção seção a seção) vêm de uma amostra aleatória do 2º turno, que cresce a cada atualização. Os dados por seção do 1º turno de 2026 e de 2022 vêm do CSV oficial do TSE e são incluídos aos poucos.',' sections counted), but the section-level data (such as closing time and section-by-section abstention) come from a random sample of the runoff, which grows with each update. Section-level data for the 2026 first round and for 2022 come from the official TSE CSV and are being added gradually.'),
+ (' de urnas já incluídas na base de dados',' of ballot boxes already included in the database'),
+ (' seções (',' sections ('),(' (amostra provisória)',' (provisional sample)'),(' · atualizado em ',' · updated at '),
  ('primeiro turno','first round'),('segundo turno','second round'),('Segundo turno','Runoff'),('1º turno','1st round'),('2º turno','2nd round'),('1º','1st'),('2º','2nd'),
  ('Flávio ganha','Flávio gains'),('Lula ganha','Lula gains'),
 ]
 RX = [  # (padrão, flags, substituição)
+ (r'([\d.,]+) de ([\d.,]+) seções', '', r'$1 of $2 sections'),
  (r'^a ([+−\-])', '', r'to $1'),
  (r'([\d.,]+) de ([\d.,]+) aptos', '', r'$1 of $2 registered voters'),
  (r'([\d.,]+) de ([\d.,]+) boletins', '', r'$1 of $2 ballot reports'),

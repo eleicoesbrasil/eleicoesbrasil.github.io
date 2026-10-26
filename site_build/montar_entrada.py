@@ -3,7 +3,10 @@ import os
 import sys
 from pathlib import Path
 
+import json
 DOCS = Path(sys.argv[1] if len(sys.argv) > 1 else "docs")
+cf = DOCS / 'dados/derivados/cobertura.json'
+COV = json.loads(cf.read_text()) if cf.exists() else None
 ITENS = [  # (ano, cargo_pt, cargo_en, ativo, href)
     (2026, "Presidente", "President", True, "2026/presidente/"),
     (2026, "Governador", "Governor", False, ""), (2026, "Senador", "Senator", False, ""),
@@ -30,6 +33,17 @@ for ano, pt, en, ativo, href in ITENS:
         cards += f'<div class="card off" aria-disabled="true"><span class="y">{ano}</span><span class="c" data-pt="{pt}" data-en="{en}">{pt}</span><span class="s" data-pt="Em breve" data-en="Coming soon">Em breve</span></div>\n'
 lista = "".join(f'<li><a href="{f}">{f}</a> <span class="mute">{mb(s)}</span></li>' for f, s in arquivos) or '<li class="mute" data-pt="Os arquivos aparecem aqui quando forem gerados." data-en="Files appear here once generated.">Os arquivos aparecem aqui quando forem gerados.</li>'
 
+def fmt(n):
+    return f"{n:,}".replace(",", ".")
+cov_html = ""
+if COV:
+    p = COV["pct"]
+    cov_html = f'''<section class="covbox"><p><strong data-pt="Dados parciais por enquanto." data-en="Partial data for now.">Dados parciais por enquanto.</strong>
+<span data-pt="O 2º turno de 2026 ainda não tem o CSV por seção do TSE; os totais por município estão completos, mas os dados por seção vêm de uma amostra aleatória que cresce a cada atualização. O 1º turno de 2026 e 2022 vêm do CSV oficial e são incluídos aos poucos." data-en="The 2026 runoff does not yet have the TSE section-level CSV; municipal totals are complete, but section-level data come from a random sample that grows with each update. The 2026 first round and 2022 come from the official CSV and are being added gradually.">O 2º turno de 2026 ainda não tem o CSV por seção do TSE; os totais por município estão completos, mas os dados por seção vêm de uma amostra aleatória que cresce a cada atualização. O 1º turno de 2026 e 2022 vêm do CSV oficial e são incluídos aos poucos.</span></p>
+<div class="covbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{p}"><i style="width:{max(p,0.6)}%"></i></div>
+<div class="covtxt"><strong>{str(p).replace('.', ',')}%</strong> <span data-pt="de urnas já incluídas na base de dados" data-en="of ballot boxes already included in the database">de urnas já incluídas na base de dados</span></div>
+<div class="covsub"><span data-pt="1º turno" data-en="1st round">1º turno</span>: {fmt(COV['r1'])} / {fmt(COV['total'])} · <span data-pt="2º turno" data-en="2nd round">2º turno</span>: {fmt(COV['r2'])} / {fmt(COV['total'])}{' (amostra)' if COV.get('r2_provisorio') else ''} · {COV['atualizado']}</div></section>'''
+
 html = f'''<!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Eleições Brasil</title>
@@ -48,11 +62,13 @@ h2{{font-family:var(--disp);font-size:20px;margin:0 0 10px}}
 .card .y{{font:500 13px var(--mono);color:var(--mute)}} .card .c{{font:600 20px var(--disp)}} .card .s{{font-size:13px;color:var(--mute)}}
 .card.on{{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}} .card.on .s{{color:var(--accent);font-weight:600}} .card.on:hover{{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}}
 .card.off{{opacity:.55;border-style:dashed;cursor:not-allowed}}
+.covbox{{border:1px solid var(--line);border-left:4px solid #8a5a00;border-radius:6px;background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:8px}} .covbox p{{margin:0}} .covbar{{height:14px;border-radius:7px;background:var(--line);overflow:hidden}} .covbar i{{display:block;height:100%;background:var(--accent);border-radius:7px}} .covtxt{{font:500 15px var(--mono)}} .covsub{{font-size:13px;color:var(--mute)}}
 ul{{margin:0;padding-left:20px}} li{{margin:4px 0}} a{{color:var(--accent)}}
 </style></head><body><main>
 <header><div class="lang"><button id="lg-pt" aria-label="Português" title="Português"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#009b3a"/><polygon points="14,2 26,10 14,18 2,10" fill="#ffdf00"/><circle cx="14" cy="10" r="4.2" fill="#002776"/><path d="M10 9.2c3-.9 6.2-.5 8.3 1.2" stroke="#fff" stroke-width=".8" fill="none"/></svg></button><button id="lg-en" aria-label="English" title="English"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#012169"/><path d="M0 0L28 20M28 0L0 20" stroke="#fff" stroke-width="3.4"/><path d="M0 0L28 20M28 0L0 20" stroke="#c8102e" stroke-width="1.6"/><path d="M14 0V20M0 10H28" stroke="#fff" stroke-width="6"/><path d="M14 0V20M0 10H28" stroke="#c8102e" stroke-width="3.4"/></svg></button></div>
 <h1>Eleições Brasil</h1>
 <p class="sub" data-pt="Resultados oficiais do TSE por seção eleitoral, com código e dados abertos para você conferir cada número." data-en="Official TSE results by polling section, with open code and data so you can check every number.">Resultados oficiais do TSE por seção eleitoral, com código e dados abertos para você conferir cada número.</p></header>
+{cov_html}
 <section><h2 data-pt="Escolha uma eleição" data-en="Choose an election">Escolha uma eleição</h2><div class="grid">
 {cards}</div></section>
 <section><h2 data-pt="Dados abertos" data-en="Open data">Dados abertos</h2><ul>{lista}</ul>

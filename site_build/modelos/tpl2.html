@@ -44,6 +44,7 @@ th.dg{cursor:grab}th.dgo{outline:2px dashed var(--flavio);outline-offset:-3px}
 header{position:relative}.lang{position:absolute;right:0;top:0;display:flex;gap:6px}.lang button{padding:2px;border:2px solid transparent;border-radius:4px;background:none;cursor:pointer;line-height:0;opacity:.6}.lang button[aria-pressed="true"]{border-color:var(--fg);opacity:1}.lang button:focus-visible{outline:2px solid var(--flavio)}
 @media (max-width:620px){h1{padding-right:0;margin-top:30px}}
 ul.rep{margin:6px 0 0;padding-left:20px;max-width:80ch}ul.rep li{margin:6px 0}pre.code{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow-x:auto;font:12.5px/1.55 var(--mono);margin:6px 0}code{font-family:var(--mono);font-size:.92em;background:color-mix(in srgb,var(--fg) 7%,transparent);padding:1px 4px;border-radius:3px}pre.code code{background:none;padding:0}.cpb{font:600 13px var(--disp);padding:6px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--fg);cursor:pointer;align-self:flex-start}
+.covbox{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:6px;background:var(--surface);padding:14px 16px;display:flex;flex-direction:column;gap:8px}.covbox p{margin:0;max-width:86ch}.covbar{height:14px;border-radius:7px;background:var(--line);overflow:hidden}.covbar i{display:block;height:100%;background:var(--lula);border-radius:7px;min-width:3px}.covtxt{font:500 15px var(--mono)}.covsub{font-size:13px;color:var(--mute)}
 .note{border-left:3px solid var(--warn);padding:2px 0 2px 14px;max-width:78ch}
 .sv{width:100%;height:auto;display:block;background:var(--surface);border:1px solid var(--line);border-radius:6px}
 .sv text{fill:var(--fg);font-family:var(--mono);font-size:11px}.sv .m{fill:var(--mute)}
@@ -69,6 +70,7 @@ ul.rep{margin:6px 0 0;padding-left:20px;max-width:80ch}ul.rep li{margin:6px 0}pr
 <h1>Para onde foram os votos entre o primeiro e o segundo turno</h1>
 <p class="sub">Descrição do que aconteceu, com os totais oficiais do TSE por município. O primeiro turno vem do arquivo de votação por seção; o segundo, dos totais municipais publicados na apuração. Nada aqui é projeção.</p>
 </header>
+<section id="cov"></section>
 <nav class="tabs" role="tablist" aria-label="Visões">
 <button role="tab" id="t-fluxo" data-p="fluxo">Fluxo de votos</button>
 <button role="tab" id="t-abstencao" data-p="abstencao">Abstenção</button>
@@ -263,7 +265,17 @@ function drawBins(){
 }
 drawBins();
 $('b-svg').addEventListener('mousemove',function(e){if(window.__tipB)window.__tipB(e);});$('b-svg').addEventListener('mouseleave',function(){$('ttp').hidden=true;});
-window.__rerender=function(){cardsF();cardsA();tf.render();ta.render();drawBins();if(window.__closeInit)window.__closeInit();var m=$('p-mapa');if(m&&!m.hidden&&window.__heatInit)window.__heatInit();};
+
+var COV=__COV__;
+function drawCov(){var el=$('cov');if(!el||!COV)return;
+ var pct=function(x){return x.toFixed(1).replace('.',(window.__DEC||','))+'%';};
+ var h='<div class="covbox"><p><strong>Dados parciais por enquanto.</strong> O 2º turno de 2026 ainda não tem o CSV por seção do TSE. Os totais por município estão completos ('+fm(COV.total)+' de '+fm(COV.total)+' seções apuradas), mas os dados por seção (como horário de fechamento e abstenção seção a seção) vêm de uma amostra aleatória do 2º turno, que cresce a cada atualização. Os dados por seção do 1º turno de 2026 e de 2022 vêm do CSV oficial do TSE e são incluídos aos poucos.</p>'+
+  '<div class="covbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+COV.pct+'"><i style="width:'+Math.max(COV.pct,0.6)+'%"></i></div>'+
+  '<div class="covtxt"><strong>'+pct(COV.pct)+'</strong> de urnas já incluídas na base de dados</div>'+
+  '<div class="covsub">1º turno: '+fm(COV.r1)+' de '+fm(COV.total)+' seções ('+pct(COV.pct1)+') · 2º turno: '+fm(COV.r2)+' de '+fm(COV.total)+' seções ('+pct(COV.pct2)+')'+(COV.r2_provisorio?' (amostra provisória)':'')+' · atualizado em '+COV.atualizado+'</div></div>';
+ el.innerHTML=h;}
+drawCov();
+window.__rerender=function(){drawCov();cardsF();cardsA();tf.render();ta.render();drawBins();if(window.__closeInit)window.__closeInit();var m=$('p-mapa');if(m&&!m.hidden&&window.__heatInit)window.__heatInit();};
 // ---------- abas
 var T=['fluxo','abstencao','fechamento','mapa','replicar'];
 function show(n){if(T.indexOf(n)<0)n='fluxo';T.forEach(function(t){$('p-'+t).hidden=t!==n;$('t-'+t).setAttribute('aria-selected',t===n?'true':'false');});
