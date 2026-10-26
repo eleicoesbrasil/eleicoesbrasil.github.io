@@ -1,0 +1,93 @@
+<section id="heat">
+<h2>Mapa de calor: onde Lula e Flávio ganharam ou perderam terreno</h2>
+<p class="sub">Cada bolha é um município, posicionado pelo centro de gravidade dos seus locais de votação (peso: eleitores). A cor mostra a diferença na parcela de Lula entre Lula e Flávio, com os totais municipais finais do 2º turno contra o 1º turno.</p>
+<div class="hctl">
+  <label>Comparar <select id="h-par"><option value="d">2º turno 2026 contra 1º turno 2026</option><option disabled>2º turno 2026 contra 2º turno 2022 (aguarda histórico)</option><option disabled>2º turno 2026 contra 2º turno 2024 (aguarda histórico)</option></select></label>
+  <label>Mostrar <select id="h-modo"><option value="d">Oscilação (pontos)</option><option value="s2">Lula no 2º turno (% de L+F)</option><option value="s1">Lula no 1º turno (% de L+F)</option></select></label>
+  <label>Ir para <select id="h-uf"><option value="">Brasil</option></select></label>
+  <label>Cidade <input id="h-busca" list="h-cidades" placeholder="digite um município" autocomplete="off"></label>
+  <datalist id="h-cidades"></datalist>
+</div>
+<div class="hwrap"><canvas id="h-cv" aria-label="Mapa do Brasil com oscilação por município"></canvas>
+  <div class="hbtn"><button id="h-mais" aria-label="Aproximar">+</button><button id="h-menos" aria-label="Afastar">−</button><button id="h-reset" aria-label="Reiniciar">⌂</button></div>
+  <div id="h-tip" class="htip" hidden></div></div>
+<div class="hleg"><span id="h-l0"></span><div class="hbar" id="h-bar"></div><span id="h-l1"></span></div>
+<p class="mute" id="h-info" style="max-width:78ch">Passe o mouse (ou toque) em uma bolha para ver o município. Arraste para mover e use a roda ou os botões para aproximar.</p>
+</section>
+<script>
+(function(){
+var MUN=__MUN__, UFG=__UFG__;
+var cv=document.getElementById('h-cv'), ctx=cv.getContext('2d'), tip=document.getElementById('h-tip');
+var S={x:0,y:0,k:1,modo:'d',W:0,H:0,uf:''};
+function merc(lat){var r=lat*Math.PI/180;return Math.log(Math.tan(Math.PI/4+r/2))*180/Math.PI;}
+var BB={minx:-74,maxx:-34,miny:merc(-34),maxy:merc(5.5)};
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+var pts=MUN.map(function(m){var t=m[8]?m[8]:0;var s1=m[4]/(m[4]+m[5]);var has=m[9]>0&&(m[6]+m[7])>0;var s2=has?m[6]/(m[6]+m[7]):null;
+ return {n:m[0],uf:m[1],lat:m[2],lon:m[3],X:m[3],Y:merc(m[2]),L1:m[4],F1:m[5],s1:s1,s2:s2,d:has?(s2-s1)*100:null,ts:m[8],st:m[9],v:m[4]+m[5]};});
+var sel=document.getElementById('h-uf');
+var ufs=Array.from(new Set(pts.map(function(p){return p.uf;}))).sort();
+ufs.forEach(function(u){var o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);});
+var dl=document.getElementById('h-cidades');
+pts.forEach(function(p,i){var o=document.createElement('option');o.value=p.n+' ('+p.uf+')';dl.appendChild(o);});
+function fit(b){var pad=24,w=S.W-2*pad,h=S.H-2*pad;var k=Math.min(w/(b.maxx-b.minx),h/(b.maxy-b.miny));S.k=k;S.x=S.W/2-k*(b.minx+b.maxx)/2;S.y=S.H/2+k*(b.miny+b.maxy)/2;}
+function px(X,Y){return [S.x+S.k*X,S.y-S.k*Y];}
+function size(){var r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;S.W=r.width;S.H=r.height;cv.width=r.width*d;cv.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);}
+function ramp(t){ // t em [-1,1]: azul (Flávio) ... neutro ... vermelho (Lula)
+ var dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+ var neu=dark?[70,76,88]:[238,236,230], red=dark?[240,98,108]:[190,32,44], blu=dark?[104,152,230]:[26,84,170];
+ var c=t>=0?red:blu, a=Math.min(1,Math.abs(t)); return neu.map(function(v,i){return Math.round(v+(c[i]-v)*a);});}
+function seq(t){var dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+ // t em [0,1]: 0 = Flávio 100%, 0.5 = empate, 1 = Lula 100% (limita em 25..75)
+ return ramp((t-0.5)*2);}
+function val(p){if(S.modo==='d')return p.d===null?null:p.d/6; var s=S.modo==='s1'?p.s1:p.s2; if(s===null)return null; return (Math.max(0.25,Math.min(0.75,s))-0.5)*4;}
+function draw(){
+ ctx.clearRect(0,0,S.W,S.H);
+ ctx.lineWidth=1;ctx.strokeStyle=css('--line');ctx.fillStyle=css('--surface');
+ UFG.forEach(function(g){ctx.beginPath();g.p.forEach(function(ring){ring.forEach(function(c,i){var q=px(c[0],merc(c[1]));if(i)ctx.lineTo(q[0],q[1]);else ctx.moveTo(q[0],q[1]);});ctx.closePath();});ctx.fill();ctx.stroke();});
+ var order=pts.slice().sort(function(a,b){return b.v-a.v;});
+ var z=Math.sqrt(S.k/(S.W/44));
+ order.forEach(function(p){
+  var q=px(p.X,p.Y); if(q[0]<-40||q[1]<-40||q[0]>S.W+40||q[1]>S.H+40)return;
+  var t=val(p);
+  var r=Math.max(2.2,Math.min(70,Math.sqrt(p.v)/38*z*(S.modo?1:1)));
+  if(t===null){ctx.fillStyle=css('--line');ctx.globalAlpha=.7;ctx.beginPath();ctx.arc(q[0],q[1],Math.max(1.3,r*.35),0,6.283);ctx.fill();ctx.globalAlpha=1;return;}
+  var c=ramp(t),conf=0.4+0.6*(p.ts?Math.min(1,p.st/p.ts):0);
+  var g=ctx.createRadialGradient(q[0],q[1],0,q[0],q[1],r*1.5);
+  g.addColorStop(0,'rgba('+c+','+(0.85*conf)+')');g.addColorStop(.55,'rgba('+c+','+(0.45*conf)+')');g.addColorStop(1,'rgba('+c+',0)');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(q[0],q[1],r*1.5,0,6.283);ctx.fill();});
+ ctx.fillStyle=css('--mute');ctx.font='11px '+css('--mono');
+ UFG.forEach(function(g){if(S.k<(S.W/44)*1.6&&S.uf==='')return;var q=px(g.c[0],merc(g.c[1]));ctx.globalAlpha=.8;ctx.fillText(g.u,q[0]-6,q[1]+4);ctx.globalAlpha=1;});
+ var bar=document.getElementById('h-bar');
+ if(S.modo==='d'){document.getElementById('h-l0').textContent='−6 pp (Flávio ganha)';document.getElementById('h-l1').textContent='+6 pp (Lula ganha)';}
+ else{document.getElementById('h-l0').textContent='25% Lula';document.getElementById('h-l1').textContent='75% Lula';}
+ var st=[];for(var i=0;i<=10;i++){st.push('rgb('+ramp((i-5)/5)+')');}bar.style.background='linear-gradient(90deg,'+st.join(',')+')';
+}
+function reset(){fit(BB);S.uf='';sel.value='';draw();}
+function fitUF(u){var xs=[],ys=[];pts.forEach(function(p){if(p.uf===u){xs.push(p.X);ys.push(p.Y);}});if(!xs.length)return;
+ var b={minx:Math.min.apply(null,xs),maxx:Math.max.apply(null,xs),miny:Math.min.apply(null,ys),maxy:Math.max.apply(null,ys)};
+ var dx=(b.maxx-b.minx)*.08+.1,dy=(b.maxy-b.miny)*.08+.1;b.minx-=dx;b.maxx+=dx;b.miny-=dy;b.maxy+=dy;fit(b);S.uf=u;draw();}
+function zoomAt(f,cx,cy){var X=(cx-S.x)/S.k,Y=(S.y-cy)/S.k;S.k*=f;S.x=cx-S.k*X;S.y=cy+S.k*Y;draw();}
+function info(p){var f=function(x){return x===null?'—':x.toFixed(1).replace('.',(window.__DEC||','))+'%';};
+ return '<strong>'+p.n+' ('+p.uf+')</strong><br>1º turno: Lula '+f(p.s1*100)+' de L+F · 2º turno: '+f(p.s2===null?null:p.s2*100)+'<br>Oscilação: '+(p.d===null?'sem dados':(p.d>0?'+':'−')+Math.abs(p.d).toFixed(1).replace('.',(window.__DEC||','))+' pp')+'';}
+function near(mx,my){var best=null,bd=1e9;pts.forEach(function(p){var q=px(p.X,p.Y),d=(q[0]-mx)*(q[0]-mx)+(q[1]-my)*(q[1]-my);if(d<bd){bd=d;best=p;}});return bd<28*28?best:null;}
+cv.addEventListener('mousemove',function(e){if(drag)return;var r=cv.getBoundingClientRect(),p=near(e.clientX-r.left,e.clientY-r.top);
+ if(p){tip.hidden=false;tip.innerHTML=info(p);tip.style.left=Math.min(e.clientX-r.left+12,S.W-250)+'px';tip.style.top=(e.clientY-r.top+12)+'px';}else tip.hidden=true;});
+cv.addEventListener('mouseleave',function(){tip.hidden=true;});
+var drag=null;
+cv.addEventListener('pointerdown',function(e){drag={x:e.clientX,y:e.clientY,sx:S.x,sy:S.y,m:false};cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',function(e){if(!drag)return;var dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(Math.abs(dx)+Math.abs(dy)>3)drag.m=true;if(drag.m){S.x=drag.sx+dx;S.y=drag.sy+dy;tip.hidden=true;draw();}});
+cv.addEventListener('pointerup',function(e){var d=drag;drag=null;if(d&&!d.m){var r=cv.getBoundingClientRect(),p=near(e.clientX-r.left,e.clientY-r.top);if(p){document.getElementById('h-info').innerHTML=info(p);}}});
+cv.addEventListener('wheel',function(e){e.preventDefault();var r=cv.getBoundingClientRect();zoomAt(e.deltaY<0?1.25:0.8,e.clientX-r.left,e.clientY-r.top);},{passive:false});
+document.getElementById('h-mais').onclick=function(){zoomAt(1.5,S.W/2,S.H/2);};
+document.getElementById('h-menos').onclick=function(){zoomAt(1/1.5,S.W/2,S.H/2);};
+document.getElementById('h-reset').onclick=reset;
+sel.onchange=function(){sel.value?fitUF(sel.value):reset();};
+document.getElementById('h-modo').onchange=function(e){S.modo=e.target.value;draw();};
+document.getElementById('h-busca').onchange=function(e){var v=e.target.value,p=pts.find(function(x){return v===x.n+' ('+x.uf+')';});if(!p)return;
+ S.k=(S.W/44)*40;S.x=S.W/2-S.k*p.X;S.y=S.H/2+S.k*p.Y;draw();document.getElementById('h-info').innerHTML=info(p);};
+window.__heatInit=function(){size();if(!S.k||S.k===1)fit(BB);draw();};
+window.addEventListener('resize',function(){if(document.getElementById('p-mapa').hidden)return;var uf=S.uf;size();uf?fitUF(uf):reset();});
+if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){draw();});
+new MutationObserver(draw).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>

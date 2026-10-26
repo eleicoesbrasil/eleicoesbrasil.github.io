@@ -1,0 +1,282 @@
+<title>Painel 2º Turno 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+/* Layout: cabeçalho com leitura do resultado, abas descritivas, tabela hierárquica região > UF > município */
+:root{--bg:#f6f5f2;--surface:#ffffff;--fg:#1d2127;--mute:#636a75;--line:#dddbd5;--lula:#b3262f;--flavio:#1d4f9c;--outros:#9a8f6b;--bn:#7a7f87;--abs:#c9c4b6;--warn:#8a5a00;
+--disp:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151a;--surface:#1a1e25;--fg:#e8e9ec;--mute:#99a0ab;--line:#2c323b;--lula:#e5646b;--flavio:#6b9be0;--outros:#b8ad86;--bn:#8d939c;--abs:#4a4f58;--warn:#e0a94a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12151a;--surface:#1a1e25;--fg:#e8e9ec;--mute:#99a0ab;--line:#2c323b;--lula:#e5646b;--flavio:#6b9be0;--outros:#b8ad86;--bn:#8d939c;--abs:#4a4f58;--warn:#e0a94a;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:26px}
+h1{font-family:var(--disp);font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:var(--disp);font-size:20px;margin:0 0 8px}
+.sub{color:var(--mute);margin:6px 0 0;max-width:72ch}.mute{color:var(--mute)}
+.lab{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;min-width:0}
+.big{font-family:var(--mono);font-size:28px;font-weight:500;margin:2px 0}
+.small{font-family:var(--mono);font-size:13px;color:var(--mute)}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);flex-wrap:wrap;margin-top:-6px}
+.tabs button{font:600 14px var(--disp);padding:10px 16px;background:none;border:0;border-bottom:3px solid transparent;color:var(--mute);cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--lula)}
+.tabs button:focus-visible{outline:2px solid var(--flavio);outline-offset:-2px}
+[role=tabpanel]{display:flex;flex-direction:column;gap:22px}
+[role=tabpanel][hidden]{display:none}
+.tw{overflow:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface);max-height:640px}
+table{border-collapse:collapse;width:100%;min-width:900px;font-size:13.5px}
+th,td{padding:6px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;white-space:nowrap}
+thead th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);font-weight:500;position:sticky;top:0;background:var(--surface);z-index:2;cursor:pointer}
+td.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr.r0 td,tr.r0 th{background:color-mix(in srgb,var(--fg) 6%,var(--surface));font-weight:600}
+tr.r1 th{padding-left:26px;font-weight:500} tr.r2 th{padding-left:50px;font-weight:400}
+tr.r2 td{color:var(--fg)}
+.tg{display:inline-block;width:16px;color:var(--mute);cursor:pointer;user-select:none}
+.pos{color:var(--lula)} .neg{color:var(--flavio)}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end}
+.ctl label{display:flex;flex-direction:column;gap:3px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.ctl select,.ctl input{font:14px var(--body);padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--fg);text-transform:none;letter-spacing:0;max-width:100%}
+details.cols{position:relative}details.cols summary{cursor:pointer;font:600 13px var(--disp);padding:7px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface);list-style:none;user-select:none}details.cols[open] summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.colbox{position:absolute;z-index:6;top:100%;left:0;min-width:320px;max-height:420px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:0 4px 4px 4px;padding:8px 10px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.colbox .pre{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.colbox button{font:12px var(--body);padding:4px 8px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg);cursor:pointer}
+.colrow{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:13px}.colrow label{flex:1;display:flex;gap:6px;align-items:center;cursor:pointer}.colrow .mv{padding:1px 6px}
+th.dg{cursor:grab}th.dgo{outline:2px dashed var(--flavio);outline-offset:-3px}
+header{position:relative}.lang{position:absolute;right:0;top:0;display:flex;gap:6px}.lang button{padding:2px;border:2px solid transparent;border-radius:4px;background:none;cursor:pointer;line-height:0;opacity:.6}.lang button[aria-pressed="true"]{border-color:var(--fg);opacity:1}.lang button:focus-visible{outline:2px solid var(--flavio)}
+@media (max-width:620px){h1{padding-right:0;margin-top:30px}}
+ul.rep{margin:6px 0 0;padding-left:20px;max-width:80ch}ul.rep li{margin:6px 0}pre.code{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow-x:auto;font:12.5px/1.55 var(--mono);margin:6px 0}code{font-family:var(--mono);font-size:.92em;background:color-mix(in srgb,var(--fg) 7%,transparent);padding:1px 4px;border-radius:3px}pre.code code{background:none;padding:0}.cpb{font:600 13px var(--disp);padding:6px 12px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--fg);cursor:pointer;align-self:flex-start}
+.note{border-left:3px solid var(--warn);padding:2px 0 2px 14px;max-width:78ch}
+.sv{width:100%;height:auto;display:block;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.sv text{fill:var(--fg);font-family:var(--mono);font-size:11px}.sv .m{fill:var(--mute)}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px}.leg i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.ttp{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-size:12px;line-height:1.45;box-shadow:0 2px 10px rgba(0,0,0,.2);z-index:20;max-width:260px}
+.hctl{display:flex;flex-wrap:wrap;gap:12px 18px;margin:8px 0}
+.hctl label{display:flex;flex-direction:column;gap:3px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);min-width:0}
+.hctl select,.hctl input{font:14px var(--body);padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--fg);max-width:100%;text-transform:none;letter-spacing:0}
+.hwrap{position:relative;border:1px solid var(--line);border-radius:6px;background:color-mix(in srgb,var(--fg) 4%,var(--surface));overflow:hidden}
+#h-cv{display:block;width:100%;height:min(72vh,640px);touch-action:none;cursor:grab}
+.hbtn{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:4px}
+.hbtn button{width:32px;height:32px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--fg);font-size:16px;cursor:pointer}
+.htip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-size:12px;line-height:1.4;max-width:240px;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.hleg{display:flex;align-items:center;gap:10px;font:12px var(--mono);color:var(--mute);flex-wrap:wrap}
+.hbar{height:10px;width:min(260px,100%);border-radius:2px;border:1px solid var(--line)}
+.bar{height:8px;border-radius:2px;background:var(--line);position:relative;min-width:80px}
+.bar i{position:absolute;top:0;bottom:0;border-radius:2px}
+</style>
+<main>
+<header>
+<div class="lang" role="group" aria-label="Idioma / Language"><button id="lg-pt" title="Português" aria-label="Português"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#009b3a"/><polygon points="14,2 26,10 14,18 2,10" fill="#ffdf00"/><circle cx="14" cy="10" r="4.2" fill="#002776"/><path d="M10 9.2c3-.9 6.2-.5 8.3 1.2" stroke="#fff" stroke-width=".8" fill="none"/></svg></button><button id="lg-en" title="English" aria-label="English"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#012169"/><path d="M0 0L28 20M28 0L0 20" stroke="#fff" stroke-width="3.4"/><path d="M0 0L28 20M28 0L0 20" stroke="#c8102e" stroke-width="1.6"/><path d="M14 0V20M0 10H28" stroke="#fff" stroke-width="6"/><path d="M14 0V20M0 10H28" stroke="#c8102e" stroke-width="3.4"/></svg></button></div>
+<div class="lab">Segundo turno · 25/10/2026 · apuração fechada (499.248 de 499.248 seções) · __HORA__ Brasília</div>
+<h1>Para onde foram os votos entre o primeiro e o segundo turno</h1>
+<p class="sub">Descrição do que aconteceu, com os totais oficiais do TSE por município. O primeiro turno vem do arquivo de votação por seção; o segundo, dos totais municipais publicados na apuração. Nada aqui é projeção.</p>
+</header>
+<nav class="tabs" role="tablist" aria-label="Visões">
+<button role="tab" id="t-fluxo" data-p="fluxo">Fluxo de votos</button>
+<button role="tab" id="t-abstencao" data-p="abstencao">Abstenção</button>
+<button role="tab" id="t-fechamento" data-p="fechamento">Fechamento das urnas</button>
+<button role="tab" id="t-mapa" data-p="mapa">Mapa de calor</button>
+<button role="tab" id="t-replicar" data-p="replicar">Como replicar</button>
+</nav>
+
+<div id="p-fluxo" role="tabpanel">
+ <section class="grid" id="f-cards"></section>
+ <section>
+  <h2>Quanto cada candidato ganhou do 1º para o 2º turno</h2>
+  <p class="sub">Clique na seta para abrir região, estado e município. “Outros” são os votos dos demais candidatos no 1º turno. A conta fecha: variação de Lula + variação de Flávio = outros do 1º turno + variação do comparecimento − variação de brancos e nulos.</p>
+  <div class="ctl" style="margin:12px 0">
+   <label>Buscar município<input id="f-q" placeholder="ex.: Cruzeiro do Sul" autocomplete="off"></label>
+   <details class="cols" id="f-cols"><summary>Colunas</summary><div id="f-colbody"></div></details>
+  </div>
+  <div class="tw"><table id="f-tab"></table></div>
+ </section>
+</div>
+
+<div id="p-abstencao" role="tabpanel" hidden>
+ <section class="grid" id="a-cards"></section>
+ <section>
+  <h2>Abstenção por região, estado e município</h2>
+  <div class="ctl" style="margin:10px 0"><details class="cols" id="a-cols"><summary>Colunas</summary><div id="a-colbody"></div></details></div>
+  <div class="tw"><table id="a-tab"></table></div>
+ </section>
+ <section>
+  <h2>Seções onde a abstenção mais caiu contra seções onde mais subiu</h2>
+  <p class="sub">__NSEC__ seções (cruzamento do 1º turno com os boletins de urna do 2º turno baixados até agora, em ordem aleatória), divididas em dez grupos iguais pela variação da taxa de abstenção do 1º para o 2º turno. Cada barra mostra como 100 eleitores aptos se distribuíam.</p>
+  <div class="leg" id="b-leg"></div>
+  <svg id="b-svg" class="sv" viewBox="0 0 1000 440" role="img" aria-label="Distribuição de 100 eleitores por grupo de variação de abstenção"></svg>
+  <div class="tw" style="margin-top:12px"><table id="b-tab"></table></div>
+  <p class="small" id="b-cap">Colunas Δ: variação em pontos por 100 eleitores aptos do grupo, 2º turno menos 1º turno.</p>
+  <p class="mute note">Isto descreve seções, não eleitores. Uma seção em que a abstenção caiu e Lula cresceu mostra que as duas coisas aconteceram juntas, mas não prova que quem voltou a votar escolheu Lula. Quando o ZIP oficial do 2º turno sair, o cruzamento passa a cobrir todas as seções.</p>
+ </section>
+</div>
+
+<div id="p-fechamento" role="tabpanel" hidden>
+__FECH__
+</div>
+
+<div id="p-mapa" role="tabpanel" hidden>
+__HEAT__
+</div>
+
+<div id="p-replicar" role="tabpanel" hidden>
+__REPLICAR__
+</div>
+</main>
+<div class="ttp" id="ttp" hidden></div>
+<script>
+(function(){
+var D=__FLUXO__, BINS=__BINS__, CL=__CLOSE__;
+var REG={AC:'Norte',AP:'Norte',AM:'Norte',PA:'Norte',RO:'Norte',RR:'Norte',TO:'Norte',AL:'Nordeste',BA:'Nordeste',CE:'Nordeste',MA:'Nordeste',PB:'Nordeste',PE:'Nordeste',PI:'Nordeste',RN:'Nordeste',SE:'Nordeste',DF:'Centro-Oeste',GO:'Centro-Oeste',MT:'Centro-Oeste',MS:'Centro-Oeste',ES:'Sudeste',MG:'Sudeste',RJ:'Sudeste',SP:'Sudeste',PR:'Sul',RS:'Sul',SC:'Sul',ZZ:'Exterior'};
+var UFN={AC:'Acre',AL:'Alagoas',AM:'Amazonas',AP:'Amapá',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MG:'Minas Gerais',MS:'Mato Grosso do Sul',MT:'Mato Grosso',PA:'Pará',PB:'Paraíba',PE:'Pernambuco',PI:'Piauí',PR:'Paraná',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RO:'Rondônia',RR:'Roraima',RS:'Rio Grande do Sul',SC:'Santa Catarina',SE:'Sergipe',SP:'São Paulo',TO:'Tocantins',ZZ:'Exterior'};
+var $=function(i){return document.getElementById(i);};
+function fm(n){return Math.round(n).toLocaleString(window.__LOC||'pt-BR');}
+function sg(n){return (n>0?'+':n<0?'−':'')+fm(Math.abs(n));}
+function p1(x){return x.toFixed(1).replace('.',(window.__DEC||','))+'%';}
+function pp(x){return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(2).replace('.',(window.__DEC||','))+' pp';}
+// linha: [uf,mun,nome,L1,F1,O1,B1,N1,ap1,cp1,ab1,L2,F2,B2,N2,ap2,cp2,ab2]
+var K=['L1','F1','O1','B1','N1','ap1','cp1','ab1','L2','F2','B2','N2','ap2','cp2','ab2'];
+function mk(r){var o={uf:r[0],mun:r[1],nome:r[2]};for(var i=0;i<K.length;i++)o[K[i]]=r[3+i];return o;}
+function zero(){var o={};K.forEach(function(k){o[k]=0;});return o;}
+function add(a,b){K.forEach(function(k){a[k]+=b[k];});}
+function derive(o){o.dL=o.L2-o.L1;o.dF=o.F2-o.F1;o.dM=o.dL-o.dF;o.dC=o.cp2-o.cp1;o.dBN=(o.B2+o.N2)-(o.B1+o.N1);o.tot1=o.cp1;
+ o.ab1p=100*o.ab1/o.ap1;o.ab2p=100*o.ab2/o.ap2;o.dab=o.ab2p-o.ab1p;
+ o.pL1=100*o.L1/o.cp1;o.pF1=100*o.F1/o.cp1;o.pO1=100*o.O1/o.cp1;o.pBN1=100*(o.B1+o.N1)/o.cp1;
+ o.pL2=100*o.L2/o.cp2;o.pF2=100*o.F2/o.cp2;o.pBN2=100*(o.B2+o.N2)/o.cp2;
+ o.dpL=o.pL2-o.pL1;o.dpF=o.pF2-o.pF1;o.dpM=o.dpL-o.dpF;o.pC=100*o.dC/o.cp1;o.dpBN=o.pBN2-o.pBN1;
+ o.dAb=o.ab2-o.ab1;o.pAb=o.ab1?100*o.dAb/o.ab1:0;o.dpAbs=o.dab;return o;}
+var rows=D.map(mk), ufs={}, regs={};
+rows.forEach(function(r){var u=ufs[r.uf]||(ufs[r.uf]=Object.assign(zero(),{nome:UFN[r.uf]||r.uf,uf:r.uf,ms:[]}));add(u,r);u.ms.push(r);});
+Object.keys(ufs).forEach(function(k){var u=ufs[k],g=REG[k]||'Exterior';var rg=regs[g]||(regs[g]=Object.assign(zero(),{nome:g,us:[]}));add(rg,u);rg.us.push(u);derive(u);u.ms.forEach(derive);});
+Object.keys(regs).forEach(function(k){derive(regs[k]);});
+var BR=zero();Object.keys(regs).forEach(function(k){add(BR,regs[k]);});derive(BR);BR.nome='Brasil';
+// ---------- cards
+function cardsF(){
+ var h='';
+ function c(t,a,b,cls,extra){return '<div class="card"><div class="lab">'+t+'</div><div class="big '+cls+'">'+sg(b-a)+'</div><div class="small">'+fm(a)+' → '+fm(b)+'</div>'+(extra||'')+'</div>';}
+ h+=c('Flávio Bolsonaro',BR.F1,BR.F2,'neg');h+=c('Lula',BR.L1,BR.L2,'pos');
+ h+='<div class="card"><div class="lab">De onde veio o crescimento dos dois</div><div class="big">'+fm(BR.dL+BR.dF)+'</div><div class="small">outros candidatos no 1º turno '+fm(BR.O1)+'<br>comparecimento '+sg(BR.dC)+'<br>brancos e nulos '+sg(BR.dBN)+' (entram com sinal trocado)</div></div>';
+ $('f-cards').innerHTML=h;}
+function cardsA(){
+ var h='<div class="card"><div class="lab">Abstenção no 1º turno</div><div class="big">'+p1(BR.ab1p)+'</div><div class="small">'+fm(BR.ab1)+' de '+fm(BR.ap1)+' aptos</div></div>';
+ h+='<div class="card"><div class="lab">Abstenção no 2º turno</div><div class="big">'+p1(BR.ab2p)+'</div><div class="small">'+fm(BR.ab2)+' de '+fm(BR.ap2)+' aptos</div></div>';
+ h+='<div class="card"><div class="lab">Variação</div><div class="big">'+pp(BR.dab)+'</div><div class="small">'+sg(BR.ab2-BR.ab1)+' abstenções · comparecimento '+sg(BR.dC)+'</div></div>';
+ $('a-cards').innerHTML=h;}
+// ---------- tabela hierárquica com colunas configuráveis
+function ppf(x){return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(2).replace('.',(window.__DEC||','))+' pp';}
+function Tab(el,cols,opts){
+ var key='cols2_'+opts.key, open={}, q='', ord='nome', asc=false;
+ var byId={};cols.forEach(function(c){byId[c.id]=c;});
+ var order=cols.map(function(c){return c.id;}), vis={};cols.forEach(function(c){vis[c.id]=!!c.on;});
+ try{var sv=JSON.parse(localStorage.getItem(key)||'null');if(sv&&sv.order){var ok=sv.order.filter(function(i){return byId[i];});cols.forEach(function(c){if(ok.indexOf(c.id)<0)ok.push(c.id);});order=ok;vis=Object.assign(vis,sv.vis||{});}}catch(e){}
+ function save(){try{localStorage.setItem(key,JSON.stringify({order:order,vis:vis}));}catch(e){}}
+ function sortF(a,b){if(ord==='nome')return (a.nome<b.nome?-1:1)*(asc?1:1);var d=(b[ord]||0)-(a[ord]||0);return asc?-d:d;}
+ function cell(o,c){return '<td class="n '+(c.cls?c.cls(o):'')+'">'+c.f(o)+'</td>';}
+ function vcols(){return order.filter(function(i){return vis[i];}).map(function(i){return byId[i];});}
+ function line(o,lv,k,kids,vc){var tg=kids?'<span class="tg" data-k="'+k+'">'+(open[k]?'▾':'▸')+'</span>':'<span class="tg"></span>';
+  return '<tr class="r'+lv+'"><th>'+tg+o.nome+(lv==2?' <span class="mute">'+o.uf+'</span>':'')+'</th>'+vc.map(function(c){return cell(o,c);}).join('')+'</tr>';}
+ function render(){
+  var vc=vcols();
+  var h='<thead><tr><th data-s="nome">Região / UF / município'+(ord==='nome'?' ▾':'')+'</th>'+vc.map(function(c){return '<th class="dg" draggable="true" data-id="'+c.id+'" data-s="'+c.id+'" style="text-align:right" title="Clique para ordenar; arraste para mudar a posição">'+c.h+(ord===c.id?(asc?' ▴':' ▾'):'')+'</th>';}).join('')+'</tr></thead><tbody>';
+  h+=line(BR,0,'br',false,vc);
+  var qq=q.trim().toLowerCase();
+  if(qq){var hits=rows.filter(function(r){return r.nome.toLowerCase().indexOf(qq)>=0;}).sort(sortF).slice(0,200);hits.forEach(function(r){h+=line(r,2,'',false,vc);});
+   if(!hits.length)h+='<tr><th>Nenhum município encontrado</th></tr>';}
+  else Object.keys(regs).sort(function(a,b){return sortF(regs[a],regs[b]);}).forEach(function(g){var R=regs[g];h+=line(R,0,'g'+g,true,vc);
+   if(open['g'+g])R.us.slice().sort(sortF).forEach(function(U){h+=line(U,1,'u'+U.uf,true,vc);
+    if(open['u'+U.uf])U.ms.slice().sort(sortF).forEach(function(M){h+=line(M,2,'',false,vc);});});});
+  el.innerHTML=h+'</tbody>';
+ }
+ function panel(){
+  var box=$(opts.body); if(!box)return;
+  var h='<div class="colbox"><div class="pre"><button data-p="abs">Só valores absolutos</button><button data-p="pct">Só porcentagem</button><button data-p="both">Ambos</button><button data-p="reset">Padrão</button></div>';
+  order.forEach(function(i,n){var c=byId[i];h+='<div class="colrow"><label><input type="checkbox" data-v="'+i+'"'+(vis[i]?' checked':'')+'> '+c.h+(c.pct?' <span class="mute">(%)</span>':'')+'</label><button class="mv" data-m="'+i+'" data-d="-1" aria-label="Subir">▲</button><button class="mv" data-m="'+i+'" data-d="1" aria-label="Descer">▼</button></div>';});
+  box.innerHTML=h+'</div>';
+ }
+ function setPreset(p){cols.forEach(function(c){vis[c.id]=p==='reset'?!!c.on:p==='abs'?!!c.on:p==='pct'?!!c.pct:(!!c.on||!!c.pct);});if(p==='reset')order=cols.map(function(c){return c.id;});save();panel();render();}
+ el.addEventListener('click',function(e){var t=e.target.closest('.tg');if(t&&t.dataset.k){open[t.dataset.k]=!open[t.dataset.k];render();return;}
+  var th=e.target.closest('th[data-s]');if(th&&th.dataset.s){if(ord===th.dataset.s)asc=!asc;else{ord=th.dataset.s;asc=false;}render();}});
+ var dragId=null;
+ el.addEventListener('dragstart',function(e){var th=e.target.closest('th[data-id]');if(th){dragId=th.dataset.id;try{e.dataTransfer.setData('text/plain',dragId);}catch(x){}}});
+ el.addEventListener('dragover',function(e){var th=e.target.closest('th[data-id]');if(th&&dragId){e.preventDefault();th.classList.add('dgo');}});
+ el.addEventListener('dragleave',function(e){var th=e.target.closest('th[data-id]');if(th)th.classList.remove('dgo');});
+ el.addEventListener('drop',function(e){var th=e.target.closest('th[data-id]');if(!th||!dragId)return;e.preventDefault();var to=th.dataset.id;if(to!==dragId){order.splice(order.indexOf(dragId),1);order.splice(order.indexOf(to),0,dragId);save();panel();}dragId=null;render();});
+ el.addEventListener('dragend',function(){dragId=null;render();});
+ var box=$(opts.body);
+ if(box){box.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+   if(b.dataset.p){setPreset(b.dataset.p);return;}
+   if(b.dataset.m){var i=order.indexOf(b.dataset.m),j=i+(+b.dataset.d);if(j>=0&&j<order.length){var x=order[i];order[i]=order[j];order[j]=x;save();panel();render();}}});
+  box.addEventListener('change',function(e){var c=e.target.closest('input[data-v]');if(c){vis[c.dataset.v]=c.checked;save();render();}});}
+ return {render:function(){panel();render();},setQ:function(v){q=v;render();}};
+}
+function A(id,h,f,o){return Object.assign({id:id,h:h,f:f},o||{});}
+function pc(k){return function(o){return p1(o[k]);};}
+function vf(k){return function(o){return fm(o[k]);};}
+function sf(k){return function(o){return sg(o[k]);};}
+function pf(k){return function(o){return ppf(o[k]);};}
+var colsF=[
+ A('L1','Lula 1º',vf('L1'),{on:1}),A('pL1','Lula 1º',pc('pL1'),{pct:1}),A('L2','Lula 2º',vf('L2'),{on:1}),A('pL2','Lula 2º',pc('pL2'),{pct:1}),
+ A('dL','Ganho de Lula',sf('dL'),{on:1,cls:function(o){return o.dL>=0?'pos':'neg';}}),A('dpL','Ganho de Lula',pf('dpL'),{pct:1,cls:function(o){return o.dpL>=0?'pos':'neg';}}),
+ A('F1','Flávio 1º',vf('F1'),{on:1}),A('pF1','Flávio 1º',pc('pF1'),{pct:1}),A('F2','Flávio 2º',vf('F2'),{on:1}),A('pF2','Flávio 2º',pc('pF2'),{pct:1}),
+ A('dF','Ganho de Flávio',sf('dF'),{on:1,cls:function(o){return o.dF>=0?'neg':'pos';}}),A('dpF','Ganho de Flávio',pf('dpF'),{pct:1,cls:function(o){return o.dpF>=0?'neg':'pos';}}),
+ A('dM','Lula − Flávio',sf('dM'),{on:1,cls:function(o){return o.dM>=0?'pos':'neg';}}),A('dpM','Lula − Flávio',pf('dpM'),{pct:1,cls:function(o){return o.dpM>=0?'pos':'neg';}}),
+ A('O1','Outros 1º',vf('O1'),{on:1}),A('pO1','Outros 1º',pc('pO1'),{pct:1}),
+ A('dC','Δ comparecimento',sf('dC'),{on:1}),A('pC','Δ comparecimento (sobre o 1º)',function(o){return (o.pC>0?'+':o.pC<0?'−':'')+Math.abs(o.pC).toFixed(2).replace('.',(window.__DEC||','))+'%';},{pct:1}),
+ A('dBN','Δ brancos+nulos',sf('dBN'),{on:1}),A('dpBN','Δ brancos+nulos',pf('dpBN'),{pct:1}),
+ A('cp1','Comparecimento 1º',vf('cp1')),A('cp2','Comparecimento 2º',vf('cp2')),A('ap2','Aptos',vf('ap2'))];
+var tf=Tab($('f-tab'),colsF,{key:'fluxo',body:'f-colbody'});
+var colsA=[
+ A('ap2','Aptos',vf('ap2'),{on:1}),A('ab1','Abstenção 1º',vf('ab1'),{on:1}),A('ab2','Abstenção 2º',vf('ab2'),{on:1}),A('dAb','Δ abstenção (votos)',sf('dAb'),{on:1}),
+ A('ab1p','Taxa 1º',pc('ab1p'),{pct:1,on:1}),A('ab2p','Taxa 2º',pc('ab2p'),{pct:1,on:1}),A('dab','Variação da taxa',pf('dab'),{pct:1,on:1,cls:function(o){return o.dab<=0?'':'mute';}}),
+ A('pAb','Variação das abstenções (sobre o 1º)',function(o){return (o.pAb>0?'+':o.pAb<0?'−':'')+Math.abs(o.pAb).toFixed(2).replace('.',(window.__DEC||','))+'%';},{pct:1})];
+var ta=Tab($('a-tab'),colsA,{key:'abst',body:'a-colbody'});
+$('f-q').addEventListener('input',function(e){tf.setQ(e.target.value);});
+cardsF();cardsA();tf.render();ta.render();
+// ---------- seções por variação de abstenção
+function drawBins(){
+ var C={L:'var(--lula)',F:'var(--flavio)',O:'var(--outros)',BN:'var(--bn)',A:'var(--abs)'};
+ var names={L:'Lula',F:'Flávio',O:'Outros candidatos (1º turno)',BN:'Brancos e nulos',A:'Abstenção'};
+ $('b-leg').innerHTML=Object.keys(C).map(function(k){return '<span><i style="background:'+C[k]+'"></i>'+names[k]+'</span>';}).join('');
+ var W=1000,H=440,m={l:50,r:10,t:16,b:70},bw=(W-m.l-m.r)/BINS.length;
+ var s='';
+ [0,25,50,75,100].forEach(function(v){var y=m.t+(H-m.t-m.b)*(1-v/100);s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text class="m" x="'+(m.l-6)+'" y="'+(y+4)+'" text-anchor="end">'+v+'</text>';});
+ BINS.forEach(function(b,i){
+  var x0=m.l+i*bw;
+  [['1',{L:b.L1/b.ap1,F:b.F1/b.ap1,O:b.O1/b.ap1,BN:b.BN1/b.ap1,A:b.A1/b.ap1}],['2',{L:b.L2/b.ap2,F:b.F2/b.ap2,O:0,BN:b.BN2/b.ap2,A:b.A2/b.ap2}]].forEach(function(t,j){
+   var x=x0+bw*0.08+j*bw*0.42,w=bw*0.38,y=H-m.b;
+   ['A','BN','O','F','L'].forEach(function(k){var hh=(H-m.t-m.b)*t[1][k];if(hh<=0)return;y-=hh;s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+hh+'" fill="'+C[k]+'" data-b="'+i+'" data-t="'+t[0]+'"/>';});
+   s+='<text class="m" x="'+(x+w/2)+'" y="'+(H-m.b+14)+'" text-anchor="middle">'+t[0]+'º</text>';});
+  s+='<text x="'+(x0+bw/2)+'" y="'+(H-m.b+34)+'" text-anchor="middle">'+(b.lo>=0?'+':'−')+Math.abs(b.lo).toFixed(1).replace('.',(window.__DEC||','))+'</text><text class="m" x="'+(x0+bw/2)+'" y="'+(H-m.b+48)+'" text-anchor="middle">a '+(b.hi>=0?'+':'−')+Math.abs(b.hi).toFixed(1).replace('.',(window.__DEC||','))+'</text>';});
+ s+='<text class="m" x="'+(m.l)+'" y="'+(H-6)+'">variação da taxa de abstenção do grupo, em pontos percentuais (do 1º para o 2º turno) · eixo vertical: eleitores aptos em cada 100</text>';
+ $('b-svg').innerHTML=s;
+ window.__tipB=function(e){var r=e.target;if(!r.dataset||r.dataset.b===undefined){$('ttp').hidden=true;return;}
+  var b=BINS[+r.dataset.b],t=r.dataset.t,ap=t==='1'?b.ap1:b.ap2;
+  var v=t==='1'?{L:b.L1,F:b.F1,O:b.O1,BN:b.BN1,A:b.A1}:{L:b.L2,F:b.F2,O:0,BN:b.BN2,A:b.A2};
+  var h='<strong>Grupo '+(+r.dataset.b+1)+' · '+t+'º turno</strong> ('+fm(b.n)+' seções)<br>';
+  ['L','F','O','BN','A'].forEach(function(k){if(t==='2'&&k==='O')return;h+=names[k]+': '+(100*v[k]/ap).toFixed(1).replace('.',(window.__DEC||','))+' por 100 aptos<br>';});
+  var T=$('ttp');T.innerHTML=h;T.hidden=false;T.style.left=Math.min(e.clientX+14,innerWidth-270)+'px';T.style.top=(e.clientY+14)+'px';}
+ 
+ var h='<thead><tr><th>Grupo</th><th style="text-align:right">Variação da abstenção</th><th style="text-align:right">Seções</th><th style="text-align:right">Δ Lula</th><th style="text-align:right">Δ Flávio</th><th style="text-align:right">Δ Lula − Δ Flávio</th><th style="text-align:right">Δ brancos+nulos</th><th style="text-align:right">Δ abstenção</th></tr></thead><tbody>';
+ function per(a,b){return 100*a/b;}
+ BINS.forEach(function(b,i){
+  var dl=per(b.L2,b.ap2)-per(b.L1,b.ap1),df=per(b.F2,b.ap2)-per(b.F1,b.ap1),dbn=per(b.BN2,b.ap2)-per(b.BN1,b.ap1),da=per(b.A2,b.ap2)-per(b.A1,b.ap1);
+  function f(x){return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(2).replace('.',(window.__DEC||','));}
+  h+='<tr><th>'+(i+1)+'</th><td class="n">'+f(b.lo)+' a '+f(b.hi)+' pp</td><td class="n">'+fm(b.n)+'</td><td class="n pos">'+f(dl)+'</td><td class="n neg">'+f(df)+'</td><td class="n">'+f(dl-df)+'</td><td class="n">'+f(dbn)+'</td><td class="n">'+f(da)+'</td></tr>';});
+ $('b-tab').innerHTML=h+'</tbody>';
+}
+drawBins();
+$('b-svg').addEventListener('mousemove',function(e){if(window.__tipB)window.__tipB(e);});$('b-svg').addEventListener('mouseleave',function(){$('ttp').hidden=true;});
+window.__rerender=function(){cardsF();cardsA();tf.render();ta.render();drawBins();if(window.__closeInit)window.__closeInit();var m=$('p-mapa');if(m&&!m.hidden&&window.__heatInit)window.__heatInit();};
+// ---------- abas
+var T=['fluxo','abstencao','fechamento','mapa','replicar'];
+function show(n){if(T.indexOf(n)<0)n='fluxo';T.forEach(function(t){$('p-'+t).hidden=t!==n;$('t-'+t).setAttribute('aria-selected',t===n?'true':'false');});
+ try{history.replaceState(null,'','#'+n);}catch(e){} if(n==='mapa'&&window.__heatInit)window.__heatInit(); if(n==='fechamento'&&window.__closeInit)window.__closeInit();}
+T.forEach(function(t){$('t-'+t).addEventListener('click',function(){show(t);});});
+window.__show=show;
+try{var cb=$('rep-copy');if(cb)cb.addEventListener('click',function(){var tx=$('rep-code').textContent;var ok=function(){cb.textContent=(window.__LANG==='en'?'Copied':'Copiado');setTimeout(function(){cb.textContent=(window.__LANG==='en'?'Copy commands':'Copiar comandos');},1500);};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(tx).then(ok,function(){});});}catch(e){}
+window.__CL=CL;
+})();
+</script>
+__HEATJS__
+__CLOSEJS__
+__I18N__
+<script>
+(function(){var n=(location.hash||'').replace('#','');if(window.__show)window.__show(n);})();
+</script>

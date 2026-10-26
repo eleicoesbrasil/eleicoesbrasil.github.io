@@ -1,0 +1,51 @@
+<section>
+<h2>Como replicar tudo na sua máquina</h2>
+<p class="sub">Se você desconfia de algum número, não precisa acreditar neste painel: todos os dados vêm de arquivos públicos do TSE e todo o código está no repositório. O caminho abaixo refaz tudo do zero e permite conferir cada passo.</p>
+</section>
+<section>
+<h2>1. De onde vêm os dados</h2>
+<ul class="rep">
+<li><strong>Boletim de urna em CSV (bweb)</strong>, por UF, de cada turno: uma linha por seção e candidato, com horário de abertura e de encerramento da urna. Portal de dados abertos do TSE, conjuntos “Resultados 2022/2026 - Boletim de Urna”.</li>
+<li><strong>Locais de votação com coordenadas</strong> (<code>eleitorado_local_votacao_AAAA.zip</code>) e <strong>votação por seção</strong> (<code>votacao_secao_AAAA_UF.zip</code>).</li>
+<li><strong>Totais por município do 2º turno de 2026</strong>, publicados na apuração em <code>resultados.tse.jus.br</code> (um JSON por município), usados enquanto o TSE não publica os CSVs do 2º turno.</li>
+<li><strong>Arquivos de urna</strong> (boletim, log, RDV) por UF, só se você quiser refazer a leitura dos boletins originais.</li>
+</ul>
+</section>
+<section>
+<h2>2. Passo a passo</h2>
+<pre class="code" id="rep-code">git clone &lt;endereço do repositório&gt;
+cd eleicoes-brasil-secoes
+
+# baixa os dados do TSE (modo mínimo, cerca de 7 GB; confere o sha512 de cada arquivo)
+./scripts/01_baixar_tse.sh --minimo dados/tse
+
+# gera os Parquet de presidente por seção
+./scripts/02_gerar_parquet.sh dados/tse
+
+# gera os dados do painel e o site (site/index.html)
+./scripts/03_gerar_site.sh
+
+# abre o painel
+xdg-open site/index.html   # ou abra o arquivo no navegador</pre>
+<button id="rep-copy" class="cpb">Copiar comandos</button>
+<p class="mute">Requisitos: Linux ou macOS (ou WSL), <code>curl</code>, <code>sha512sum</code>, Python 3.10 ou mais novo e <code>uv</code> (ou <code>pip</code>). O download é sequencial e com pausa para não sobrecarregar o servidor do TSE. O modo <code>--completo</code> baixa também os pacotes de arquivos de urna (centenas de GB).</p>
+</section>
+<section>
+<h2>3. Como conferir os números</h2>
+<ul class="rep">
+<li><strong>Integridade dos arquivos:</strong> cada ZIP é comparado com o <code>.sha512</code> que o próprio TSE publica ao lado. O script apaga o arquivo se o hash divergir.</li>
+<li><strong>Totais nacionais:</strong> com os Parquet em mãos, <code>SELECT sum(votos_13), sum(votos_22) FROM 'data/parquet/presidente_secoes_2026_1t.parquet'</code> deve bater com o resultado oficial do TSE para o 1º turno (Lula 53.879.538 e Flávio 56.104.503 votos).</li>
+<li><strong>2º turno de 2026:</strong> some os JSON por município em <code>resultados.tse.jus.br/oficial/ele2026/6258/dados/UF/UFMUNICIPIO-c0001-e006258-u.json</code>. O painel usou esses totais: Lula 64.256.232 e Flávio 59.826.041 votos.</li>
+<li><strong>Horários de fechamento:</strong> a coluna <code>encerramento</code> é o relógio local da urna, copiado do boletim. A coluna <code>encerramento_brasilia</code> soma o fuso (Acre +2h; Amazonas, Rondônia, Roraima, Mato Grosso e Mato Grosso do Sul +1h). Você pode refazer a leitura direto dos boletins originais com <code>pipeline/eleicoes_pipeline/urnas_parse.py</code> e comparar.</li>
+<li><strong>Conferência cruzada independente:</strong> o projeto DataUrnas-BR (GitHub, licença MIT) decodifica os mesmos boletins por outro código. Compare as contagens por seção.</li>
+<li><strong>Todos os gráficos</strong> saem dos arquivos de <code>data/derivados/</code>, que são gerados a partir dos Parquet. Nenhum número do painel é digitado à mão.</li>
+</ul>
+</section>
+<section>
+<h2>4. Limites e cuidados</h2>
+<ul class="rep">
+<li>O 2º turno de 2026 só tem CSV por seção quando o TSE publicar o conjunto “Boletim de Urna” desse turno. Até lá, o painel usa os totais por município e uma amostra aleatória de boletins para os horários, e informa isso na própria aba.</li>
+<li>Nos horários, “fora do horário previsto” é medido em relação às 17h de Brasília. Em 2026, a prorrogação decidida pelo ministro Zanin muda a referência para as urnas que estavam abertas na hora da decisão; o painel mostra as duas marcas.</li>
+<li>Dados do TSE têm licença Creative Commons Atribuição. O código deste repositório é MIT.</li>
+</ul>
+</section>

@@ -1,0 +1,13 @@
+[project]
+name = "eleicoes-pipeline"
+version = "0.1.0"
+description = "Gera Parquet por seção (presidente) a partir dos arquivos abertos do TSE"
+requires-python = ">=3.10"
+dependencies = ["duckdb>=1.1", "httpx>=0.27"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["eleicoes_pipeline"]

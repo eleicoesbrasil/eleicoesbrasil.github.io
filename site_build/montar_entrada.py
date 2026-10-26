@@ -1,0 +1,67 @@
+"""Gera docs/index.html: página de entrada. Só '2026 · Presidente' é clicável; o resto são placeholders."""
+import os
+import sys
+from pathlib import Path
+
+DOCS = Path(sys.argv[1] if len(sys.argv) > 1 else "docs")
+ITENS = [  # (ano, cargo_pt, cargo_en, ativo, href)
+    (2026, "Presidente", "President", True, "2026/presidente/"),
+    (2026, "Governador", "Governor", False, ""), (2026, "Senador", "Senator", False, ""),
+    (2026, "Deputado federal", "Federal deputy", False, ""), (2026, "Deputado estadual", "State deputy", False, ""),
+    (2024, "Prefeito", "Mayor", False, ""), (2024, "Vereador", "City council", False, ""),
+    (2022, "Presidente", "President", False, ""), (2022, "Governador", "Governor", False, ""),
+    (2020, "Prefeito", "Mayor", False, ""),
+]
+arquivos = []
+for p in sorted((DOCS / "dados").rglob("*")):
+    if p.is_file() and p.suffix in (".parquet", ".json") and p.stat().st_size > 0:
+        arquivos.append((str(p.relative_to(DOCS)), p.stat().st_size))
+
+
+def mb(n):
+    return f"{n/1e6:.1f} MB" if n >= 1e5 else f"{n/1e3:.0f} KB"
+
+
+cards = ""
+for ano, pt, en, ativo, href in ITENS:
+    if ativo:
+        cards += f'<a class="card on" href="{href}"><span class="y">{ano}</span><span class="c" data-pt="{pt}" data-en="{en}">{pt}</span><span class="s" data-pt="Painel disponível" data-en="Dashboard available">Painel disponível</span></a>\n'
+    else:
+        cards += f'<div class="card off" aria-disabled="true"><span class="y">{ano}</span><span class="c" data-pt="{pt}" data-en="{en}">{pt}</span><span class="s" data-pt="Em breve" data-en="Coming soon">Em breve</span></div>\n'
+lista = "".join(f'<li><a href="{f}">{f}</a> <span class="mute">{mb(s)}</span></li>' for f, s in arquivos) or '<li class="mute" data-pt="Os arquivos aparecem aqui quando forem gerados." data-en="Files appear here once generated.">Os arquivos aparecem aqui quando forem gerados.</li>'
+
+html = f'''<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Eleições Brasil</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+:root{{--bg:#f6f5f2;--surface:#fff;--fg:#1d2127;--mute:#636a75;--line:#dddbd5;--accent:#b3262f;--disp:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;--body:"IBM Plex Sans",system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}}
+@media (prefers-color-scheme:dark){{:root:not([data-theme="light"]){{--bg:#12151a;--surface:#1a1e25;--fg:#e8e9ec;--mute:#99a0ab;--line:#2c323b;--accent:#e5646b;color-scheme:dark}}}}
+body{{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--body);padding-block:32px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+main{{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:28px}}
+header{{position:relative}} h1{{font-family:var(--disp);font-size:clamp(30px,6vw,48px);line-height:1.05;margin:0;letter-spacing:-.01em}}
+.sub{{color:var(--mute);max-width:64ch;margin:8px 0 0}} .mute{{color:var(--mute)}}
+.lang{{position:absolute;right:0;top:0;display:flex;gap:6px}} .lang button{{padding:2px;border:2px solid transparent;border-radius:4px;background:none;cursor:pointer;line-height:0;opacity:.6}} .lang button[aria-pressed="true"]{{border-color:var(--fg);opacity:1}}
+h2{{font-family:var(--disp);font-size:20px;margin:0 0 10px}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}}
+.card{{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border:1px solid var(--line);border-radius:6px;background:var(--surface);text-decoration:none;color:inherit;min-width:0}}
+.card .y{{font:500 13px var(--mono);color:var(--mute)}} .card .c{{font:600 20px var(--disp)}} .card .s{{font-size:13px;color:var(--mute)}}
+.card.on{{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}} .card.on .s{{color:var(--accent);font-weight:600}} .card.on:hover{{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}}
+.card.off{{opacity:.55;border-style:dashed;cursor:not-allowed}}
+ul{{margin:0;padding-left:20px}} li{{margin:4px 0}} a{{color:var(--accent)}}
+</style></head><body><main>
+<header><div class="lang"><button id="lg-pt" aria-label="Português" title="Português"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#009b3a"/><polygon points="14,2 26,10 14,18 2,10" fill="#ffdf00"/><circle cx="14" cy="10" r="4.2" fill="#002776"/><path d="M10 9.2c3-.9 6.2-.5 8.3 1.2" stroke="#fff" stroke-width=".8" fill="none"/></svg></button><button id="lg-en" aria-label="English" title="English"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#012169"/><path d="M0 0L28 20M28 0L0 20" stroke="#fff" stroke-width="3.4"/><path d="M0 0L28 20M28 0L0 20" stroke="#c8102e" stroke-width="1.6"/><path d="M14 0V20M0 10H28" stroke="#fff" stroke-width="6"/><path d="M14 0V20M0 10H28" stroke="#c8102e" stroke-width="3.4"/></svg></button></div>
+<h1>Eleições Brasil</h1>
+<p class="sub" data-pt="Resultados oficiais do TSE por seção eleitoral, com código e dados abertos para você conferir cada número." data-en="Official TSE results by polling section, with open code and data so you can check every number.">Resultados oficiais do TSE por seção eleitoral, com código e dados abertos para você conferir cada número.</p></header>
+<section><h2 data-pt="Escolha uma eleição" data-en="Choose an election">Escolha uma eleição</h2><div class="grid">
+{cards}</div></section>
+<section><h2 data-pt="Dados abertos" data-en="Open data">Dados abertos</h2><ul>{lista}</ul>
+<p class="mute" data-pt="Dados originais: Tribunal Superior Eleitoral, licença Creative Commons Atribuição. O painel de cada eleição tem uma aba “Como replicar”." data-en="Original data: Superior Electoral Court (TSE), Creative Commons Attribution license. Each election dashboard has a “How to replicate” tab.">Dados originais: Tribunal Superior Eleitoral, licença Creative Commons Atribuição. O painel de cada eleição tem uma aba “Como replicar”.</p></section>
+</main><script>
+(function(){{function set(l){{document.documentElement.lang=l==='en'?'en':'pt-BR';document.querySelectorAll('[data-pt]').forEach(function(e){{e.textContent=e.getAttribute('data-'+l);}});
+document.getElementById('lg-pt').setAttribute('aria-pressed',l==='pt');document.getElementById('lg-en').setAttribute('aria-pressed',l==='en');try{{localStorage.setItem('lang',l);}}catch(x){{}}}}
+document.getElementById('lg-pt').onclick=function(){{set('pt');}};document.getElementById('lg-en').onclick=function(){{set('en');}};
+var s='pt';try{{s=localStorage.getItem('lang')||'pt';}}catch(x){{}};set(s==='en'?'en':'pt');}})();
+</script></body></html>'''
+(DOCS / "index.html").write_text(html)
+print("docs/index.html gerado;", len(arquivos), "arquivos de dados listados")
