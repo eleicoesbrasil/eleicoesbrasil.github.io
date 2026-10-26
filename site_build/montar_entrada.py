@@ -16,9 +16,14 @@ ITENS = [  # (ano, cargo_pt, cargo_en, ativo, href)
     (2020, "Prefeito", "Mayor", False, ""),
 ]
 arquivos = []
+n_mapa = tam_mapa = 0
 for p in sorted((DOCS / "dados").rglob("*")):
     if p.is_file() and p.suffix in (".parquet", ".json") and p.stat().st_size > 0:
-        arquivos.append((str(p.relative_to(DOCS)), p.stat().st_size))
+        rel = str(p.relative_to(DOCS))
+        if rel.startswith("dados/mapa/") and rel != "dados/mapa/index.json":
+            n_mapa += 1; tam_mapa += p.stat().st_size   # um JSON por município: resumido em uma linha
+            continue
+        arquivos.append((rel, p.stat().st_size))
 
 
 def mb(n):
@@ -31,7 +36,7 @@ for ano, pt, en, ativo, href in ITENS:
         cards += f'<a class="card on" href="{href}"><span class="y">{ano}</span><span class="c" data-pt="{pt}" data-en="{en}">{pt}</span><span class="s" data-pt="Painel disponível" data-en="Dashboard available">Painel disponível</span></a>\n'
     else:
         cards += f'<div class="card off" aria-disabled="true"><span class="y">{ano}</span><span class="c" data-pt="{pt}" data-en="{en}">{pt}</span><span class="s" data-pt="Em breve" data-en="Coming soon">Em breve</span></div>\n'
-lista = "".join(f'<li><a href="{f}">{f}</a> <span class="mute">{mb(s)}</span></li>' for f, s in arquivos) or '<li class="mute" data-pt="Os arquivos aparecem aqui quando forem gerados." data-en="Files appear here once generated.">Os arquivos aparecem aqui quando forem gerados.</li>'
+lista = (f'<li><a href="dados/mapa/index.json">dados/mapa/</a> <span class="mute">{n_mapa} arquivos JSON, um por município, {mb(tam_mapa)}</span></li>' if n_mapa else "") + "".join(f'<li><a href="{f}">{f}</a> <span class="mute">{mb(s)}</span></li>' for f, s in arquivos) or '<li class="mute" data-pt="Os arquivos aparecem aqui quando forem gerados." data-en="Files appear here once generated.">Os arquivos aparecem aqui quando forem gerados.</li>'
 
 def fmt(n):
     return f"{n:,}".replace(",", ".")
