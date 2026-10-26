@@ -130,6 +130,8 @@ PAIRS = [
  ('Sem dados lidos ainda para esta seleção.','No data read yet for this selection.'),
  ('Lula entre os dois (acumulado)','Lula between the two (cumulative)'),('Janela de 5 minutos','5-minute window'),('Atraso médio por faixa de tamanho','Mean delay by size band'),('Mediana','Median'),('Seções (amostra)','Sections (sample)'),
  ('Média por faixa de tamanho','Mean by size band'),('Primeiro a terceiro quartil','First to third quartile'),
+ ('% dos válidos)','% of valid votes)'),('Neste minuto: ','This minute: '),
+ ('atualizado em ','updated at '),
  ('primeiro turno','first round'),('segundo turno','second round'),('Segundo turno','Runoff'),('1º turno','1st round'),('2º turno','2nd round'),('1º','1st'),('2º','2nd'),
  ('Flávio Bolsonaro ganha','Flávio Bolsonaro gains'),('Lula ganha','Lula gains'),
 ]

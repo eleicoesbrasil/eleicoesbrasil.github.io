@@ -116,8 +116,8 @@ function hover(svg){return function(e){if(!VS)return;var r=svg.getBoundingClient
   var i=Math.round(VS.X0+(px-VS.m.l)/(VS.W-VS.m.l-VS.m.r)*(VS.X1-VS.X0));i=Math.max(VS.X0,Math.min(VS.X1,i));
   var x=VS.m.l+(VS.W-VS.m.l-VS.m.r)*(i-VS.X0)/(VS.X1-VS.X0);
   ['c-cur2','c-cur3','c-cur4'].forEach(function(id){var el=$(id);if(el){el.setAttribute('x1',x);el.setAttribute('x2',x);el.style.display='';}});
-  var t=i+CL.xmin, A=VS.A, d=VS.d, sh=VS.sh[i];
-  var h='<strong>'+(t>0?'+':t<0?'−':'')+Math.abs(t)+' min depois das 17h</strong><br>Urnas fechadas até aqui: '+fm(VS.cn[i])+' ('+p1(100*VS.cn[i]/VS.tn)+')<br>Lula acumulado: '+fm(VS.cL[i])+' ('+p2(VS.pL[i])+'% dos válidos)<br>'+d.cand+' acumulado: '+fm(VS.cF[i])+' ('+p2(VS.pF[i])+'% dos válidos)<br>Lula entre os dois: '+(sh===null?'—':p2(sh)+'%')+'<br><span class="mute">Neste minuto: '+fm(A.n[i])+' urnas · Lula '+fm(A.L[i])+' · '+d.cand+' '+fm(A.F[i])+'</span>';
+  var t=i+CL.xmin, A=VS.A, d=VS.d, sh=VS.sh[i], vm=A.L[i]+A.F[i]+A.O[i];
+  var h='<strong>'+(t>0?'+':t<0?'−':'')+Math.abs(t)+' min depois das 17h</strong><br>Urnas fechadas até aqui: '+fm(VS.cn[i])+' ('+p1(100*VS.cn[i]/VS.tn)+')<br>Lula acumulado: '+fm(VS.cL[i])+' ('+p2(VS.pL[i])+'% dos válidos)<br>'+d.cand+' acumulado: '+fm(VS.cF[i])+' ('+p2(VS.pF[i])+'% dos válidos)<br>Lula entre os dois: '+(sh===null?'—':p2(sh)+'%')+'<br><span class="mute">Neste minuto: '+fm(A.n[i])+' urnas · Lula '+fm(A.L[i])+' ('+(vm?p2(100*A.L[i]/vm):'—')+'% dos válidos) · '+d.cand+' '+fm(A.F[i])+' ('+(vm?p2(100*A.F[i]/vm):'—')+'% dos válidos)</span>';
   var T=$('ttp');T.innerHTML=h;T.hidden=false;T.style.left=Math.min(e.clientX+14,innerWidth-280)+'px';T.style.top=(e.clientY+14)+'px';};}
 ['c-svg2','c-svg3','c-svg4'].forEach(function(id){var s=$(id);s.addEventListener('mousemove',hover(s));s.addEventListener('mouseleave',function(){$('ttp').hidden=true;['c-cur2','c-cur3','c-cur4'].forEach(function(i){var el=$(i);if(el)el.style.display='none';});});});
 $('t-svg').addEventListener('mousemove',function(e){var r=e.target;if(!TS||!r.dataset||r.dataset.i===undefined){$('ttp').hidden=true;return;}var b=TS.B[+r.dataset.i];
