@@ -34,8 +34,8 @@ xdg-open site/index.html   # ou abra o arquivo no navegador</pre>
 <h2>3. Como conferir os números</h2>
 <ul class="rep">
 <li><strong>Integridade dos arquivos:</strong> cada ZIP é comparado com o <code>.sha512</code> que o próprio TSE publica ao lado. O script apaga o arquivo se o hash divergir.</li>
-<li><strong>Totais nacionais:</strong> com os Parquet em mãos, <code>SELECT sum(votos_13), sum(votos_22) FROM 'data/parquet/presidente_secoes_2026_1t.parquet'</code> deve bater com o resultado oficial do TSE para o 1º turno (Lula 53.879.538 e Flávio 56.104.503 votos).</li>
-<li><strong>2º turno de 2026:</strong> some os JSON por município em <code>resultados.tse.jus.br/oficial/ele2026/6258/dados/UF/UFMUNICIPIO-c0001-e006258-u.json</code>. O painel usou esses totais: Lula 64.256.232 e Flávio 59.826.041 votos.</li>
+<li><strong>Totais nacionais:</strong> com os Parquet em mãos, <code>SELECT sum(votos_13), sum(votos_22) FROM 'data/parquet/presidente_secoes_2026_1t.parquet'</code> deve bater com o resultado oficial do TSE para o 1º turno (Lula 53.879.538 e Flávio Bolsonaro 56.104.503 votos).</li>
+<li><strong>2º turno de 2026:</strong> some os JSON por município em <code>resultados.tse.jus.br/oficial/ele2026/6258/dados/UF/UFMUNICIPIO-c0001-e006258-u.json</code>. O painel usou esses totais: Lula 64.256.232 e Flávio Bolsonaro 59.826.041 votos.</li>
 <li><strong>Horários de fechamento:</strong> a coluna <code>encerramento</code> é o relógio local da urna, copiado do boletim. A coluna <code>encerramento_brasilia</code> soma o fuso (Acre +2h; Amazonas, Rondônia, Roraima, Mato Grosso e Mato Grosso do Sul +1h). Você pode refazer a leitura direto dos boletins originais com <code>pipeline/eleicoes_pipeline/urnas_parse.py</code> e comparar.</li>
 <li><strong>Conferência cruzada independente:</strong> o projeto DataUrnas-BR (GitHub, licença MIT) decodifica os mesmos boletins por outro código. Compare as contagens por seção.</li>
 <li><strong>Todos os gráficos</strong> saem dos arquivos de <code>data/derivados/</code>, que são gerados a partir dos Parquet. Nenhum número do painel é digitado à mão.</li>

@@ -11,8 +11,8 @@ from pathlib import Path
 import duckdb
 
 XMIN, XMAX = -120, 360
-LAB = {(2022, "1t"): ("2022 · 1º turno", "Bolsonaro"), (2022, "2t"): ("2022 · 2º turno", "Bolsonaro"),
-       (2026, "1t"): ("2026 · 1º turno", "Flávio"), (2026, "2t"): ("2026 · 2º turno", "Flávio")}
+LAB = {(2022, "1t"): ("2022 · 1º turno", "Jair Bolsonaro"), (2022, "2t"): ("2022 · 2º turno", "Jair Bolsonaro"),
+       (2026, "1t"): ("2026 · 1º turno", "Flávio Bolsonaro"), (2026, "2t"): ("2026 · 2º turno", "Flávio Bolsonaro")}
 
 
 def main(pq: Path, out: Path):
@@ -55,11 +55,20 @@ def main(pq: Path, out: Path):
         (out / "abst_bins.json").write_text(json.dumps([dict(zip(cols, [float(x) if isinstance(x, float) else int(x) for x in r])) for r in rows]))
         print("abst_bins: seções cruzadas", sum(r[1] for r in rows))
 
-    # ---- fechamento das urnas: bins de 1 minuto por UF, relativo às 17h de Brasília
+    # ---- centro de gravidade dos locais de votação por município (mapa de calor e mapa de atraso)
+    xy = {}
+    if (2026, "1t") in ok:
+        rows = con.execute(f"""select uf, cd_municipio, any_value(nm_municipio), sum(aptos*lat)/sum(aptos), sum(aptos*lon)/sum(aptos)
+            from read_parquet('{ok[(2026,'1t')]}') where lat is not null and uf<>'ZZ' group by 1,2""").fetchall()
+        xy = {f"{u}-{m}": [n, round(la, 4), round(lo, 4)] for u, m, n, la, lo in rows}
+        (out / "mun_xy.json").write_text(json.dumps(xy, ensure_ascii=False))
+        print("mun_xy:", len(rows))
+
+    # ---- fechamento das urnas: bins de 1 minuto por UF (relativo às 17h de Brasília), tamanho x atraso e mapa
     ds = {}
     for (a, t), p in ok.items():
         lab, cand = LAB[(a, t)]
-        con.execute(f"""create or replace table t as select uf, cd_municipio mun, votos_13 L, votos_22 F,
+        con.execute(f"""create or replace table t as select uf, cd_municipio mun, votos_13 L, votos_22 F, votos_outros O, aptos,
             date_diff('second', date_trunc('day', encerramento_brasilia) + interval 17 hour, encerramento_brasilia)/60.0 delta
             from read_parquet('{p}') where uf<>'ZZ' and encerramento_brasilia is not null""")
         n = con.execute("select count(*) from t").fetchall()[0][0]
@@ -67,26 +76,43 @@ def main(pq: Path, out: Path):
             continue
         ufs = {}
         for uf in [r[0] for r in con.execute("select distinct uf from t").fetchall()]:
-            L = [0] * (XMAX - XMIN + 1); F = list(L); N = list(L)
-            for d, nn, l, f in con.execute("select greatest(?,least(?,floor(delta)))::int, count(*), sum(L), sum(F) from t where uf=? group by 1", [XMIN, XMAX, uf]).fetchall():
-                N[d - XMIN] = nn; L[d - XMIN] = int(l or 0); F[d - XMIN] = int(f or 0)
+            L = [0] * (XMAX - XMIN + 1); F = list(L); O = list(L); N = list(L)
+            for d, nn, l, f, o in con.execute("select greatest(?,least(?,floor(delta)))::int, count(*), sum(L), sum(F), sum(O) from t where uf=? group by 1", [XMIN, XMAX, uf]).fetchall():
+                N[d - XMIN] = nn; L[d - XMIN] = int(l or 0); F[d - XMIN] = int(f or 0); O[d - XMIN] = int(o or 0)
             tot = sum(N)
-            ufs[uf] = {"n": N, "L": L, "F": F, "fator": 1.0, "amostra": tot, "total": tot}
+            ufs[uf] = {"n": N, "L": L, "F": F, "O": O, "amostra": tot, "total": tot}
         rows = con.execute("""with b as (select *, case when delta<=15 then 0 when delta<=30 then 1 when delta<=60 then 2 when delta<=90 then 3 else 4 end fx from t),
             m as (select uf, mun, sum(L) filter(where fx=0) L0, sum(F) filter(where fx=0) F0 from b group by 1,2)
             select b.fx, count(*) n, sum(b.L), sum(b.F), 0, sum((b.L+b.F)*m.L0*1.0/nullif(m.L0+m.F0,0)) filter(where m.L0+m.F0>0),
               sum(b.L) filter(where m.L0+m.F0>0), sum(b.L+b.F) filter(where m.L0+m.F0>0) from b join m using (uf, mun) group by 1 order by 1""").fetchall()
         faixas = [dict(zip(["f", "n", "L", "F", "comp", "expL", "Lc", "LFc"], [(float(x) if isinstance(x, float) else int(x or 0)) for x in r])) for r in rows]
-        ds[f"{a}_{t}"] = {"label": lab, "cand": cand, "ufs": ufs, "faixas": faixas, "n": n}
+        con.execute("create or replace table z as select uf, mun, aptos, greatest(-10,least(300,delta)) d, delta from t where aptos>0")
+        corr = con.execute("select corr(aptos,d), corr(rk_a,rk_d) from (select aptos,d,rank() over (order by aptos) rk_a, rank() over (order by d) rk_d from z)").fetchall()[0]
+        bins = con.execute("""select count(*), avg(aptos), avg(d), median(d), avg((delta>15)::int)*100, avg((delta>60)::int)*100, min(aptos), max(aptos)
+            from (select *, ntile(12) over (order by aptos) b from z) group by b order by b""").fetchall()
+        sc = con.execute("select aptos, round(d,1) from z using sample 3500 rows (reservoir, 7)").fetchall()
+        mp = []
+        for uf, mun, nn, md, p15, ma in con.execute("select uf, mun, count(*), avg(d), avg((delta>15)::int)*100, avg(aptos) from z group by 1,2").fetchall():
+            k = f"{uf}-{mun}"
+            if k in xy:
+                nm, la, lo = xy[k]; mp.append([nm, uf, round(la, 3), round(lo, 3), nn, round(md, 2), round(p15, 1), round(ma)])
+        ds[f"{a}_{t}"] = {"label": lab, "cand": cand, "ufs": ufs, "faixas": faixas, "n": n,
+            "tam": {"pearson": corr[0], "spearman": corr[1], "bins": [[int(b[0]), round(b[1], 1), round(b[2], 2), round(b[3], 2), round(b[4], 2), round(b[5], 2), int(b[6]), int(b[7])] for b in bins],
+                    "pontos": [[int(x), float(y)] for x, y in sc]}, "mapa": mp}
     (out / "close_tab.json").write_text(json.dumps({"datasets": ds, "xmin": XMIN, "xmax": XMAX}, separators=(",", ":")))
     print("close_tab:", {k: v["n"] for k, v in ds.items()})
 
-    # ---- centro de gravidade dos locais de votação por município (mapa de calor)
-    if (2026, "1t") in ok:
-        rows = con.execute(f"""select uf, cd_municipio, any_value(nm_municipio), sum(aptos*lat)/sum(aptos), sum(aptos*lon)/sum(aptos)
-            from read_parquet('{ok[(2026,'1t')]}') where lat is not null and uf<>'ZZ' group by 1,2""").fetchall()
-        (out / "mun_xy.json").write_text(json.dumps({f"{u}-{m}": [n, round(la, 4), round(lo, 4)] for u, m, n, la, lo in rows}, ensure_ascii=False))
-        print("mun_xy:", len(rows))
+    # ---- correlação entre tamanho da seção e variação da abstenção
+    if (2026, "1t") in ok and (2026, "2t") in ok:
+        con.execute("create or replace table az as select ap1 ap, ((1-cp2*1.0/ap2)-(1-cp1*1.0/ap1))*100 d from sec where ap1>0 and ap2>0")
+        cor = con.execute("select corr(ap,d), corr(ra,rd) from (select ap,d,rank() over (order by ap) ra, rank() over (order by d) rd from az)").fetchall()[0]
+        bins = con.execute("""select count(*), avg(ap), avg(d), median(d), quantile_cont(d,0.25), quantile_cont(d,0.75), min(ap), max(ap)
+            from (select *, ntile(20) over (order by ap) b from az) group by b order by b""").fetchall()
+        pts = con.execute("select ap, round(d,2) from az using sample 4000 rows (reservoir, 11)").fetchall()
+        (out / "abst_size.json").write_text(json.dumps({"pearson": cor[0], "spearman": cor[1], "n": con.execute("select count(*) from az").fetchall()[0][0],
+            "bins": [[int(b[0]), round(b[1], 1), round(b[2], 3), round(b[3], 3), round(b[4], 3), round(b[5], 3), int(b[6]), int(b[7])] for b in bins],
+            "pontos": [[int(x), float(y)] for x, y in pts]}))
+
 
 
 if __name__ == "__main__":

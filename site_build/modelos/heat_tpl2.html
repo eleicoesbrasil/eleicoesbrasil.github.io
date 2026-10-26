@@ -1,6 +1,6 @@
 <section id="heat">
-<h2>Mapa de calor: onde Lula e Flávio ganharam ou perderam terreno</h2>
-<p class="sub">Cada bolha é um município, posicionado pelo centro de gravidade dos seus locais de votação (peso: eleitores). A cor mostra a diferença na parcela de Lula entre Lula e Flávio, com os totais municipais finais do 2º turno contra o 1º turno.</p>
+<h2>Mapa de calor: onde Lula e Flávio Bolsonaro ganharam ou perderam terreno</h2>
+<p class="sub">Cada bolha é um município, posicionado pelo centro de gravidade dos seus locais de votação (peso: eleitores). A cor mostra a diferença na parcela de Lula entre Lula e Flávio Bolsonaro, com os totais municipais finais do 2º turno contra o 1º turno.</p>
 <div class="hctl">
   <label>Comparar <select id="h-par"><option value="d">2º turno 2026 contra 1º turno 2026</option><option disabled>2º turno 2026 contra 2º turno 2022 (aguarda histórico)</option><option disabled>2º turno 2026 contra 2º turno 2024 (aguarda histórico)</option></select></label>
   <label>Mostrar <select id="h-modo"><option value="d">Oscilação (pontos)</option><option value="s2">Lula no 2º turno (% de L+F)</option><option value="s1">Lula no 1º turno (% de L+F)</option></select></label>
@@ -16,7 +16,7 @@
 </section>
 <script>
 (function(){
-var MUN=__MUN__, UFG=__UFG__;
+var MUN=__MUN__, UFG=__UFG__; window.__UFG=UFG;
 var cv=document.getElementById('h-cv'), ctx=cv.getContext('2d'), tip=document.getElementById('h-tip');
 var S={x:0,y:0,k:1,modo:'d',W:0,H:0,uf:''};
 function merc(lat){var r=lat*Math.PI/180;return Math.log(Math.tan(Math.PI/4+r/2))*180/Math.PI;}
@@ -32,12 +32,12 @@ pts.forEach(function(p,i){var o=document.createElement('option');o.value=p.n+' (
 function fit(b){var pad=24,w=S.W-2*pad,h=S.H-2*pad;var k=Math.min(w/(b.maxx-b.minx),h/(b.maxy-b.miny));S.k=k;S.x=S.W/2-k*(b.minx+b.maxx)/2;S.y=S.H/2+k*(b.miny+b.maxy)/2;}
 function px(X,Y){return [S.x+S.k*X,S.y-S.k*Y];}
 function size(){var r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;S.W=r.width;S.H=r.height;cv.width=r.width*d;cv.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);}
-function ramp(t){ // t em [-1,1]: azul (Flávio) ... neutro ... vermelho (Lula)
+function ramp(t){ // t em [-1,1]: azul (Flávio Bolsonaro) ... neutro ... vermelho (Lula)
  var dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches);
  var neu=dark?[70,76,88]:[238,236,230], red=dark?[240,98,108]:[190,32,44], blu=dark?[104,152,230]:[26,84,170];
  var c=t>=0?red:blu, a=Math.min(1,Math.abs(t)); return neu.map(function(v,i){return Math.round(v+(c[i]-v)*a);});}
 function seq(t){var dark=document.documentElement.getAttribute('data-theme')==='dark'||(!document.documentElement.getAttribute('data-theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches);
- // t em [0,1]: 0 = Flávio 100%, 0.5 = empate, 1 = Lula 100% (limita em 25..75)
+ // t em [0,1]: 0 = Flávio Bolsonaro 100%, 0.5 = empate, 1 = Lula 100% (limita em 25..75)
  return ramp((t-0.5)*2);}
 function val(p){if(S.modo==='d')return p.d===null?null:p.d/6; var s=S.modo==='s1'?p.s1:p.s2; if(s===null)return null; return (Math.max(0.25,Math.min(0.75,s))-0.5)*4;}
 function draw(){
@@ -58,7 +58,7 @@ function draw(){
  ctx.fillStyle=css('--mute');ctx.font='11px '+css('--mono');
  UFG.forEach(function(g){if(S.k<(S.W/44)*1.6&&S.uf==='')return;var q=px(g.c[0],merc(g.c[1]));ctx.globalAlpha=.8;ctx.fillText(g.u,q[0]-6,q[1]+4);ctx.globalAlpha=1;});
  var bar=document.getElementById('h-bar');
- if(S.modo==='d'){document.getElementById('h-l0').textContent='−6 pp (Flávio ganha)';document.getElementById('h-l1').textContent='+6 pp (Lula ganha)';}
+ if(S.modo==='d'){document.getElementById('h-l0').textContent='−6 pp (Flávio Bolsonaro ganha)';document.getElementById('h-l1').textContent='+6 pp (Lula ganha)';}
  else{document.getElementById('h-l0').textContent='25% Lula';document.getElementById('h-l1').textContent='75% Lula';}
  var st=[];for(var i=0;i<=10;i++){st.push('rgb('+ramp((i-5)/5)+')');}bar.style.background='linear-gradient(90deg,'+st.join(',')+')';
 }

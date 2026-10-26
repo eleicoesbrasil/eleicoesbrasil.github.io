@@ -30,7 +30,7 @@ if os.path.exists(close_path) and os.path.exists(f'{M}/close_tab.html'):
 else:
     CL='null'; closejs='<script>window.__closeInit=function(){};</script>'
     fech='<section><h2>Fechamento das urnas</h2><p class="sub">Esta aba depende dos arquivos de urna do TSE (boletins com horário de abertura e fechamento). Eles estão sendo baixados e ainda não há UFs completas para analisar.</p></section>'
-t=open(f'{M}/tpl2.html').read().replace('__COV__',open(f'{D}/cobertura.json').read() if os.path.exists(f'{D}/cobertura.json') else 'null')
+t=open(f'{M}/tpl2.html').read().replace('__ABSSIZE__',open(f'{D}/abst_size.json').read() if os.path.exists(f'{D}/abst_size.json') else 'null').replace('__COV__',open(f'{D}/cobertura.json').read() if os.path.exists(f'{D}/cobertura.json') else 'null')
 t=(t.replace('__FLUXO__',json.dumps(fluxo,ensure_ascii=False,separators=(',',':'))).replace('__BINS__',json.dumps(bins,separators=(',',':'))).replace('__CLOSE__',CL)
     .replace('__HORA__',time.strftime('%H:%M',time.localtime(time.time()-4*3600))).replace('__NSEC__',f"{nsec:,}".replace(',','.'))
     .replace('__REPLICAR__',open(f'{M}/replicar_tab.html').read()).replace('__FECH__',fech).replace('__HEAT__',heat_html).replace('__HEATJS__',heat_js).replace('__CLOSEJS__',closejs))

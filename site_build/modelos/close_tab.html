@@ -1,22 +1,18 @@
 <section>
 <h2>Urnas que fecharam no horário e urnas que fecharam depois</h2>
-<p class="sub">O horário previsto de fechamento é 17h de Brasília. O horário real de cada urna vem do boletim de urna (relógio da própria urna, já convertido do fuso do estado para Brasília: Acre +2h; Amazonas, Rondônia, Roraima, Mato Grosso e Mato Grosso do Sul +1h). O exterior fica de fora, porque vota em horários locais próprios.</p>
+<p class="sub">O horário previsto de fechamento é 17h de Brasília. O horário real de cada urna vem do boletim de urna (relógio da própria urna, já convertido do fuso do estado para Brasília: Acre +2h; Amazonas, Rondônia, Roraima, Mato Grosso e Mato Grosso do Sul +1h). O exterior fica de fora, porque vota em horários locais próprios. Os números vêm apenas dos boletins efetivamente lidos; nada é estimado.</p>
 <div class="ctl">
  <label>Eleição<select id="c-ds"></select></label>
  <label>Onde<select id="c-uf"></select></label>
- <label>Gráfico<select id="c-mod"><option value="ambos">Votos e porcentagem acumulada</option><option value="votos">Votos acumulados</option><option value="pct">Porcentagem acumulada do total de votos</option></select></label>
- <label>Valores<select id="c-esc"><option value="est">Estimados para todas as seções</option><option value="amo">Somente a amostra lida</option></select></label>
 </div>
 <div class="grid" id="c-cards"></div>
 </section>
 <section>
- <h2>Votos acumulados conforme o horário de fechamento da urna</h2>
- <p class="sub">Cada ponto soma os votos de todas as urnas que fecharam até aquele minuto, contado a partir das 17h de Brasília. Passe o mouse sobre o gráfico para ver os valores exatos.</p>
+ <h2>Porcentagem acumulada dos votos válidos</h2>
+ <p class="sub">Cada linha mostra os votos válidos acumulados do candidato, como porcentagem do total de votos válidos, conforme o horário em que a urna fechou (minutos a partir das 17h de Brasília). Passe o mouse sobre o gráfico para ver os valores exatos.</p>
  <div class="leg" id="c-leg"></div>
- <svg id="c-svg1" class="sv" viewBox="0 0 1000 380" role="img" aria-label="Votos acumulados por minuto de fechamento"></svg>
- <h2 id="c-h3" style="margin-top:18px">Porcentagem acumulada do total de votos</h2>
- <p class="sub" id="c-p3">Cada linha mostra os votos acumulados do candidato como porcentagem do total de votos dos dois (Lula mais adversário). No fim as duas linhas terminam na porcentagem final de cada um e, empilhadas, somam 100% (linha tracejada).</p>
- <svg id="c-svg3" class="sv" viewBox="0 0 1000 340" role="img" aria-label="Porcentagem acumulada do total de votos por minuto de fechamento"></svg>
+ <svg id="c-svg3" class="sv" viewBox="0 0 1000 340" role="img" aria-label="Porcentagem acumulada dos votos válidos por minuto de fechamento"></svg>
+ <p class="small" id="c-aviso"></p>
  <h2 style="margin-top:18px">Parcela de Lula entre Lula e o adversário, acumulada</h2>
  <svg id="c-svg2" class="sv" viewBox="0 0 1000 300" role="img" aria-label="Parcela acumulada de Lula por minuto de fechamento"></svg>
  <h2 style="margin-top:18px">Parcela acumulada de cada candidato entre os dois</h2>
@@ -28,4 +24,21 @@
  <p class="sub">“Esperado” é o resultado que as urnas atrasadas teriam se votassem como as urnas que fecharam no horário no mesmo município. Isso separa o efeito do local (urnas de bairros grandes costumam atrasar) de qualquer outro padrão.</p>
  <div class="tw"><table id="c-tab"></table></div>
  <p class="mute note" id="c-nota"></p>
+</section>
+<section>
+ <h2>Atraso no fechamento contra tamanho da seção</h2>
+ <p class="sub" id="t-sub"></p>
+ <svg id="t-svg" class="sv" viewBox="0 0 1000 420" role="img" aria-label="Atraso no fechamento da urna contra número de eleitores da seção"></svg>
+</section>
+<section>
+ <h2>Mapa do atraso médio no fechamento por município</h2>
+ <p class="sub">Cada bolha é um município; a cor mostra o atraso médio das urnas lidas (ou a parcela com mais de 15 minutos de atraso) e o tamanho, quantas urnas foram lidas.</p>
+ <div class="hctl">
+  <label>Mostrar<select id="d-modo"><option value="m">Atraso médio (minutos)</option><option value="p">% de urnas com mais de 15 min de atraso</option></select></label>
+  <label>Ir para<select id="d-uf"><option value="">Brasil</option></select></label>
+ </div>
+ <div class="hwrap"><canvas id="d-cv" style="display:block;width:100%;height:min(70vh,600px);touch-action:none;cursor:grab" aria-label="Mapa do Brasil com atraso médio por município"></canvas>
+  <div class="hbtn"><button id="d-mais" aria-label="Aproximar">+</button><button id="d-menos" aria-label="Afastar">−</button><button id="d-reset" aria-label="Reiniciar">⌂</button></div>
+  <div id="d-tip" class="htip" hidden></div></div>
+ <div class="hleg"><span id="d-l0">0</span><div class="hbar" id="d-bar"></div><span id="d-l1"></span></div>
 </section>

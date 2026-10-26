@@ -83,12 +83,27 @@ ul.rep{margin:6px 0 0;padding-left:20px;max-width:80ch}ul.rep li{margin:6px 0}pr
  <section class="grid" id="f-cards"></section>
  <section>
   <h2>Quanto cada candidato ganhou do 1º para o 2º turno</h2>
-  <p class="sub">Clique na seta para abrir região, estado e município. “Outros” são os votos dos demais candidatos no 1º turno. A conta fecha: variação de Lula + variação de Flávio = outros do 1º turno + variação do comparecimento − variação de brancos e nulos.</p>
+  <p class="sub">Clique na seta para abrir região, estado e município. “Outros” são os votos dos demais candidatos no 1º turno. A conta fecha: variação de Lula + variação de Flávio Bolsonaro = outros do 1º turno + variação do comparecimento − variação de brancos e nulos.</p>
   <div class="ctl" style="margin:12px 0">
    <label>Buscar município<input id="f-q" placeholder="ex.: Cruzeiro do Sul" autocomplete="off"></label>
    <details class="cols" id="f-cols"><summary>Colunas</summary><div id="f-colbody"></div></details>
   </div>
   <div class="tw"><table id="f-tab"></table></div>
+ </section>
+
+ <section>
+  <h2>Gráficos: escolha o que plotar</h2>
+  <p class="sub">Escolha o recorte (país, região, estado ou município), o turno e a unidade de medida. Os valores vêm dos totais oficiais por município.</p>
+  <div class="ctl" style="margin:12px 0">
+   <label>Recorte<select id="g-esc"><option value="br">País (Brasil)</option><option value="reg">Região</option><option value="uf">Estado</option><option value="mun">Município</option></select></label>
+   <label id="g-l-un">Unidade<select id="g-un"></select></label>
+   <label id="g-l-mun" hidden>Município<input id="g-mun" list="g-muns" placeholder="digite um município" autocomplete="off"><datalist id="g-muns"></datalist></label>
+   <label>O que mostrar<select id="g-oq"><option value="12">1º e 2º turno lado a lado</option><option value="1">Só o 1º turno</option><option value="2">Só o 2º turno</option><option value="d">Variação (2º menos 1º)</option></select></label>
+   <label>Medida<select id="g-me"><option value="v">Votos (valor bruto)</option><option value="pa">% dos eleitores aptos</option><option value="pv">% dos votos válidos</option></select></label>
+  </div>
+  <div class="leg" id="g-leg"></div>
+  <svg id="g-svg" class="sv" viewBox="0 0 1000 400" role="img" aria-label="Gráfico escolhido de votos por candidato"></svg>
+  <p class="small" id="g-nota"></p>
  </section>
 </div>
 
@@ -107,6 +122,13 @@ ul.rep{margin:6px 0 0;padding-left:20px;max-width:80ch}ul.rep li{margin:6px 0}pr
   <div class="tw" style="margin-top:12px"><table id="b-tab"></table></div>
   <p class="small" id="b-cap">Colunas Δ: variação em pontos por 100 eleitores aptos do grupo, 2º turno menos 1º turno.</p>
   <p class="mute note">Isto descreve seções, não eleitores. Uma seção em que a abstenção caiu e Lula cresceu mostra que as duas coisas aconteceram juntas, mas não prova que quem voltou a votar escolheu Lula. Quando o ZIP oficial do 2º turno sair, o cruzamento passa a cobrir todas as seções.</p>
+ </section>
+
+ <section>
+  <h2>Tamanho da seção e variação da abstenção</h2>
+  <p class="sub" id="as-sub"></p>
+  <svg id="as-svg" class="sv" viewBox="0 0 1000 440" role="img" aria-label="Variação da abstenção contra número de eleitores da seção"></svg>
+  <p class="mute note">Cada ponto cinza é uma seção (amostra de 4.000). A linha vermelha é a média da variação em cada faixa de tamanho, e a faixa sombreada vai do primeiro ao terceiro quartil. Variação negativa significa que a abstenção caiu do 1º para o 2º turno.</p>
  </section>
 </div>
 
@@ -216,9 +238,9 @@ function pf(k){return function(o){return ppf(o[k]);};}
 var colsF=[
  A('L1','Lula 1º',vf('L1'),{on:1}),A('pL1','Lula 1º',pc('pL1'),{pct:1}),A('L2','Lula 2º',vf('L2'),{on:1}),A('pL2','Lula 2º',pc('pL2'),{pct:1}),
  A('dL','Ganho de Lula',sf('dL'),{on:1,cls:function(o){return o.dL>=0?'pos':'neg';}}),A('dpL','Ganho de Lula',pf('dpL'),{pct:1,cls:function(o){return o.dpL>=0?'pos':'neg';}}),
- A('F1','Flávio 1º',vf('F1'),{on:1}),A('pF1','Flávio 1º',pc('pF1'),{pct:1}),A('F2','Flávio 2º',vf('F2'),{on:1}),A('pF2','Flávio 2º',pc('pF2'),{pct:1}),
- A('dF','Ganho de Flávio',sf('dF'),{on:1,cls:function(o){return o.dF>=0?'neg':'pos';}}),A('dpF','Ganho de Flávio',pf('dpF'),{pct:1,cls:function(o){return o.dpF>=0?'neg':'pos';}}),
- A('dM','Lula − Flávio',sf('dM'),{on:1,cls:function(o){return o.dM>=0?'pos':'neg';}}),A('dpM','Lula − Flávio',pf('dpM'),{pct:1,cls:function(o){return o.dpM>=0?'pos':'neg';}}),
+ A('F1','Flávio Bolsonaro 1º',vf('F1'),{on:1}),A('pF1','Flávio Bolsonaro 1º',pc('pF1'),{pct:1}),A('F2','Flávio Bolsonaro 2º',vf('F2'),{on:1}),A('pF2','Flávio Bolsonaro 2º',pc('pF2'),{pct:1}),
+ A('dF','Ganho de Flávio Bolsonaro',sf('dF'),{on:1,cls:function(o){return o.dF>=0?'neg':'pos';}}),A('dpF','Ganho de Flávio Bolsonaro',pf('dpF'),{pct:1,cls:function(o){return o.dpF>=0?'neg':'pos';}}),
+ A('dM','Lula − Flávio Bolsonaro',sf('dM'),{on:1,cls:function(o){return o.dM>=0?'pos':'neg';}}),A('dpM','Lula − Flávio Bolsonaro',pf('dpM'),{pct:1,cls:function(o){return o.dpM>=0?'pos':'neg';}}),
  A('O1','Outros 1º',vf('O1'),{on:1}),A('pO1','Outros 1º',pc('pO1'),{pct:1}),
  A('dC','Δ comparecimento',sf('dC'),{on:1}),A('pC','Δ comparecimento (sobre o 1º)',function(o){return (o.pC>0?'+':o.pC<0?'−':'')+Math.abs(o.pC).toFixed(2).replace('.',(window.__DEC||','))+'%';},{pct:1}),
  A('dBN','Δ brancos+nulos',sf('dBN'),{on:1}),A('dpBN','Δ brancos+nulos',pf('dpBN'),{pct:1}),
@@ -234,7 +256,7 @@ cardsF();cardsA();tf.render();ta.render();
 // ---------- seções por variação de abstenção
 function drawBins(){
  var C={L:'var(--lula)',F:'var(--flavio)',O:'var(--outros)',BN:'var(--bn)',A:'var(--abs)'};
- var names={L:'Lula',F:'Flávio',O:'Outros candidatos (1º turno)',BN:'Brancos e nulos',A:'Abstenção'};
+ var names={L:'Lula',F:'Flávio Bolsonaro',O:'Outros candidatos (1º turno)',BN:'Brancos e nulos',A:'Abstenção'};
  $('b-leg').innerHTML=Object.keys(C).map(function(k){return '<span><i style="background:'+C[k]+'"></i>'+names[k]+'</span>';}).join('');
  var W=1000,H=440,m={l:50,r:10,t:16,b:70},bw=(W-m.l-m.r)/BINS.length;
  var s='';
@@ -255,7 +277,7 @@ function drawBins(){
   ['L','F','O','BN','A'].forEach(function(k){if(t==='2'&&k==='O')return;h+=names[k]+': '+(100*v[k]/ap).toFixed(1).replace('.',(window.__DEC||','))+' por 100 aptos<br>';});
   var T=$('ttp');T.innerHTML=h;T.hidden=false;T.style.left=Math.min(e.clientX+14,innerWidth-270)+'px';T.style.top=(e.clientY+14)+'px';}
  
- var h='<thead><tr><th>Grupo</th><th style="text-align:right">Variação da abstenção</th><th style="text-align:right">Seções</th><th style="text-align:right">Δ Lula</th><th style="text-align:right">Δ Flávio</th><th style="text-align:right">Δ Lula − Δ Flávio</th><th style="text-align:right">Δ brancos+nulos</th><th style="text-align:right">Δ abstenção</th></tr></thead><tbody>';
+ var h='<thead><tr><th>Grupo</th><th style="text-align:right">Variação da abstenção</th><th style="text-align:right">Seções</th><th style="text-align:right">Δ Lula</th><th style="text-align:right">Δ Flávio Bolsonaro</th><th style="text-align:right">Δ Lula − Δ Flávio Bolsonaro</th><th style="text-align:right">Δ brancos+nulos</th><th style="text-align:right">Δ abstenção</th></tr></thead><tbody>';
  function per(a,b){return 100*a/b;}
  BINS.forEach(function(b,i){
   var dl=per(b.L2,b.ap2)-per(b.L1,b.ap1),df=per(b.F2,b.ap2)-per(b.F1,b.ap1),dbn=per(b.BN2,b.ap2)-per(b.BN1,b.ap1),da=per(b.A2,b.ap2)-per(b.A1,b.ap1);
@@ -275,7 +297,71 @@ function drawCov(){var el=$('cov');if(!el||!COV)return;
   '<div class="covsub">1º turno: '+fm(COV.r1)+' de '+fm(COV.total)+' seções ('+pct(COV.pct1)+') · 2º turno: '+fm(COV.r2)+' de '+fm(COV.total)+' seções ('+pct(COV.pct2)+')'+(COV.r2_provisorio?' (amostra provisória)':'')+' · atualizado em '+COV.atualizado+'</div></div>';
  el.innerHTML=h;}
 drawCov();
-window.__rerender=function(){drawCov();cardsF();cardsA();tf.render();ta.render();drawBins();if(window.__closeInit)window.__closeInit();var m=$('p-mapa');if(m&&!m.hidden&&window.__heatInit)window.__heatInit();};
+
+
+var ABS=__ABSSIZE__;
+var CATS=[['L','Lula','var(--lula)'],['F','Flávio Bolsonaro','var(--flavio)'],['O','Outros candidatos','var(--outros)'],['B','Brancos','var(--bn)'],['N','Nulos','var(--bn)'],['A','Abstenção','var(--abs)']];
+function gVals(o,r){return r===1?{L:o.L1,F:o.F1,O:o.O1,B:o.B1,N:o.N1,A:o.ab1,ap:o.ap1}:{L:o.L2,F:o.F2,O:0,B:o.B2,N:o.N2,A:o.ab2,ap:o.ap2};}
+function gConv(v,me){var out={},valid=v.L+v.F+v.O;CATS.forEach(function(c){var k=c[0],x=v[k];
+ out[k]=me==='v'?x:me==='pa'?100*x/v.ap:((k==='L'||k==='F'||k==='O')?100*x/valid:null);});return out;}
+var muniByLabel={};
+function gScope(){var e=$('g-esc').value,u=$('g-un').value;
+ if(e==='br')return {o:BR,nome:'Brasil'};
+ if(e==='reg')return {o:regs[u]||BR,nome:'Região '+u};
+ if(e==='uf')return {o:ufs[u]||BR,nome:UFN[u]||u};
+ var m=muniByLabel[$('g-mun').value];return m?{o:m,nome:m.nome+' ('+m.uf+')'}:{o:null,nome:''};}
+function gFill(){var e=$('g-esc').value,sel=$('g-un'),h='';
+ $('g-l-un').hidden=(e==='br'||e==='mun');$('g-l-mun').hidden=(e!=='mun');
+ if(e==='reg')Object.keys(regs).forEach(function(r){h+='<option value="'+r+'">'+r+'</option>';});
+ if(e==='uf')Object.keys(ufs).sort(function(a,b){return (UFN[a]||a)<(UFN[b]||b)?-1:1;}).forEach(function(u){h+='<option value="'+u+'">'+(UFN[u]||u)+'</option>';});
+ var prev=sel.value;sel.innerHTML=h;if(prev&&sel.querySelector&&sel.querySelector('option[value="'+prev+'"]'))sel.value=prev;
+ if(e==='mun'&&!Object.keys(muniByLabel).length){var dl='';rows.slice().sort(function(a,b){return a.nome<b.nome?-1:1;}).forEach(function(r){var l=r.nome+' ('+r.uf+')';muniByLabel[l]=r;dl+='<option value="'+l+'">';});$('g-muns').innerHTML=dl;
+  if(!$('g-mun').value)$('g-mun').value='São Paulo (SP)';}}
+function drawG(){var S=gScope(),svg=$('g-svg');if(!S.o){svg.innerHTML='';$('g-nota').textContent='Escolha um município da lista.';return;}
+ var oq=$('g-oq').value,me=$('g-me').value,v1=gConv(gVals(S.o,1),me),v2=gConv(gVals(S.o,2),me);
+ var cs=CATS.filter(function(c){return v1[c[0]]!==null;}),W=1000,H=400,m={l:84,r:16,t:26,b:70};
+ function val(k,r){return r===1?v1[k]:r===2?(k==='O'&&me!=='v'?0:v2[k]):v2[k]-v1[k];}
+ var series=oq==='12'?[1,2]:oq==='1'?[1]:oq==='2'?[2]:['d'];
+ var all=[];cs.forEach(function(c){series.forEach(function(r){all.push(r==='d'?val(c[0],'d'):val(c[0],r));});});
+ var mx=Math.max.apply(null,all.concat([0])),mn=Math.min.apply(null,all.concat([0]));if(mx===mn){mx=mn+1;}
+ var pad=(mx-mn)*0.1;if(mx>0)mx+=pad;if(mn<0)mn-=pad;
+ var ys=function(v){return m.t+(H-m.t-m.b)*(mx-v)/(mx-mn);};
+ function f(v){if(me==='v')return (v>0&&oq==='d'?'+':v<0?'−':'')+fm(Math.abs(v));return (v>0&&oq==='d'?'+':v<0?'−':'')+Math.abs(v).toFixed(1).replace('.',(window.__DEC||','))+(oq==='d'?' pp':'%');}
+ var s='',nt=5;for(var i=0;i<=nt;i++){var v=mn+(mx-mn)*i/nt,y=ys(v);s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text class="m" x="'+(m.l-6)+'" y="'+(y+4)+'" text-anchor="end">'+(me==='v'?(Math.abs(v)>=1e6?(v/1e6).toFixed(1).replace('.',(window.__DEC||','))+' mi':fm(v)):v.toFixed(0)+'%')+'</text>';}
+ s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+ys(0)+'" y2="'+ys(0)+'" stroke="var(--mute)"/>';
+ var gw=(W-m.l-m.r)/cs.length;
+ cs.forEach(function(c,i){var x0=m.l+i*gw,bw=gw*0.7/series.length;
+  series.forEach(function(r,j){var v=val(c[0],r==='d'?'d':r),x=x0+gw*0.15+j*bw,y=ys(Math.max(v,0)),h=Math.abs(ys(v)-ys(0));
+   s+='<rect x="'+x+'" y="'+y+'" width="'+(bw-3)+'" height="'+Math.max(h,1)+'" fill="'+c[2]+'" opacity="'+(r===1?0.5:1)+'" data-c="'+c[0]+'" data-r="'+r+'"/>';
+   s+='<text x="'+(x+(bw-3)/2)+'" y="'+(v>=0?y-5:y+h+13)+'" text-anchor="middle">'+f(v)+'</text>';});
+  s+='<text x="'+(x0+gw/2)+'" y="'+(H-m.b+22)+'" text-anchor="middle">'+c[1]+'</text>';});
+ svg.innerHTML=s;
+ $('g-leg').innerHTML=oq==='12'?'<span><i style="background:var(--fg);opacity:.5"></i>1º turno</span><span><i style="background:var(--fg)"></i>2º turno</span>':'';
+ $('g-nota').textContent=S.nome+' · '+(oq==='12'?'1º e 2º turno':oq==='1'?'1º turno':oq==='2'?'2º turno':'variação do 2º menos o 1º turno')+' · '+(me==='v'?'votos (valor bruto)':me==='pa'?'% dos eleitores aptos (as seis categorias somam 100% em cada turno)':'% dos votos válidos (Lula, Flávio Bolsonaro e outros candidatos)');}
+['g-esc'].forEach(function(i){$(i).addEventListener('change',function(){gFill();drawG();});});
+['g-un','g-mun','g-oq','g-me'].forEach(function(i){$(i).addEventListener('change',drawG);});$('g-mun').addEventListener('input',drawG);
+function drawAS(){var el=$('as-svg');if(!el||!ABS)return;var pts=ABS.pontos,B=ABS.bins,W=1000,H=440,m={l:70,r:16,t:16,b:56};
+ var xs0=pts.map(function(p){return p[0];}).sort(function(a,b){return a-b;}),xmax=xs0[Math.floor(xs0.length*0.995)]||600;
+ var ys0=pts.map(function(p){return p[1];}).sort(function(a,b){return a-b;}),ylo=Math.min(-5,ys0[Math.floor(ys0.length*0.01)]),yhi=Math.max(5,ys0[Math.floor(ys0.length*0.99)]);
+ var xs=function(v){return m.l+(W-m.l-m.r)*Math.min(v,xmax)/xmax;},ys=function(v){return m.t+(H-m.t-m.b)*(yhi-Math.max(ylo,Math.min(yhi,v)))/(yhi-ylo);};
+ var s='';for(var i=0;i<=5;i++){var v=ylo+(yhi-ylo)*i/5,y=ys(v);s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text class="m" x="'+(m.l-6)+'" y="'+(y+4)+'" text-anchor="end">'+(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(0)+'</text>';}
+ for(var k=0;k<=6;k++){var xv=xmax*k/6;s+='<text class="m" x="'+xs(xv)+'" y="'+(H-m.b+18)+'" text-anchor="middle">'+Math.round(xv)+'</text>';}
+ s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+ys(0)+'" y2="'+ys(0)+'" stroke="var(--mute)" stroke-dasharray="4 3"/>';
+ pts.forEach(function(p){if(p[0]<=xmax)s+='<circle cx="'+xs(p[0]).toFixed(1)+'" cy="'+ys(p[1]).toFixed(1)+'" r="1.6" fill="var(--mute)" opacity="0.22"/>';});
+ var up=B.map(function(b){return xs(b[1]).toFixed(1)+','+ys(b[5]).toFixed(1);}),dn=B.slice().reverse().map(function(b){return xs(b[1]).toFixed(1)+','+ys(b[4]).toFixed(1);});
+ s+='<polygon points="'+up.concat(dn).join(' ')+'" fill="var(--lula)" opacity="0.14"/>';
+ s+='<polyline points="'+B.map(function(b){return xs(b[1]).toFixed(1)+','+ys(b[2]).toFixed(1);}).join(' ')+'" fill="none" stroke="var(--lula)" stroke-width="2.6"/>';
+ B.forEach(function(b,i){s+='<circle cx="'+xs(b[1])+'" cy="'+ys(b[2])+'" r="4" fill="var(--lula)" data-i="'+i+'"/>';});
+ s+='<text class="m" x="'+(W/2)+'" y="'+(H-8)+'" text-anchor="middle">eleitores aptos na seção</text><text class="m" transform="translate(16,'+(H/2)+') rotate(-90)" text-anchor="middle">variação da abstenção (pontos percentuais)</text>';
+ el.innerHTML=s;
+ var sg=function(x){return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(3).replace('.',(window.__DEC||','));};
+ $('as-sub').textContent=fm(ABS.n)+' seções com dados nos dois turnos. Correlação de Pearson r = '+sg(ABS.pearson)+' e de Spearman ρ = '+sg(ABS.spearman)+(ABS.pearson<0?' (seções maiores tiveram queda maior da abstenção).':' (seções maiores tiveram aumento maior da abstenção).');}
+$('as-svg')&&$('as-svg').addEventListener('mousemove',function(e){if(!ABS)return;var r=e.target;if(!r.dataset||r.dataset.i===undefined){$('ttp').hidden=true;return;}var b=ABS.bins[+r.dataset.i];
+ var T=$('ttp');T.innerHTML='<strong>Seções com '+b[6]+' a '+b[7]+' eleitores</strong> ('+fm(b[0])+' seções)<br>Média: '+sg2(b[2])+' pp · mediana '+sg2(b[3])+' pp<br>Intervalo central: '+sg2(b[4])+' a '+sg2(b[5])+' pp';T.hidden=false;T.style.left=Math.min(e.clientX+14,innerWidth-280)+'px';T.style.top=(e.clientY+14)+'px';});
+$('as-svg')&&$('as-svg').addEventListener('mouseleave',function(){$('ttp').hidden=true;});
+function sg2(x){return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(2).replace('.',(window.__DEC||','));}
+gFill();drawG();drawAS();
+window.__rerender=function(){drawCov();cardsF();gFill();drawG();drawAS();cardsA();tf.render();ta.render();drawBins();if(window.__closeInit)window.__closeInit();var m=$('p-mapa');if(m&&!m.hidden&&window.__heatInit)window.__heatInit();};
 // ---------- abas
 var T=['fluxo','abstencao','fechamento','mapa','replicar'];
 function show(n){if(T.indexOf(n)<0)n='fluxo';T.forEach(function(t){$('p-'+t).hidden=t!==n;$('t-'+t).setAttribute('aria-selected',t===n?'true':'false');});
