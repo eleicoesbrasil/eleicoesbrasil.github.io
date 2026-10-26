@@ -40,6 +40,8 @@ t=t.replace('__I18N__',open(f'{M}/i18n_tpl.js').read().replace('__I18N_DATA__',o
 t=t.replace('<header>\n','<header>\n<a class="back" href="../../">← Eleições Brasil</a>\n',1).replace('</style>','.back{display:inline-block;font-size:13px;color:var(--mute);margin-bottom:8px;text-decoration:none}</style>',1)
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from envelope import envolver
+import glob as _g
+t=t.replace('/*__MOBILE_CSS__*/',''.join(open(f).read()+'\n' for f in sorted(_g.glob(f'{M}/mobile_*.css')))).replace('__MOBILEJS__',''.join('<script>'+open(f).read()+'</script>\n' for f in sorted(_g.glob(f'{M}/mobile_*.js'))))
 t=envolver(t)
 os.makedirs(os.path.dirname(OUT) or '.',exist_ok=True); open(OUT,'w').write(t)
 print(len(t)//1024,'KB')
