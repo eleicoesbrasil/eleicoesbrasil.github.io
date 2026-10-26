@@ -38,16 +38,20 @@ function draw(){
   '<div class="card"><div class="lab">Urnas analisadas</div><div class="big">'+fm(tn)+'</div><div class="small">'+cob+'</div></div>'+
   '<div class="card"><div class="lab">Fecharam mais de 15 min depois das 17h</div><div class="big">'+p1(100*late15/tn)+'</div><div class="small">'+fm(late15)+' urnas · '+p1(lf?100*lv15/lf:0)+' dos votos para Lula ou '+d.cand+' ('+fm(lv15)+' votos)</div></div>'+
   '<div class="card"><div class="lab">Fecharam mais de 1h depois</div><div class="big">'+p1(100*late60/tn)+'</div><div class="small">'+fm(late60)+' urnas · '+p1(lf?100*lv60/lf:0)+' dos votos para Lula ou '+d.cand+' ('+fm(lv60)+' votos)</div></div>';
+ $('c-leg2').innerHTML='<span><i style="background:var(--lula)"></i>Lula entre os dois (acumulado)</span><span><i style="background:var(--outros)"></i>Janela de 5 minutos</span><span><i style="background:none;border-top:2px dashed var(--mute);height:0;width:16px"></i>50%</span>';
+ $('c-leg4').innerHTML='<span><i style="background:var(--lula)"></i>Lula</span><span><i style="background:var(--flavio)"></i>'+d.cand+'</span>';
+ $('t-leg').innerHTML='<span><i style="background:var(--lula)"></i>Atraso médio por faixa de tamanho</span><span><i style="background:none;border-top:2px dashed var(--mute);height:0;width:16px"></i>Mediana</span><span><i style="background:var(--mute);opacity:.5;border-radius:50%"></i>Seções (amostra)</span>';
  $('c-leg').innerHTML='<span><i style="background:var(--lula)"></i>Lula</span><span><i style="background:var(--flavio)"></i>'+d.cand+'</span>';
  // janela do eixo X
  var lo=0,hi=len-1; while(lo<len-1&&cn[lo]<tn*0.001)lo++; while(hi>0&&cn[hi-1]>=tn*0.999)hi--;
- lo=Math.max(0,Math.min(lo,-CL.xmin-30)); hi=Math.min(len-1,Math.max(hi,-CL.xmin+60));
+ lo=-CL.xmin-5; hi=Math.min(len-1,Math.max(hi,-CL.xmin+60));
  var X0=lo,X1=hi,W=1000,m={l:70,r:16,t:14,b:44},step=X1-X0>400?60:X1-X0>200?30:15;
  var xs=function(i){return m.l+(W-m.l-m.r)*(i-X0)/(X1-X0);}, z=xs(-CL.xmin);
  // gráfico 1: % acumulada dos votos válidos
- var H3=340,m3={l:70,r:16,t:14,b:44},ys3=function(v){return H3-m3.b-(H3-m3.t-m3.b)*v/100;};
+ var H3=340,m3={l:70,r:16,t:14,b:44};
  var pL=[],pF=[];for(var i=0;i<len;i++){pL.push(valid>0?100*cL[i]/valid:0);pF.push(valid>0?100*cF[i]/valid:0);}
- var s3='';for(var v=0;v<=100;v+=25){var y=ys3(v);s3+='<line x1="'+m3.l+'" x2="'+(W-m3.r)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text class="m" x="'+(m3.l-6)+'" y="'+(y+4)+'" text-anchor="end">'+v+'%</text>';}
+ var ym=Math.min(100,Math.max(10,Math.ceil((Math.max(pL[len-1],pF[len-1])+2)/10)*10)),ys3=function(v){return H3-m3.b-(H3-m3.t-m3.b)*v/ym;};
+ var s3='';for(var v=0;v<=ym;v+=(ym>60?20:10)){var y=ys3(v);s3+='<line x1="'+m3.l+'" x2="'+(W-m3.r)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text class="m" x="'+(m3.l-6)+'" y="'+(y+4)+'" text-anchor="end">'+v+'%</text>';}
  s3+=axisX(X0,X1,W,m3,H3,H3-m3.b,step);
  s3+='<line x1="'+z+'" x2="'+z+'" y1="'+m3.t+'" y2="'+(H3-m3.b)+'" stroke="var(--mute)" stroke-dasharray="4 3"/>';
  function path3(c){var p='';for(var i=X0;i<=X1;i++)p+=(i===X0?'M':'L')+xs(i).toFixed(1)+' '+ys3(c[i]).toFixed(1);return p;}
@@ -69,7 +73,7 @@ function draw(){
  s2+=axisX(X0,X1,W,m2,H2,H2-m2.b,step);
  function path2(a,min){var p='',on=false;for(var i=X0;i<=X1;i++){if(a[i]===null||(min&&cn[i]<tn*min)){on=false;continue;}p+=(on?'L':'M')+xs(i).toFixed(1)+' '+ys2(a[i]).toFixed(1);on=true;}return p;}
  s2+='<path d="'+path2(win,0.01)+'" fill="none" stroke="var(--outros)" stroke-width="1.2"/><path d="'+path2(sh,0)+'" fill="none" stroke="var(--lula)" stroke-width="2.4"/>';
- s2+='<text class="m" x="'+(m2.l+6)+'" y="'+(m2.t+12)+'">linha vermelha: acumulado · linha clara: janela de 5 minutos</text><line id="c-cur2" x1="0" x2="0" y1="'+m2.t+'" y2="'+(H2-m2.b)+'" stroke="var(--fg)" stroke-width="1" style="display:none"/>';
+ s2+='<line id="c-cur2" x1="0" x2="0" y1="'+m2.t+'" y2="'+(H2-m2.b)+'" stroke="var(--fg)" stroke-width="1" style="display:none"/>';
  $('c-svg2').innerHTML=s2;
  var H4=300,m4={l:70,r:16,t:14,b:44},lo4=50,hi4=50;
  for(var i=X0;i<=X1;i++){if(sh[i]!==null&&cn[i]>tn*0.001){lo4=Math.min(lo4,sh[i],100-sh[i]);hi4=Math.max(hi4,sh[i],100-sh[i]);}}
@@ -104,7 +108,6 @@ function drawTam(d){var T=d.tam; if(!T){return;} var pts=T.pontos,B=T.bins,W=100
  s+='<polyline points="'+B.map(function(b){return xs(b[1]).toFixed(1)+','+ys(b[2]).toFixed(1);}).join(' ')+'" fill="none" stroke="var(--lula)" stroke-width="2.6"/>';
  B.forEach(function(b,i){s+='<circle cx="'+xs(b[1])+'" cy="'+ys(b[2])+'" r="4.5" fill="var(--lula)" data-i="'+i+'"/>';});
  s+='<text class="m" x="'+(W/2)+'" y="'+(H-8)+'" text-anchor="middle">eleitores aptos na seção</text><text class="m" transform="translate(16,'+(H/2)+') rotate(-90)" text-anchor="middle">atraso no fechamento (minutos depois das 17h)</text>';
- s+='<text class="m" x="'+(m.l+8)+'" y="'+(m.t+12)+'">linha vermelha: atraso médio por faixa de tamanho · linha tracejada: mediana · pontos: amostra de seções</text>';
  $('t-svg').innerHTML=s; TS={B:B};
  var sg=function(x){return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(3).replace('.',(window.__DEC||','));};
  $('t-sub').textContent='Correlação de Pearson r = '+sg(T.pearson)+' e de Spearman ρ = '+sg(T.spearman)+' entre o número de eleitores aptos e o atraso no fechamento, em '+fm(d.n)+' urnas. Cada ponto vermelho é uma faixa com o mesmo número de seções (12 faixas).';}
