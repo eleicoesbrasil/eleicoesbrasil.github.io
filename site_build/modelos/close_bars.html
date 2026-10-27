@@ -1,0 +1,22 @@
+<section id="cb-sec">
+<style>.cb-chips{display:flex;flex-wrap:wrap;gap:6px}.cb-chips button,.cb-st{font:inherit;min-height:36px;min-width:40px;padding:4px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);cursor:pointer}.cb-chips button:hover,.cb-st:hover{border-color:var(--fg)}.cb-sl{display:flex;align-items:center;gap:8px;margin:8px 0;max-width:720px}.cb-sl input{flex:1;min-width:0}.cb-sl output{min-width:64px;font:500 14px var(--mono)}.cb-modes{align-items:flex-end}@media(max-width:700px){.cb-chips button,.cb-st{min-height:44px;min-width:48px;font-size:15px}.cb-sl input{height:44px}.cb-sl output{font-size:15px}}</style>
+<h2>Resultado por horário de fechamento da urna</h2>
+<p class="sub">Escolha a eleição, o recorte (país, região, estado, município ou zona eleitoral) e quais urnas entram: as que fecharam até +N minutos depois das 17h de Brasília (acumulado), apenas as do minuto +N (instantâneo) ou só as que fecharam depois de +N. As barras mostram o resultado somente dessas urnas.</p>
+<div class="ctl" id="cb-ctl">
+ <label>Eleição<select id="cb-ds"></select></label>
+ <label>Recorte<select id="cb-esc"><option value="br">País (Brasil)</option><option value="reg">Região</option><option value="uf">Estado</option><option value="mun">Município</option><option value="zon">Zona eleitoral</option></select></label>
+ <label id="cb-l-reg" hidden>Região<select id="cb-reg"></select></label>
+ <label id="cb-l-uf" hidden>Estado<select id="cb-uf"></select></label>
+ <label id="cb-l-mun" hidden>Município<input id="cb-mun" list="cb-muns" placeholder="digite um município" autocomplete="off"><datalist id="cb-muns"></datalist></label>
+ <label id="cb-l-zon" hidden>Zona<select id="cb-zon"></select></label>
+ <label>Base<select id="cb-base"><option value="v">Votos válidos</option><option value="t">Todos os votos apurados (com brancos e nulos)</option></select></label>
+</div>
+<div class="ctl cb-modes" role="group" aria-label="Quais urnas">
+ <label>Urnas<select id="cb-modo"><option value="c">Acumulado: fechadas até +N min</option><option value="i">Instantâneo: fechadas no minuto +N</option><option value="a">Apenas as fechadas depois de +N min</option></select></label>
+ <div class="cb-chips" id="cb-chips"></div>
+</div>
+<div class="cb-sl"><button type="button" class="cb-st" id="cb-m" aria-label="−1 minuto">−</button><input type="range" id="cb-k" min="-10" max="180" step="1" value="0" aria-label="Minutos após o horário previsto"><button type="button" class="cb-st" id="cb-p" aria-label="+1 minuto">+</button><output id="cb-kv"></output></div>
+<div class="leg" id="cb-leg"></div>
+<svg id="cb-svg" class="sv" viewBox="0 0 1000 380" role="img" aria-label="Resultado das urnas selecionadas por horário de fechamento"></svg>
+<p class="small" id="cb-nota"></p>
+</section>

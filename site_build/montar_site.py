@@ -27,6 +27,8 @@ i=heat.index('<script>'); heat_html,heat_js=heat[:i],heat[i:]
 close_path=f'{D}/close_tab.json'
 if os.path.exists(close_path) and os.path.exists(f'{M}/close_tab.html'):
     CL=open(close_path).read(); fech=open(f'{M}/close_tab.html').read(); closejs=open(f'{M}/close_tab.js').read()
+    if os.path.exists(f'{M}/close_bars.html'):
+        fech=fech.replace('</section>','</section>\n'+open(f'{M}/close_bars.html').read(),1); closejs+=open(f'{M}/close_bars.js').read()
 else:
     CL='null'; closejs='<script>window.__closeInit=function(){};</script>'
     fech='<section><h2>Fechamento das urnas</h2><p class="sub">Esta aba depende dos arquivos de urna do TSE (boletins com horário de abertura e fechamento). Eles estão sendo baixados e ainda não há UFs completas para analisar.</p></section>'
