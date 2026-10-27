@@ -144,8 +144,18 @@ window.__delayDraw=function(){var d=CL&&(CL.datasets[$('c-ds').value]||CL.datase
   var v=(modo==='m'?p.m:p.p)/sc,col=ramp(v),r=Math.max(2.4,Math.min(26,Math.sqrt(p.c)*1.1*z));
   ctx.fillStyle='rgba('+col+',0.82)';ctx.beginPath();ctx.arc(q[0],q[1],r,0,6.283);ctx.fill();});
  var st=[];for(var i=0;i<=10;i++){st.push('rgb('+ramp(i/10)+')');}$('d-bar').style.background='linear-gradient(90deg,'+st.join(',')+')';
- $('d-l0').textContent='0';$('d-l1').textContent=modo==='m'?sc+' min ou mais':'100%';};
+ $('d-l0').textContent='0';$('d-l1').textContent=modo==='m'?sc+' min ou mais':'100%';
+ if(window.__mapD&&window.__mapD.after)window.__mapD.after();};
 function dnear(mx,my){var best=null,bd=1e9;dpts.forEach(function(p){var q=dpx(p.X,p.Y),dd=(q[0]-mx)*(q[0]-mx)+(q[1]-my)*(q[1]-my);if(dd<bd){bd=dd;best=p;}});return bd<22*22?best:null;}
+function dinfo(p){return '<strong>'+p.n+' ('+p.uf+')</strong><br>'+fm(p.c)+' urnas lidas · seção média de '+fm(p.a)+' eleitores<br>Atraso médio: '+p2(p.m)+' min<br>'+p1(p.p)+' com mais de 15 min de atraso';}
+/* API de toque (mobile_mapas.js) */
+window.__mapD={cv:$('d-cv'),id:'d',
+ size:function(){return [DM.W,DM.H];},
+ get:function(i){var p=dpts[i];if(!p)return null;var q=dpx(p.X,p.Y);return {x:q[0],y:q[1],html:dinfo(p),r:Math.max(2.4,Math.min(26,Math.sqrt(p.c)*1.1*Math.sqrt(DM.k/(DM.W/44))))};},
+ hit:function(x,y,rad){var best=-1,bd=(rad||22)*(rad||22);dpts.forEach(function(p,i){var q=dpx(p.X,p.Y),d=(q[0]-x)*(q[0]-x)+(q[1]-y)*(q[1]-y);if(d<bd){bd=d;best=i;}});return best;},
+ near:function(x,y,n){var a=[];dpts.forEach(function(p,i){var q=dpx(p.X,p.Y);if(q[0]<0||q[1]<0||q[0]>DM.W||q[1]>DM.H)return;a.push([(q[0]-x)*(q[0]-x)+(q[1]-y)*(q[1]-y),i]);});a.sort(function(u,v){return u[0]-v[0];});return a.slice(0,n).map(function(u){return u[1];});},
+ zoomAt:function(f,cx,cy){var X=(cx-DM.x)/DM.k,Y=(DM.y-cy)/DM.k;DM.k*=f;DM.x=cx-DM.k*X;DM.y=cy+DM.k*Y;window.__delayDraw();},
+ reset:function(){dfit(BB);$('d-uf').value='';window.__delayDraw();},pan:function(dx,dy){DM.x+=dx;DM.y+=dy;window.__delayDraw();},gen:function(){return 0;},after:null};
 window.__delayInit=function(){var cv=$('d-cv');if(!cv)return;dsize();
  if(!dinit){dinit=true;var u=$('d-uf'),ufl=Array.from(new Set(((CL.datasets[$('c-ds').value]||CL.datasets[Object.keys(CL.datasets)[0]]).mapa||[]).map(function(r){return r[1];}))).sort();ufl.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;u.appendChild(o);});
   dfit(BB);

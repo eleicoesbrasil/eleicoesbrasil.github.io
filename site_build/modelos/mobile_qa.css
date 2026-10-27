@@ -1,0 +1,29 @@
+/* ===== mobile_qa: polimento global e escala de z-index =====
+   Carrega depois de mobile_mapas e ANTES de mobile_shell/tabelas/zoom: seletores com "html body" para ganhar na especificidade.
+   Escala de camadas: conteúdo 1-6 | abas 40 | tooltip .ttp 45 | cartão de leitura (.mi-card/.mi-nav) 50 | backdrop da sheet 90 | sheet 100 */
+:root{--z-tabs:40;--z-tip:45;--z-card:50;--z-sheet-bd:90;--z-sheet:100}
+html body .tabs{z-index:var(--z-tabs)}
+html body .ttp{z-index:var(--z-tip)}
+html body .mi-card,html body .mi-nav,html body .mz-bar{z-index:var(--z-card)}
+html body .colbox{z-index:var(--z-sheet)}
+html{scroll-padding-top:56px}
+[id^="p-"],h2[id],section[id]{scroll-margin-top:56px}
+
+/* tablet / toque (qualquer largura): alvos >=40px e texto >=12px */
+@media (pointer:coarse),(max-width:1024px){
+ html body .ctl select,html body .ctl input:not([type=checkbox]),html body .hctl select,html body .hctl input:not([type=checkbox]){min-height:40px}
+ html body details.cols>summary{min-height:40px;display:inline-flex;align-items:center;padding:0 12px;box-sizing:border-box}
+ html body .colbox button,html body .colbox .pre button{min-height:40px}
+ html body .colbox .mv{min-width:40px;min-height:40px}
+ html body .ctl .colbox .colrow label{min-height:40px}
+ html body .colbox input[type=checkbox]{width:36px;height:36px;flex:0 0 auto;margin:0}
+ html body .hbtn button{width:40px;height:40px}
+ html body #rep-copy,html body .cpb{min-height:40px;padding:0 16px}
+ html body thead th{font-size:12px;padding-top:10px;padding-bottom:10px}
+}
+/* mobile */
+@media (max-width:700px){
+ html body .colbox .mv{min-width:44px;min-height:44px}
+ html body .hbtn button{width:44px;height:44px}
+ html body details.cols>summary{min-height:44px}
+}

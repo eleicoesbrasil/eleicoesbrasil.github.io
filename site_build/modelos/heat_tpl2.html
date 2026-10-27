@@ -24,6 +24,7 @@ var BB={minx:-74,maxx:-34,miny:merc(-34),maxy:merc(5.5)};
 function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
 var pts=MUN.map(function(m){var t=m[8]?m[8]:0;var s1=m[4]/(m[4]+m[5]);var has=m[9]>0&&(m[6]+m[7])>0;var s2=has?m[6]/(m[6]+m[7]):null;
  return {n:m[0],uf:m[1],lat:m[2],lon:m[3],X:m[3],Y:merc(m[2]),L1:m[4],F1:m[5],s1:s1,s2:s2,d:has?(s2-s1)*100:null,ts:m[8],st:m[9],v:m[4]+m[5]};});
+pts.forEach(function(p,i){p.i=i;});
 var sel=document.getElementById('h-uf');
 var ufs=Array.from(new Set(pts.map(function(p){return p.uf;}))).sort();
 ufs.forEach(function(u){var o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);});
@@ -58,6 +59,7 @@ function draw(){
  ctx.fillStyle=css('--mute');ctx.font='11px '+css('--mono');
  UFG.forEach(function(g){if(S.k<(S.W/44)*1.6&&S.uf==='')return;var q=px(g.c[0],merc(g.c[1]));ctx.globalAlpha=.8;ctx.fillText(g.u,q[0]-6,q[1]+4);ctx.globalAlpha=1;});
  var bar=document.getElementById('h-bar');
+ if(window.__mapH&&window.__mapH.after)window.__mapH.after();
  if(S.modo==='d'){document.getElementById('h-l0').textContent='−6 pp (Flávio Bolsonaro ganha)';document.getElementById('h-l1').textContent='+6 pp (Lula ganha)';}
  else{document.getElementById('h-l0').textContent='25% Lula';document.getElementById('h-l1').textContent='75% Lula';}
  var st=[];for(var i=0;i<=10;i++){st.push('rgb('+ramp((i-5)/5)+')');}bar.style.background='linear-gradient(90deg,'+st.join(',')+')';
@@ -85,6 +87,13 @@ sel.onchange=function(){sel.value?fitUF(sel.value):reset();};
 document.getElementById('h-modo').onchange=function(e){S.modo=e.target.value;draw();};
 document.getElementById('h-busca').onchange=function(e){var v=e.target.value,p=pts.find(function(x){return v===x.n+' ('+x.uf+')';});if(!p)return;
  S.k=(S.W/44)*40;S.x=S.W/2-S.k*p.X;S.y=S.H/2+S.k*p.Y;draw();document.getElementById('h-info').innerHTML=info(p);};
+/* API de toque (mobile_mapas.js): itens = municipios; coordenadas em px CSS do canvas */
+window.__mapH={cv:cv,id:'h',
+ size:function(){return [S.W,S.H];},
+ get:function(i){var p=pts[i];if(!p)return null;var q=px(p.X,p.Y);return {x:q[0],y:q[1],html:info(p),r:Math.max(2.2,Math.min(70,Math.sqrt(p.v)/38*Math.sqrt(S.k/(S.W/44))))};},
+ hit:function(x,y,rad){var best=-1,bd=(rad||28)*(rad||28);pts.forEach(function(p){var q=px(p.X,p.Y),d=(q[0]-x)*(q[0]-x)+(q[1]-y)*(q[1]-y);if(d<bd){bd=d;best=p.i;}});return best;},
+ near:function(x,y,n){var a=[];pts.forEach(function(p){var q=px(p.X,p.Y);if(q[0]<0||q[1]<0||q[0]>S.W||q[1]>S.H)return;a.push([(q[0]-x)*(q[0]-x)+(q[1]-y)*(q[1]-y),p.i]);});a.sort(function(u,v){return u[0]-v[0];});return a.slice(0,n).map(function(u){return u[1];});},
+ zoomAt:zoomAt,reset:reset,pan:function(dx,dy){S.x+=dx;S.y+=dy;draw();},gen:function(){return 0;},after:null};
 window.__heatInit=function(){size();if(!S.k||S.k===1)fit(BB);draw();};
 window.addEventListener('resize',function(){if(document.getElementById('p-mapa').hidden)return;var uf=S.uf;size();uf?fitUF(uf):reset();});
 if(window.matchMedia)window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(){draw();});

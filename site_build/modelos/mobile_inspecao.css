@@ -1,0 +1,48 @@
+/* mobile_inspecao (onda 2): cartão persistente, ◀ ▶, indicador do ponto e zoom simples (g-svg, b-svg, as-svg) */
+.mi-wrap{position:relative}
+.mi-card,.mi-tools,.mi-hl{display:none}
+@media (max-width:700px){
+ .mi-wrap .sv{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+ .mi-wrap.mi-panmode .sv{cursor:grab}
+ /* cartão de leitura persistente (sticky na base da tela enquanto o gráfico estiver visível) */
+ .mi-card{display:block;position:sticky;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:30;margin:8px 0;padding:10px 12px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.22);font-size:14px;line-height:1.4}
+ .mi-card.mi-empty{box-shadow:none;position:static}
+ .mi-card .mi-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+ .mi-card .mi-t{min-width:0;flex:1;padding-top:2px}
+ .mi-card .mi-ttl{display:flex;align-items:center;gap:8px;font:700 15px var(--disp);overflow-wrap:anywhere}
+ .mi-card.mi-empty .mi-ttl{display:none}
+ .mi-card .mi-sub{display:block;font-size:13px;color:var(--mute)}
+ .mi-card .mi-nav{display:flex;gap:6px;flex:none}
+ .mi-card .mi-nav button,.mi-tools button{min-width:44px;min-height:44px;padding:0 10px;font:600 16px var(--disp);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+ .mi-card .mi-nav button:active,.mi-tools button:active{background:var(--line)}
+ .mi-card .mi-rows{margin-top:6px;display:grid;gap:2px}
+ .mi-card.mi-empty .mi-rows{display:none}
+ .mi-card.mi-empty .mi-t{align-self:center}
+ .mi-card .mi-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+ .mi-card .mi-l{color:var(--mute);font-size:13px}
+ .mi-card .mi-row .mi-sw+.mi-l{flex:1}
+ .mi-card .mi-v{font:600 14px var(--mono);margin-left:auto}
+ .mi-card .mi-l+.mi-v{margin-left:0}
+ .mi-card .mi-sw+.mi-l+.mi-v{margin-left:auto}
+ .mi-card .mi-pos{justify-self:end;font-size:12px;color:var(--mute)}
+ .mi-sw{display:inline-block;width:12px;height:12px;border-radius:3px;flex:none}
+ /* indicador do ponto selecionado */
+ .mi-hl{display:none;position:absolute;inset:0;pointer-events:none;z-index:2}
+ .mi-hl.on{display:block}
+ .mi-hl i{display:none;position:absolute}
+ .mi-hl.as .mi-v{display:block;width:0;border-left:2px dashed var(--fg);opacity:.75;transform:translateX(-1px)}
+ .mi-hl.as .mi-r{display:block;width:22px;height:22px;margin:-11px 0 0 -11px;border:3px solid var(--fg);border-radius:50%;box-shadow:0 0 0 2px var(--surface)}
+ .mi-hl.box .mi-b{display:block;border:2.5px solid var(--fg);border-radius:4px;background:color-mix(in srgb,var(--fg) 8%,transparent);box-shadow:0 0 0 1.5px var(--surface)}
+ /* zoom */
+ .mi-tools{display:block;margin:6px 0}
+ .mi-tools .mi-zrow{display:flex;gap:8px;flex-wrap:wrap}
+ .mi-tools .mi-z{font-size:22px;padding:0}
+ .mi-tools button:disabled{opacity:.4}
+ .mi-tools .mi-pan[hidden]{display:none}
+ .mi-tools .mi-pan.on,.mi-tools .mi-chip[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+ .mi-tools .mi-zl{font-size:13.5px;color:var(--mute);margin:6px 0 2px}
+ .mi-tools .mi-zl b{color:var(--fg);font-family:var(--mono)}
+ .mi-tools .mi-chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+ .mi-tools .mi-cap{font-size:13.5px;color:var(--mute)}
+ .mi-tools .mi-chip{font:600 14px var(--mono)}
+}

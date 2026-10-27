@@ -30,7 +30,8 @@ function dsize(){var cv=$('s-cv'),r=cv.getBoundingClientRect(),dp=window.deviceP
 function fit(b){var pad=26,w=V.W-2*pad,h=V.H-2*pad,x0=b[0],x1=b[2],y0=merc(b[1]),y1=merc(b[3]);var k=Math.min(w/Math.max(x1-x0,1e-4),h/Math.max(y1-y0,1e-4));V.k=k;V.x=V.W/2-k*(x0+x1)/2;V.y=V.H/2+k*(y0+y1)/2;}
 function P(lon,lat){return [V.x+V.k*lon,V.y-V.k*merc(lat)];}
 function rings(g){return g.type==='Polygon'?[g.coordinates]:g.coordinates;}
-function prep(){CELLS=[];if(!MUN)return;
+var GEN=0;
+function prep(){GEN++;CELLS=[];if(!MUN)return;
  var cam=$('s-cam').value||'loc';
  if(cam==='zon'){var z={};MUN.locais.forEach(function(l){var o=z[l.zona]||(z[l.zona]={s:0,ap:0,cp:0,v13:0,v22:0,vo:0,dw:0,dn:0,zona:l.zona});o.s+=l.s;o.ap+=l.ap;o.cp+=l.cp;o.v13+=l.v13;o.v22+=l.v22;if(l.d!==null){o.dw+=l.d*l.s;o.dn+=l.s;}});
   MUN.zonas.forEach(function(zz){var o=z[zz.zona]||{s:0,ap:0,cp:0,v13:0,v22:0,dw:0,dn:0};o.d=o.dn?o.dw/o.dn:null;o.nome='Zona '+zz.zona;o.bairro='';o.zonaInfo=zz;CELLS.push({o:o,g:zz.g,u:0,tipo:'zona'});});}
@@ -48,18 +49,29 @@ function draw(){var cv=$('s-cv'),ctx=cv.getContext('2d');ctx.clearRect(0,0,V.W,V
     ctx.fillStyle='rgb('+col+')';ctx.fillRect(a[0],a[1]-h,w,h);}});}
  if(cam!=='zon'&&MUN.zonas.length){ctx.strokeStyle=fg;ctx.globalAlpha=0.55;ctx.lineWidth=1.6;MUN.zonas.forEach(function(z){path(z.g);ctx.stroke();});ctx.globalAlpha=1;}
  if(cam==='zon'){ctx.fillStyle=fg;ctx.font='600 12px '+css('--mono');CELLS.forEach(function(c){var b=c.bx,a=P(b[0],0),z=P(b[2],0);if(z[0]-a[0]>40){var cx=(a[0]+z[0])/2,cy=V.y-V.k*(b[1]+b[3])/2;ctx.fillText(c.o.nome,cx-18,cy);}});}
- else{ctx.fillStyle=fg;ctx.font='11px '+css('--body');ctx.globalAlpha=0.9;CELLS.forEach(function(c){var b=c.bx,a=P(b[0],0),z=P(b[2],0);if(z[0]-a[0]>150){var cx=(a[0]+z[0])/2,cy=V.y-V.k*(b[1]+b[3])/2,t=(c.o.nome||'').slice(0,28);ctx.fillText(t,cx-ctx.measureText(t).width/2,cy);}});ctx.globalAlpha=1;}}
+ else{ctx.fillStyle=fg;ctx.font='11px '+css('--body');ctx.globalAlpha=0.9;CELLS.forEach(function(c){var b=c.bx,a=P(b[0],0),z=P(b[2],0);if(z[0]-a[0]>150){var cx=(a[0]+z[0])/2,cy=V.y-V.k*(b[1]+b[3])/2,t=(c.o.nome||'').slice(0,28);ctx.fillText(t,cx-ctx.measureText(t).width/2,cy);}});ctx.globalAlpha=1;}
+ if(window.__mapS&&window.__mapS.after)window.__mapS.after();}
 function pip(c,X,Y){var b=c.bx;if(X<b[0]||X>b[2]||Y<b[1]||Y>b[3])return false;var inside=false;
  rings(c.g).forEach(function(p){var r=p[0];for(var i=0,j=r.length-1;i<r.length;j=i++){var xi=r[i][0],yi=merc(r[i][1]),xj=r[j][0],yj=merc(r[j][1]);if((yi>Y)!==(yj>Y)&&X<(xj-xi)*(Y-yi)/(yj-yi)+xi)inside=!inside;}});return inside;}
-function tip(o,e){var s=o.v13+o.v22,t=$('s-tip');
- t.innerHTML='<strong>'+(o.nome||'')+'</strong>'+(o.bairro?'<br>Bairro: '+titulo(o.bairro):'')+'<br>Zona '+(o.zona||'—')+' · '+fm(o.s)+' seções · '+fm(o.ap)+' eleitores aptos'+(o.nl>1?' · '+o.nl+' locais neste ponto':'')+
+function tiph(o){var s=o.v13+o.v22;
+ return '<strong>'+(o.nome||'')+'</strong>'+(o.bairro?'<br>Bairro: '+titulo(o.bairro):'')+'<br>Zona '+(o.zona||'—')+' · '+fm(o.s)+' seções · '+fm(o.ap)+' eleitores aptos'+(o.nl>1?' · '+o.nl+' locais neste ponto':'')+
  '<br>Lula '+dec(s?100*o.v13/s:0,1)+'% · Flávio Bolsonaro '+dec(s?100*o.v22/s:0,1)+'% (de Lula + Flávio Bolsonaro)'+'<br>Abstenção '+dec(o.ap?100*(o.ap-o.cp)/o.ap:0,1)+'%'+(o.d!==null&&o.d!==undefined?'<br>Atraso médio no fechamento '+dec(o.d,1)+' min':'')+
- (o.a?'<br><span class="mute">Área estimada '+dec(o.a,1)+' km² · '+(o.u===2?'estimativa pouco confiável':o.u===1?'estimativa moderada':'estimativa razoável')+'</span>':'');
+ (o.a?'<br><span class="mute">Área estimada '+dec(o.a,1)+' km² · '+(o.u===2?'estimativa pouco confiável':o.u===1?'estimativa moderada':'estimativa razoável')+'</span>':'');}
+function tip(o,e){var t=$('s-tip');t.innerHTML=tiph(o);
  t.hidden=false;var r=$('s-cv').getBoundingClientRect();t.style.left=Math.min(e.clientX-r.left+12,V.W-270)+'px';t.style.top=(e.clientY-r.top+12)+'px';}
 function carregar(uf,cd){msg('Carregando…');fetch(BASE+uf+'/'+cd+'.json').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(d){MUN=d;prep();dsize();fit(d.bbox);draw();msg('');
  $('s-aviso').textContent='Áreas estimadas por proximidade ao local de votação (diagrama de Voronoi recortado pelo limite municipal'+(d.fonte==='IBGE'?' do IBGE':', aproximado pelos locais, pois o limite do IBGE não foi encontrado')+'). Bordas tracejadas e cores mais claras indicam células grandes, onde a estimativa é menos confiável. Os quadrados são uma convenção visual, um por seção, em volta do ponto do local; não mostram a posição real das seções.'+(d.inval_locais?' '+fm(d.inval_locais)+' locais ('+fm(d.inval_secoes)+' seções) ficaram de fora por falta de coordenada válida.':'');}).catch(function(){msg('Não foi possível carregar os dados deste município.');});}
 function listaMun(){var uf=$('s-uf').value,dl='';(IDX[uf]||[]).forEach(function(r){dl+='<option value="'+titulo(r[1])+'">';});$('s-muns').innerHTML=dl;}
 function escolher(){var uf=$('s-uf').value,v=$('s-mun').value.trim().toLowerCase(),r=(IDX[uf]||[]).filter(function(x){return titulo(x[1]).toLowerCase()===v||x[1].toLowerCase()===v;})[0];if(r)carregar(uf,r[0]);}
+/* API de toque (mobile_mapas.js) */
+function ccent(c){var b=c.bx;return [V.x+V.k*(b[0]+b[2])/2,V.y-V.k*(b[1]+b[3])/2];}
+window.__mapS={cv:document.getElementById('s-cv'),id:'s',
+ size:function(){return [V.W,V.H];},
+ get:function(i){var c=CELLS[i];if(!c)return null;var q=ccent(c);return {x:q[0],y:q[1],html:tiph(c.o),r:10,path:function(){var out=[];rings(c.g).forEach(function(p){p.forEach(function(r){out.push(r.map(function(z){return P(z[0],z[1]);}));});});return out;}};},
+ hit:function(x,y){var X=(x-V.x)/V.k,Y=(V.y-y)/V.k;for(var i=CELLS.length-1;i>=0;i--){if(pip(CELLS[i],X,Y))return i;}return -1;},
+ near:function(x,y,n){var a=[];CELLS.forEach(function(c,i){var q=ccent(c);if(q[0]<0||q[1]<0||q[0]>V.W||q[1]>V.H)return;a.push([(q[0]-x)*(q[0]-x)+(q[1]-y)*(q[1]-y),i]);});a.sort(function(u,v){return u[0]-v[0];});return a.slice(0,n).map(function(u){return u[1];});},
+ zoomAt:function(f,cx,cy){var X=(cx-V.x)/V.k,Y=(V.y-cy)/V.k;V.k*=f;V.x=cx-V.k*X;V.y=cy+V.k*Y;draw();},
+ reset:function(){if(MUN){fit(MUN.bbox);draw();}},pan:function(dx,dy){V.x+=dx;V.y+=dy;draw();},gen:function(){return GEN;},after:null};
 window.__secInit=function(){var cv=$('s-cv');if(!cv)return;
  if(!inited){inited=true;
   if(location.protocol.indexOf('http')!==0||/claude\.ai|claudeusercontent/.test(location.hostname)){msg('Esta visão carrega arquivos do site público. Abra https://eleicoesbrasil.github.io/2026/presidente/#secoes para ver o mapa por zona e local de votação.');return;}
