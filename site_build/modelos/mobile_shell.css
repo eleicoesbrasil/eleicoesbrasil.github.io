@@ -1,0 +1,54 @@
+/* ===== mobile_shell: casca, cabeçalho, abas, cobertura, rodapé, aba replicar ===== */
+html{scroll-padding-top:56px}
+[role=tabpanel]>*{min-width:0;max-width:100%}
+main{min-width:0}
+.tabs{scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+/* idioma: alvo de toque confortável (também desktop, sem mudar a aparência) */
+.lang button{min-width:40px;min-height:36px;display:inline-flex;align-items:center;justify-content:center}
+a.back{display:inline-flex!important;align-items:center;min-height:36px}
+
+@media (max-width:700px){
+ body{font-size:16px;padding-top:max(14px,env(safe-area-inset-top,0px));padding-bottom:max(48px,calc(24px + env(safe-area-inset-bottom,0px)))}
+ main{gap:20px}
+ header{padding-top:0}
+ .lang{gap:4px;top:-4px}
+ .lang button{min-width:44px;min-height:44px}
+ a.back{min-height:44px;font-size:14px;margin-bottom:0!important;max-width:calc(100% - 110px)}
+ h1{font-size:clamp(25px,7.2vw,32px)!important;margin-top:4px!important;padding-right:0!important;line-height:1.12}
+ header .lab{font-size:12px;line-height:1.45;margin-top:2px}
+ .sub{font-size:15px;line-height:1.55}
+ h2{font-size:20px}
+ .mute,.note{font-size:14px}
+ .small{font-size:13px}
+ /* barra de abas: rolável, fixa no topo, com indicação de mais conteúdo */
+ .tabs{position:sticky;top:0;z-index:40;flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;gap:0;margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px))) 0 calc(-1*max(16px,env(safe-area-inset-right,0px)));padding:0 8px;background:var(--bg);border-bottom:1px solid var(--line);-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
+  --fadeL:0;--fadeR:1;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 calc(var(--fadeL)*22px),#000 calc(100% - var(--fadeR)*26px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 calc(var(--fadeL)*22px),#000 calc(100% - var(--fadeR)*26px),transparent 100%)}
+ .tabs button{flex:0 0 auto;white-space:nowrap;min-height:48px;padding:0 14px;font-size:15px;scroll-snap-align:center}
+ .tabs button[aria-selected="true"]{border-bottom-width:4px}
+ /* cobertura / progresso */
+ .covbox{padding:12px 14px}
+ .covbox p{font-size:14px;line-height:1.5}
+ .covtxt{font-size:14px!important;line-height:1.5;overflow-wrap:anywhere}
+ .covlbl{display:block;min-width:0!important}
+ .covbar{height:12px}
+ .covsub{font-size:13px}
+ .card{padding:12px 14px}
+ .big{font-size:26px}
+ /* aba replicar */
+ pre.code{white-space:pre-wrap!important;overflow-wrap:anywhere;word-break:break-word;overflow-x:visible!important;font-size:13px!important;padding:12px}
+ pre.code code{white-space:inherit}
+ code{overflow-wrap:anywhere;font-size:.9em}
+ ul.rep{padding-left:18px}ul.rep li{margin:10px 0;overflow-wrap:anywhere}
+ .cpb,#rep-copy{min-height:44px;padding:0 16px;font-size:15px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);cursor:pointer;margin:2px 0 8px}
+ [id^=p-replicar] p,[id^=p-replicar] li{max-width:none}
+ /* campos genéricos: alvo de toque; 16px evita zoom automático do iOS no foco */
+ .ctl select,.ctl input,.hctl select,.hctl input{min-height:44px;font-size:16px}
+ .ctl,.hctl{gap:10px 12px}
+ .ctl label,.hctl label{font-size:12px}
+ .ttp{max-width:min(260px,calc(100vw - 24px))}
+}
+@media (max-width:380px){
+ .tabs button{padding:0 11px;font-size:14px}
+ h1{font-size:25px!important}
+}

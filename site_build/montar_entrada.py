@@ -84,5 +84,8 @@ document.getElementById('lg-pt').setAttribute('aria-pressed',l==='pt');document.
 document.getElementById('lg-pt').onclick=function(){{set('pt');}};document.getElementById('lg-en').onclick=function(){{set('en');}};
 var s='pt';try{{s=localStorage.getItem('lang')||'pt';}}catch(x){{}};set(s==='en'?'en':'pt');}})();
 </script></body></html>'''
+_css = Path(__file__).parent / "modelos/entrada_mobile.css"
+if _css.exists():
+    html = html.replace("</style></head>", _css.read_text() + "</style></head>", 1)
 (DOCS / "index.html").write_text(html)
 print("docs/index.html gerado;", len(arquivos), "arquivos de dados listados")

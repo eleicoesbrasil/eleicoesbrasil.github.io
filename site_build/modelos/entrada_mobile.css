@@ -1,0 +1,22 @@
+/* entrada_mobile: injetar dentro do <style> de docs/index.html (montar_entrada.py), no fim, depois de ul{...}li{...}a{...} */
+.lang button{min-width:40px;min-height:36px;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width:700px){
+ body{font-size:16px;padding-top:max(20px,env(safe-area-inset-top,0px));padding-bottom:max(40px,calc(20px + env(safe-area-inset-bottom,0px)))}
+ main{gap:22px;min-width:0}
+ header{padding-top:0}
+ .lang{gap:4px;top:-6px}.lang button{min-width:44px;min-height:44px}
+ h1{font-size:clamp(28px,8.4vw,36px);padding-right:100px}
+ .sub{font-size:15px}
+ .grid{grid-template-columns:1fr 1fr;gap:10px}
+ .card{padding:12px 14px;min-height:76px}
+ .card .y{font-size:13px}.card .c{font-size:19px;line-height:1.15}.card .s{font-size:13px}
+ .card.on{grid-column:1/-1;min-height:84px}
+ .covbox{padding:12px 14px}.covbox p{font-size:14px;line-height:1.5}
+ .covtxt{font-size:14px;line-height:1.5;overflow-wrap:anywhere}.covlbl{display:block;min-width:0}
+ ul{padding-left:0;list-style:none}
+ li{margin:0;border-bottom:1px solid var(--line)}li:last-child{border-bottom:0}
+ li a{display:inline-block;padding:14px 0 6px;overflow-wrap:anywhere;word-break:break-all;line-height:1.35}
+ li .mute{display:block;font-size:13px;padding-bottom:10px}
+ p.mute{font-size:14px}
+}
+@media (max-width:340px){.grid{grid-template-columns:1fr}}

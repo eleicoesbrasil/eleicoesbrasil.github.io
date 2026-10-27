@@ -1,0 +1,30 @@
+/* mobile_mapas: abas "mapa" e "secoes" */
+.mv-toggle{display:none}
+@media (max-width:700px){
+ #p-mapa .hctl,#p-secoes .hctl{display:grid;grid-template-columns:1fr 1fr;gap:10px 10px;margin:12px 0}
+ #p-mapa .hctl label,#p-secoes .hctl label{font-size:12px;width:100%}
+ #p-mapa .hctl label:nth-child(-n+2),#p-secoes .hctl label:nth-child(3),#p-secoes .hctl label:nth-child(4){grid-column:1/-1}
+ #p-secoes .hctl label:nth-child(1){grid-column:auto}#p-secoes .hctl label:nth-child(2){grid-column:auto}
+ #p-mapa .hctl label:nth-child(3),#p-mapa .hctl label:nth-child(4){grid-column:auto}
+ #p-mapa .hctl select,#p-mapa .hctl input,#p-secoes .hctl select,#p-secoes .hctl input{font-size:16px;min-height:44px;width:100%;box-sizing:border-box;padding:8px 10px}
+ #h-cv,#s-cv{height:min(64vh,520px)!important;min-height:340px}
+ .hwrap canvas{touch-action:pan-y!important}
+ .hwrap.mv-on canvas{touch-action:none!important}
+ .hwrap.mv-on{outline:2px solid var(--lula)}
+ .hbtn{gap:8px;right:8px;top:8px}
+ .hbtn button{width:44px;height:44px;font-size:20px;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+ .mv-toggle{display:inline-flex;align-items:center;position:absolute;left:8px;top:8px;z-index:3;min-height:44px;padding:0 14px;font:600 14px var(--disp);border:1px solid var(--line);border-radius:22px;background:var(--surface);color:var(--fg);box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer}
+ .hwrap.mv-on .mv-toggle{background:var(--lula);color:#fff;border-color:var(--lula)}
+ .hwrap .htip{left:8px!important;right:8px;top:auto!important;bottom:8px;max-width:none;font-size:14px;padding:10px 12px;z-index:4}
+ #s-msg.htip{top:64px!important;bottom:auto!important}
+ .hleg{display:grid;grid-template-columns:1fr 1fr;gap:6px 8px;font-size:13px;margin-top:8px}
+ .hleg .hbar{width:100%;height:12px;grid-column:1/-1;grid-row:1}
+ .hleg span:last-child{text-align:right}
+ #h-info{font-size:14px;max-width:none}
+ #s-aviso{font-size:14px}
+}
+@media (max-width:420px){
+ #p-mapa .hctl,#p-secoes .hctl{grid-template-columns:1fr}
+ #p-secoes .hctl label:nth-child(1),#p-secoes .hctl label:nth-child(2){grid-column:1/-1}
+ #p-mapa .hctl label:nth-child(n){grid-column:1/-1}
+}

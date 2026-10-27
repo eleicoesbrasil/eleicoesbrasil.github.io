@@ -1,0 +1,30 @@
+@media (max-width:700px){
+ .sv.mob text{font-size:12px}
+ .sv.mob{touch-action:pan-y;-webkit-tap-highlight-color:transparent}
+ .leg{font-size:13.5px;gap:8px 16px;margin:6px 0}
+ .leg i{width:14px;height:14px}
+ .ttp{left:8px!important;right:8px;top:auto!important;bottom:calc(8px + env(safe-area-inset-bottom,0px));max-width:none;font-size:13.5px;padding:10px 12px;line-height:1.5}
+ #p-fechamento .sub,#p-fechamento .small,#p-fechamento .note{font-size:14px}
+ .ctl,.hctl{gap:10px 12px}
+ .ctl label,.hctl label{flex:1 1 45%;min-width:0}
+ .ctl select,.ctl input,.hctl select,.hctl input{min-height:44px;font-size:16px;width:100%}
+ #g-esc,#g-un,#g-oq,#g-me,#g-mun{min-height:44px;font-size:16px}
+ .grid{grid-template-columns:1fr;gap:10px}
+ .card .big{font-size:30px}
+ .card .lab,.card .small{font-size:13.5px}
+ /* tabela de faixas -> cartões */
+ #c-tab{min-width:0;display:block;border:0}
+ #c-tab thead{display:none}
+ #c-tab tbody{display:block}
+ #c-tab tr{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;padding:12px;border-bottom:1px solid var(--line)}
+ #c-tab tr>th{grid-column:1/-1;font-size:15px;text-align:left!important;padding:0;border:0;background:none;position:static}
+ #c-tab td{display:block;text-align:left!important;padding:0;border:0;font-size:15px}
+ #c-tab td::before{content:attr(data-label);display:block;font:12px var(--body);color:var(--mute);text-transform:none;white-space:normal;line-height:1.25}
+ .tw:has(#c-tab){max-height:none}
+ /* mapa de atraso (aba fechamento) */
+ #d-cv{height:min(62vh,480px)!important;touch-action:pan-y!important}
+ .hbtn button{width:44px;height:44px;font-size:20px}
+ .hbtn{gap:6px}
+ .hleg{font-size:12.5px}
+ .htip{font-size:13px;max-width:70vw}
+}
