@@ -159,7 +159,7 @@ RX = [  # (padrão, flags, substituição)
 import glob as _g, importlib.util as _iu, os as _os
 for _f in sorted(_g.glob(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'i18n_extra_*.py'))):
     _sp = _iu.spec_from_file_location('x', _f); _m = _iu.module_from_spec(_sp); _sp.loader.exec_module(_m)
-    PAIRS.extend(getattr(_m, 'PAIRS_EXTRA', [])); EX.update(getattr(_m, 'EX_EXTRA', {}))
+    PAIRS.extend(getattr(_m, 'PAIRS_EXTRA', [])); RX[0:0] = list(getattr(_m, 'RX_EXTRA', [])); EX.update(getattr(_m, 'EX_EXTRA', {}))
 js = json.dumps({'EX':EX,'PAIRS':PAIRS,'RX':RX}, ensure_ascii=False)
 open('i18n_data.json','w').write(js)
 print(len(PAIRS),'pares')

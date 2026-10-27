@@ -7,5 +7,6 @@ EX_EXTRA = {
  'Urnas': 'Ballot boxes', 'Acumulado: fechadas até +N min': 'Cumulative: closed up to +N min', 'Instantâneo: fechadas no minuto +N': 'Instant: closed at minute +N', 'Apenas as fechadas depois de +N min': 'Only those closed after +N min',
  'Até 15': 'Up to 15', 'Apenas após 15': 'Only after 15',
  'Urnas selecionadas': 'Selected ballot boxes', 'Todas as urnas do recorte (referência)': 'All ballot boxes in scope (reference)',
+ 'Reproduzir': 'Play', 'Pausar': 'Pause', 'Velocidade': 'Speed',
  'digite um município': 'type a municipality',
 }

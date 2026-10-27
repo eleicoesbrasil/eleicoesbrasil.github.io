@@ -14,7 +14,8 @@ var CFG={ // orig: W,H,l,r,t,b ; hn = altura desejada (px) no celular
 var Wo=1000, CH=7.3, LH=15, busy=false;
 function $(i){return document.getElementById(i);}
 function num(el,a){return parseFloat(el.getAttribute(a));}
-function wrap(s,max){var w=s.split(/\s+/),out=[],cur='';w.forEach(function(x){if(cur&&(cur+' '+x).length>max){out.push(cur);cur=x;}else cur=cur?cur+' '+x:x;});if(cur)out.push(cur);return out;}
+function TX(s){return (window.__LANG==='en'&&window.__tr)?window.__tr(s):s;}
+function wrap(s,max){s=TX(s);var w=s.split(/\s+/),out=[],cur='';w.forEach(function(x){if(cur&&(cur+' '+x).length>max){out.push(cur);cur=x;}else cur=cur?cur+' '+x:x;});if(cur)out.push(cur);return out;}
 function setLines(el,lines,x){el.textContent='';lines.forEach(function(t,i){var s=document.createElementNS('http://www.w3.org/2000/svg','tspan');s.setAttribute('x',x);if(i)s.setAttribute('dy',LH);s.textContent=t;el.appendChild(s);});}
 function compact(t){ // 12.345.678 -> 12,3 mi
  var m=/^([−+-]?)(\d{1,3}(?:[.,\s ]\d{3})+)$/.exec(t.trim());if(!m)return t;

@@ -38,6 +38,9 @@ t=(t.replace('__FLUXO__',json.dumps(fluxo,ensure_ascii=False,separators=(',',':'
     .replace('__REPLICAR__',open(f'{M}/replicar_tab.html').read()).replace('__SECOES__',open(f'{M}/secoes_tab.html').read()).replace('__SECOESJS__',open(f'{M}/secoes_tab.js').read()).replace('__FECH__',fech).replace('__HEAT__',heat_html).replace('__HEATJS__',heat_js).replace('__CLOSEJS__',closejs))
 import subprocess
 subprocess.run([sys.executable,'i18n_dict.py'],check=True,capture_output=True,cwd=M)
+if os.path.exists(f'{M}/abst_corr.html'):
+    _ac=open(f'{M}/abst_corr.html').read(); _mk=' <section>\n  <h2>Tamanho da seção e variação da abstenção</h2>'
+    if _mk in t: t=t.replace(_mk,_ac+open(f'{M}/abst_corr.js').read()+_mk,1)
 t=t.replace('__I18N__',open(f'{M}/i18n_tpl.js').read().replace('__I18N_DATA__',open(f'{M}/i18n_data.json').read()))
 t=t.replace('<header>\n','<header>\n<a class="back" href="../../">← Eleições Brasil</a>\n',1).replace('</style>','.back{display:inline-block;font-size:13px;color:var(--mute);margin-bottom:8px;text-decoration:none}</style>',1)
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))

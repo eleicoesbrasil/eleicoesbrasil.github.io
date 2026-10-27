@@ -1,0 +1,33 @@
+ <section id="ac-sec">
+  <style>
+  #ac-sec .ac-modes{display:flex;gap:0;margin:8px 0}#ac-sec .ac-modes button{font:inherit;padding:8px 14px;min-height:40px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}#ac-sec .ac-modes button:first-child{border-radius:6px 0 0 6px}#ac-sec .ac-modes button:last-child{border-radius:0 6px 6px 0;border-left:0}#ac-sec .ac-modes button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+  #ac-sec canvas,#ac-sec svg.sv{width:100%;display:block;touch-action:pan-y}
+  #ac-sec .ac-wrap{position:relative}
+  #ac-sec .ac-r{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin:10px 0}
+  #ac-sec .ac-r div{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:8px 10px}
+  #ac-sec .ac-r b{display:block;font:600 20px var(--mono)}#ac-sec .ac-r span{font-size:13px;color:var(--mute)}
+  #ac-sec .ac-info{display:flex;gap:8px;align-items:stretch;margin:8px 0;min-height:56px}
+  #ac-sec .ac-info>div{flex:1;border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:8px 10px;font-size:14px;min-width:0}
+  #ac-sec .ac-info button{font:inherit;min-width:44px;min-height:44px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);cursor:pointer;align-self:center}
+  #ac-sec .ac-row{cursor:pointer}#ac-sec .ac-row:hover rect.hl{opacity:.12}
+  @media(max-width:700px){#ac-sec .ac-modes button{min-height:44px;flex:1}}
+  </style>
+  <h2>Variação da abstenção contra as demais variáveis</h2>
+  <p class="sub">Escolha como comparar: por faixa (as seções são divididas em grupos iguais pela variação da taxa de abstenção do 1º para o 2º turno e cada grupo vira um violino, com a linha das médias) ou por seção individual (um ponto por seção, em dispersão). Em ambos aparecem as correlações de Pearson e de Spearman. Isto descreve seções, não eleitores.</p>
+  <div class="ac-modes" role="group" aria-label="Modo"><button type="button" id="ac-m-f" aria-pressed="true">Por faixa (violino)</button><button type="button" id="ac-m-s" aria-pressed="false">Por seção (dispersão)</button></div>
+  <div class="ctl">
+   <label>Variável no eixo Y<select id="ac-y"></select></label>
+   <label id="ac-l-x" hidden>Variável no eixo X<select id="ac-x"></select></label>
+   <label id="ac-l-nb">Número de faixas<select id="ac-nb"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select></label>
+   <label class="ac-ck"><input type="checkbox" id="ac-trim" checked> Aparar extremos (mostrar 95% central)</label>
+  </div>
+  <div class="ac-r" id="ac-r"></div>
+  <div class="leg" id="ac-leg"></div>
+  <div class="ac-wrap"><svg id="ac-svg" class="sv" viewBox="0 0 1000 460" role="img" aria-label="Violinos da variável escolhida por faixa de variação da abstenção"></svg><canvas id="ac-cv" hidden role="img" aria-label="Dispersão por seção"></canvas></div>
+  <div class="ac-info"><button type="button" id="ac-prev" aria-label="Anterior">◀</button><div id="ac-info">Toque ou passe o mouse sobre o gráfico para ler os valores.</div><button type="button" id="ac-next" aria-label="Próximo">▶</button></div>
+  <p class="small" id="ac-nota"></p>
+  <h3 style="margin:16px 0 4px">Correlograma: correlação de cada variável com <span id="ac-xn"></span></h3>
+  <p class="small">Barras cheias: Pearson. Contorno: Spearman. Toque numa linha para plotá-la no eixo Y.</p>
+  <svg id="ac-cor" class="sv" viewBox="0 0 1000 600" role="img" aria-label="Correlação de cada variável com a variável do eixo X"></svg>
+ </section>
+
