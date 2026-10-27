@@ -31,7 +31,7 @@ function drawF(){
  var qs=B.q.map(function(b){return b[y];}),means=B.mean.map(function(m){return m[y];});
  var lo=Infinity,hi=-Infinity;qs.forEach(function(q,k){lo=Math.min(lo,trim?q[1]:q[0],means[k]);hi=Math.max(hi,trim?q[39]:q[40],means[k]);});
  var pd=(hi-lo||1)*.06;lo-=pd;hi+=pd;
- var sv=$('ac-svg'),W=nar()?Math.max(300,Math.round(sv.getBoundingClientRect().width)||340):1000,H=nar()?400:460,fs=nar()?12:13,m={l:nar()?50:72,r:nar()?8:20,t:16,b:nar()?62:66};
+ var sv=$('ac-svg'),nw=nar()||sv._ptNarrow,W=nw?Math.max(240,Math.round(sv.getBoundingClientRect().width)||340):1000,H=nar()?400:(sv._ptNarrow&&sv._ptH?Math.round(sv._ptH):460),fs=nar()?12:13,m={l:nar()?50:72,r:nar()?8:20,t:16,b:nar()?62:66};
  sv.setAttribute('viewBox','0 0 '+W+' '+H);var pw=W-m.l-m.r,ph=H-m.t-m.b,bw=pw/N,Y=function(v){return m.t+ph*(1-(v-lo)/(hi-lo));},s='';
  nice(lo,hi).forEach(function(t){var yy=Y(t);s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+yy+'" y2="'+yy+'" stroke="var(--line)"/><text class="m" font-size="'+fs+'" x="'+(m.l-6)+'" y="'+(yy+4)+'" text-anchor="end">'+fv(t,y)+'</text>';});
  var pts=[];
@@ -61,7 +61,7 @@ function infoF(){var nb=$('ac-nb').value,B=D.bins[nb],y=yi(),k=sel;if(k<0){$('ac
 /* ---------- dispersão ---------- */
 var SC=null;
 function drawS(){
- var x=xi(),y=yi(),cv=$('ac-cv'),w=Math.max(300,Math.round(cv.parentNode.getBoundingClientRect().width)||340),h=nar()?380:460,dpr=window.devicePixelRatio||1,trim=$('ac-trim').checked;
+ var x=xi(),y=yi(),cv=$('ac-cv'),w=Math.max(200,Math.round(cv.getBoundingClientRect().width||cv.parentNode.getBoundingClientRect().width)||340),h=nar()?380:460,dpr=window.devicePixelRatio||1,trim=$('ac-trim').checked;
  cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+'px';var g=cv.getContext('2d');g.scale(dpr,dpr);
  var css=getComputedStyle(document.documentElement),col=function(v){return css.getPropertyValue(v).trim()||'#888';};
  var X=D.sample[x],Yv=D.sample[y],n=X.length,xl=trim?D.p[x][0]:Math.min.apply(null,X),xh=trim?D.p[x][1]:Math.max.apply(null,X),yl=trim?D.p[y][0]:Math.min.apply(null,Yv),yh=trim?D.p[y][1]:Math.max.apply(null,Yv);
@@ -97,7 +97,7 @@ function infoS(){ if(pick===null){$('ac-info').textContent=S('Toque num ponto pa
  var x=xi(),y=yi();$('ac-info').innerHTML='<strong>'+S('Seção da amostra','Sample section')+'</strong><br>'+LV(x)+': '+fv(SC.X[pick],x)+' · '+LV(y)+': '+fv(SC.Y[pick],y);}
 function info(){ if(mode==='f')infoF();else infoS(); }
 /* ---------- correlograma (barras) ---------- */
-function drawC(){var x=xi(),sv=$('ac-cor'),W=nar()?Math.max(300,Math.round(sv.getBoundingClientRect().width)||340):1000,rowh=nar()?38:30,fs=nar()?12:13,y=yi(),
+function drawC(){var x=xi(),sv=$('ac-cor'),W=(nar()||sv._ptNarrow)?Math.max(240,Math.round(sv.getBoundingClientRect().width)||340):1000,rowh=(sv._ptNarrow&&sv._ptH&&!nar())?(sv._ptH-30)/(D.vars.length-1):(nar()?38:30),fs=nar()?12:13,y=yi(),
  order=D.vars.map(function(v,i){return i;}).filter(function(i){return i!==x;}).sort(function(a,b){return Math.abs(D.rP[x][b])-Math.abs(D.rP[x][a]);}),H=order.length*rowh+30,s='',mid=W/2,half=(W-30)/2;
  $('ac-xn').textContent=LV(x);sv.setAttribute('viewBox','0 0 '+W+' '+H);
  s+='<line x1="'+mid+'" x2="'+mid+'" y1="0" y2="'+(H-24)+'" stroke="var(--line)"/><text class="m" font-size="'+fs+'" x="'+(mid-half+4)+'" y="'+(H-8)+'" text-anchor="start">−1</text><text class="m" font-size="'+fs+'" x="'+mid+'" y="'+(H-8)+'" text-anchor="middle">0</text><text class="m" font-size="'+fs+'" x="'+(mid+half-4)+'" y="'+(H-8)+'" text-anchor="end">+1</text>';

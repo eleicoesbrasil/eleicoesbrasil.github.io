@@ -29,7 +29,7 @@ function apply(svg){
  try{
  if(svg._orig===undefined)return;
  svg.innerHTML=svg._orig;
- if(!MQ.matches){restore(svg);return;}
+ if(!MQ.matches&&!svg._ptNarrow){restore(svg);return;}
  var rw=svg.getBoundingClientRect().width-2;
  var Wn=Math.round(rw>120?rw:(document.documentElement.clientWidth-34));
  var texts=[].slice.call(svg.querySelectorAll('text'));
@@ -53,7 +53,7 @@ function apply(svg){
   var pos=num(t,'y')<num(pr,'y')+num(pr,'height')/2,L=t.textContent.length*CH+8;rot.push([t,pos]);if(pos)maxPos=Math.max(maxPos,L);else maxNeg=Math.max(maxNeg,L);});
   extraTop+=Math.max(0,maxPos-20);extraBot+=maxNeg;}
  if(c.bars){var ml0=0;texts.forEach(function(t){if(!t.classList.contains('m')&&num(t,'y')>Ho-mb&&num(t,'y')<Ho-mb+40&&!t.getAttribute('transform')&&t!==ytitle&&xtitles.indexOf(t)<0)ml0=Math.max(ml0,t.textContent.length);});extraBot+=Math.round(ml0*CH*0.64);}
- var tn=mt+extraTop,bn=mb+extraBot,Hn=Math.round(c.hn+extraTop+extraBot);
+ var tn=mt+extraTop,bn=mb+extraBot,Hn=Math.round(c.hn+extraTop+extraBot);if(!MQ.matches&&svg._ptH)Hn=Math.round(svg._ptH);
  var kx=(Wn-mln-mrn)/(Wo-ml-mr),ky=(Hn-tn-bn)/(Ho-mt-mb);
  var fx=function(x){return x<ml?x-ml+mln:x>Wo-mr?x-(Wo-mr)+(Wn-mrn):mln+(x-ml)*kx;};
  var fy=function(y){return y<mt?y-mt+tn:y>Ho-mb?y-(Ho-mb)+(Hn-bn):tn+(y-mt)*ky;};
@@ -88,7 +88,7 @@ function init(id){var svg=$(id);if(!svg)return;svg._ho=CFG[id].Ho;
  var mo=new MutationObserver(function(){if(busy)return;svg._orig=svg.innerHTML;apply(svg);});svg._mo=mo;
  mo.observe(svg,{childList:true});
  if(svg.innerHTML.trim()){svg._orig=svg.innerHTML;apply(svg);}
- if(window.ResizeObserver){new ResizeObserver(function(es){var w=es[0].contentRect.width;if(w<=0)return;if(MQ.matches){if(!svg.classList.contains('mob')||Math.abs((w-2)-svg._wn)>3)apply(svg);}else if(svg.classList.contains('mob'))apply(svg);}).observe(svg);}
+ if(window.ResizeObserver){new ResizeObserver(function(es){var w=es[0].contentRect.width;if(w<=0)return;if(MQ.matches||svg._ptNarrow){if(!svg.classList.contains('mob')||Math.abs((w-2)-svg._wn)>3)apply(svg);}else if(svg.classList.contains('mob'))apply(svg);}).observe(svg);}
 }
 Object.keys(CFG).forEach(init);
 (MQ.addEventListener?MQ.addEventListener('change',function(){Object.keys(CFG).forEach(function(i){var s=$(i);if(s)apply(s);});}):0);

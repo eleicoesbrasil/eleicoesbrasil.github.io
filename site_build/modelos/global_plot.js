@@ -42,7 +42,10 @@ function attach(el){
  bar.innerHTML='<label><span></span><input type="range" min="35" max="100" step="5"><output></output></label><button type="button" class="pt-b"></button>';
  var rg=bar.querySelector('input'),out=bar.querySelector('output'),sp=bar.querySelector('span'),b=bar.querySelector('button');
  function lang(){sp.textContent=T('Largura','Width');rg.setAttribute('aria-label',T('Largura do gráfico','Chart width'));bar.setAttribute('aria-label',T('Ferramentas do gráfico','Chart tools'));b.title=framed()?T('Copia o gráfico como SVG para a área de transferência','Copies the chart as SVG to the clipboard'):T('Baixa o gráfico como arquivo SVG','Downloads the chart as an SVG file');label(b);}
- function apply(v,persist){rg.value=v;out.textContent=v+'%';el.classList.toggle('pt-sized',v<100);el.style.width=v<100?v+'%':'';if(persist)save(key,v);}
+ function apply(v,persist){rg.value=v;out.textContent=v+'%';
+  if(v<100&&!el._ptH&&el.tagName!=='CANVAS'){var hh=el.getBoundingClientRect().height;if(hh>40)el._ptH=hh;}  // altura natural (px) em 100%: só a largura muda
+  el._ptNarrow=v<100;if(v>=100)el._ptH=null;
+  el.classList.toggle('pt-sized',v<100);el.style.width=v<100?v+'%':'';if(persist)save(key,v);}
  rg.value=load(key);apply(+rg.value,false);lang();
  rg.addEventListener('input',function(){apply(+rg.value,true);window.dispatchEvent(new Event('resize'));});
  b.addEventListener('click',function(){act(el,b,name);});

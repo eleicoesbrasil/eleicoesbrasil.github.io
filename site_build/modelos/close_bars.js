@@ -59,7 +59,7 @@ function draw(){ if(!D)return; var S=sums(),key=$('cb-ds').value,nm=NAMES[key],a
  var tot=function(o){return cats.reduce(function(s,c){return s+o[c[1]];},0);},tw=tot(S.w),ta=tot(S.a);
  $('cb-kv').textContent=(S.k>0?'+':'')+S.k+' min';
  $('cb-leg').innerHTML='<span><i style="background:var(--fg);opacity:.85"></i>'+T('Urnas selecionadas','Selected ballot boxes')+'</span><span><i style="background:none;border:2px solid var(--fg)"></i>'+T('Todas as urnas do recorte (referência)','All ballot boxes in scope (reference)')+'</span>';
- var sv=$('cb-svg'),nar=window.innerWidth<=700,W=nar?Math.max(300,Math.round(sv.getBoundingClientRect().width)||340):1000,H=nar?360:380,fs=nar?12:13,m={l:nar?44:60,r:nar?8:20,t:30,b:70}; sv.setAttribute('viewBox','0 0 '+W+' '+H),pw=W-m.l-m.r,ph=H-m.t-m.b,mx=0;
+ var sv=$('cb-svg'),nar=window.innerWidth<=700,nw=nar||sv._ptNarrow,W=nw?Math.max(240,Math.round(sv.getBoundingClientRect().width)||340):1000,H=nar?360:(sv._ptNarrow&&sv._ptH?Math.round(sv._ptH):380),fs=nar?12:13,m={l:nar?44:60,r:nar?8:20,t:30,b:70}; sv.setAttribute('viewBox','0 0 '+W+' '+H),pw=W-m.l-m.r,ph=H-m.t-m.b,mx=0;
  mx=ymaxAll(all);
  var s='',g;for(g=0;g<=4;g++){var v=mx*g/4,y=m.t+ph*(1-g/4);s+='<line x1="'+m.l+'" x2="'+(W-m.r)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text class="m" font-size="'+fs+'" x="'+(m.l-6)+'" y="'+(y+4)+'" text-anchor="end">'+Math.round(v*100)+'%</text>';}
  var bw=pw/cats.length;
@@ -92,6 +92,7 @@ function play(){ if(timer){stop();return;} var r=range(),k=$('cb-k');if(+k.value
  $('cb-play').textContent='⏸';$('cb-play').setAttribute('aria-label',window.__LANG==='en'?'Pause':'Pausar');draw();
  timer=setInterval(function(){var r=range(),v=+k.value+1;k.value=v>r[1]?r[0]:v;draw();},+$('cb-sp').value);}
 ['lg-pt','lg-en'].forEach(function(i){var b=$(i);if(b)b.addEventListener('click',function(){setTimeout(function(){if(inited){chips();draw();}},0);});});
+window.addEventListener('resize',function(){if(inited&&$('cb-svg')&&$('cb-svg').getClientRects().length)draw();});
 window.__barsRedraw=function(){ if(inited)draw(); };
 })();
 </script>
