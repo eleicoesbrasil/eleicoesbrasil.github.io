@@ -9,11 +9,11 @@ fora da lista de nomes próprios (ALLOW). Ajuste ALLOW/PT_WORDS ao incluir novos
 import argparse, functools, glob, http.server, os, re, socketserver, sys, threading
 from playwright.sync_api import sync_playwright
 
-TABS = ["fluxo", "abstencao", "fechamento", "mapa", "secoes", "replicar"]
+TABS = ["fluxo", "abstencao", "fechamento", "mapa", "secoes", "cruzamento", "replicar"]
 # nomes próprios e termos que ficam iguais nos dois idiomas
 ALLOW = re.compile(r"(Flávio|Bolsonaro|Lula|Brasília|Eleições Brasil|São Paulo|Pará|Paraná|Amapá|Ceará|Piauí|Maranhão|Goiás|Rondônia|Paraíba|Espírito Santo|"
                    r"Mato Grosso|Amazônia|Tocantins|Distrito Federal|Zanin|Bahia|Pernambuco|Alagoas|Sergipe|Acre|Roraima|Rio Grande|Minas Gerais|Santa Catarina|"
-                   r"Centro-Oeste|Nordeste|Sudeste|Norte|Sul|Pearson|Spearman|TSE|BU|CSV|Parquet|DuckDB|GitHub|Python|Português|©)", re.I)
+                   r"Centro-Oeste|Nordeste|Sudeste|Norte|Sul|Pearson|Spearman|Candomblé|Bolsa Fam[ií]lia|Fam[ií]lias|TSE|BU|CSV|Parquet|DuckDB|GitHub|Python|Português|©)", re.I)
 PT_WORDS = re.compile(r"\b(seção|seções|votos|voto|eleitores|eleitor|abstenção|município|municípios|estado|estados|região|turno|urnas?|fechadas?|"
                       r"para|com|sem|dos|das|uma|não|até|após|depois|mais|menos|dados|escolha|toque|selecione|carregando|variação|média|mediana|"
                       r"faixa|faixas|ordenar|colunas|mostrar|fechar|aplicar|copiar|baixar|aptos|brancos|nulos|válidos|comparecimento|resultado|horário|"
@@ -66,7 +66,13 @@ def main():
                 pg.query_selector("#ac-sec").scroll_into_view_if_needed(); pg.wait_for_timeout(2500)
             if tab == "fechamento":
                 pg.query_selector("#cb-sec").scroll_into_view_if_needed(); pg.wait_for_timeout(2500)
+            if tab == "cruzamento":   # carga sob demanda: espera o JSON (ou o aviso de erro) e abre o seletor de variáveis
+                pg.wait_for_function("document.querySelector('#cz-root') && document.querySelector('#cz-root').dataset.ready", timeout=15000); pg.wait_for_timeout(800)
             texts = pg.evaluate(JS)
+            if tab == "cruzamento" and pg.query_selector("#cz-g-btn") and pg.is_visible("#cz-g-btn"):
+                pg.click("#cz-g-btn"); pg.wait_for_timeout(500); texts += pg.evaluate(JS)
+                pg.click("#cz-pk-x"); pg.wait_for_timeout(200)
+                pg.click("#cz-flt summary"); pg.wait_for_timeout(300); texts += pg.evaluate(JS)
             if tab == "abstencao":
                 pg.click("#ac-m-s"); pg.wait_for_timeout(800); texts += pg.evaluate(JS)
             for t in set(texts):

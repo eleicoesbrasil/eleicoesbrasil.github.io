@@ -35,7 +35,7 @@ else:
 t=open(f'{M}/tpl2.html').read().replace('__ABSSIZE__',open(f'{D}/abst_size.json').read() if os.path.exists(f'{D}/abst_size.json') else 'null').replace('__COV__',open(f'{D}/cobertura.json').read() if os.path.exists(f'{D}/cobertura.json') else 'null')
 t=(t.replace('__FLUXO__',json.dumps(fluxo,ensure_ascii=False,separators=(',',':'))).replace('__BINS__',json.dumps(bins,separators=(',',':'))).replace('__CLOSE__',CL)
     .replace('__HORA__',time.strftime('%H:%M',time.localtime(time.time()-4*3600))).replace('__NSEC__',f"{nsec:,}".replace(',','.'))
-    .replace('__REPLICAR__',open(f'{M}/replicar_tab.html').read()).replace('__SECOES__',open(f'{M}/secoes_tab.html').read()).replace('__SECOESJS__',open(f'{M}/secoes_tab.js').read()).replace('__FECH__',fech).replace('__HEAT__',heat_html).replace('__HEATJS__',heat_js).replace('__CLOSEJS__',closejs))
+    .replace('__REPLICAR__',open(f'{M}/replicar_tab.html').read()).replace('__SECOES__',open(f'{M}/secoes_tab.html').read()).replace('__SECOESJS__',open(f'{M}/secoes_tab.js').read()).replace('__CRUZ__',open(f'{M}/cruz_tab.html').read()).replace('__CRUZJS__',open(f'{M}/cruz_tab.js').read()).replace('__FECH__',fech).replace('__HEAT__',heat_html).replace('__HEATJS__',heat_js).replace('__CLOSEJS__',closejs))
 import subprocess
 subprocess.run([sys.executable,'i18n_dict.py'],check=True,capture_output=True,cwd=M)
 if os.path.exists(f'{M}/abst_corr.html'):
@@ -46,6 +46,7 @@ t=t.replace('<header>\n','<header>\n<a class="back" href="../../">← Eleições
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from envelope import envolver
 import glob as _g
+t=t.replace('/*__CRUZCSS__*/',open(f'{M}/cruz_tab.css').read())
 t=t.replace('/*__MOBILE_CSS__*/',''.join(open(f).read()+'\n' for f in sorted(_g.glob(f'{M}/global_*.css'))+sorted(_g.glob(f'{M}/mobile_*.css')))).replace('__MOBILEJS__',''.join('<script>'+open(f).read()+'</script>\n' for f in sorted(_g.glob(f'{M}/global_*.js'))+sorted(_g.glob(f'{M}/mobile_*.js'))))
 t=envolver(t)
 os.makedirs(os.path.dirname(OUT) or '.',exist_ok=True); open(OUT,'w').write(t)

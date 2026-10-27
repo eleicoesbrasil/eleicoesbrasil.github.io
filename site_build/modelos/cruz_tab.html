@@ -1,0 +1,112 @@
+<section id="cz-root" data-ready="">
+<h2>Cruzamento: compare qualquer variável por qualquer grupo de municípios</h2>
+<p class="sub">Escolha como agrupar os municípios (região, UF, porte ou faixas de qualquer variável) e o que medir em cada grupo. Cada barra resume municípios, não eleitores: o resultado de um grupo mostra o que aconteceu junto, mas não prova causa nem comportamento individual.</p>
+<div id="cz-status" class="cz-status" role="status" aria-live="polite">Carregando os dados por município (uma vez só)…</div>
+<div id="cz-main" hidden>
+ <div class="cz-recipes"><div class="cz-lab">Receitas prontas</div><div id="cz-rec" class="cz-chips"></div></div>
+
+ <div class="cz-panel">
+  <div class="cz-grid">
+   <div class="cz-f">
+    <span class="cz-lab">Agrupar por</span>
+    <button type="button" class="cz-vb" id="cz-g-btn"></button>
+    <div class="cz-sub2" id="cz-g-opt" hidden>
+     <select id="cz-g-m" aria-label="Corte em faixas">
+      <option value="q3">Tercis (3 faixas)</option><option value="q4">Quartis (4 faixas)</option><option value="q5" selected>Quintis (5 faixas)</option>
+      <option value="q10">Decis (10 faixas)</option><option value="q20">Ventis (20 faixas)</option><option value="man">Cortes manuais</option>
+     </select>
+     <input type="text" id="cz-g-cuts" inputmode="decimal" placeholder="ex.: 10, 50, 200" aria-label="Pontos de corte" hidden>
+     <label class="cz-ck"><input type="checkbox" id="cz-g-wq"> Faixas com o mesmo peso total</label>
+    </div>
+   </div>
+   <div class="cz-f">
+    <span class="cz-lab">Segundo agrupamento (opcional)</span>
+    <button type="button" class="cz-vb" id="cz-g2-btn"></button>
+    <div class="cz-sub2" id="cz-g2-opt" hidden>
+     <select id="cz-g2-m" aria-label="Corte em faixas do 2º agrupamento">
+      <option value="q3">Tercis (3 faixas)</option><option value="q4">Quartis (4 faixas)</option><option value="q5" selected>Quintis (5 faixas)</option>
+      <option value="q10">Decis (10 faixas)</option><option value="man">Cortes manuais</option>
+     </select>
+     <input type="text" id="cz-g2-cuts" inputmode="decimal" placeholder="ex.: 10, 50, 200" aria-label="Pontos de corte do 2º agrupamento" hidden>
+     <select id="cz-lay" aria-label="Disposição das barras"><option value="grp">Barras lado a lado</option><option value="stk">Barras empilhadas</option></select>
+    </div>
+   </div>
+  </div>
+
+  <div class="cz-f">
+   <span class="cz-lab">Medir (1 a 3 medidas)</span>
+   <div id="cz-meas"></div>
+   <button type="button" class="cz-btn" id="cz-addm">+ Adicionar medida</button>
+  </div>
+
+  <div class="cz-grid cz-grid4">
+   <label class="cz-f"><span class="cz-lab">Peso das médias ponderadas</span><select id="cz-w"></select></label>
+   <label class="cz-f"><span class="cz-lab">Escala</span><select id="cz-sc"><option value="val">Valor</option><option value="pct">% do total das barras</option><option value="idx">Índice (base 100 = conjunto filtrado)</option></select></label>
+   <label class="cz-f"><span class="cz-lab">Ordenar por</span><select id="cz-ord"><option value="nat">Ordem natural do grupo</option><option value="vd">Valor (maior primeiro)</option><option value="va">Valor (menor primeiro)</option><option value="lab">Rótulo</option><option value="nd">Nº de municípios</option></select></label>
+   <label class="cz-f"><span class="cz-lab">Mostrar só os primeiros</span><select id="cz-top"><option value="0">Todos</option><option value="5">5</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select></label>
+  </div>
+  <label class="cz-ck"><input type="checkbox" id="cz-ci" checked> Mostrar intervalo de confiança aproximado (95%)</label>
+
+  <details class="cz-flt" id="cz-flt">
+   <summary>Filtros</summary>
+   <div class="cz-fb">
+    <div class="cz-lab">Região</div><div id="cz-f-reg" class="cz-chips"></div>
+    <div class="cz-lab">Estado (UF)</div><div id="cz-f-uf" class="cz-chips cz-chips-s"></div>
+    <label class="cz-f"><span class="cz-lab">Porte do município</span><select id="cz-f-porte"></select></label>
+    <div class="cz-lab">Faixa de uma variável</div>
+    <div id="cz-f-rng"></div>
+    <div class="cz-row"><button type="button" class="cz-btn" id="cz-f-add">+ Adicionar filtro de faixa</button><button type="button" class="cz-btn" id="cz-f-clr">Limpar filtros</button></div>
+   </div>
+  </details>
+  <div class="cz-count" id="cz-count"></div>
+ </div>
+
+ <div id="cz-warn" class="cz-warn"></div>
+ <div class="cz-chartbox">
+  <div class="cz-leg" id="cz-leg"></div>
+  <div class="cz-wrap" id="cz-wrap"><svg id="cz-svg" tabindex="0" role="img" aria-label="Gráfico de barras do cruzamento"></svg></div>
+  <div class="cz-cap" id="cz-cap"></div>
+  <div class="cz-card cz-empty" id="cz-card" role="status" aria-live="polite">
+   <div class="cz-head"><div class="cz-t"><b class="cz-ttl"></b><span class="cz-sub3"></span></div>
+    <div class="cz-nav"><button type="button" class="cz-prev" aria-label="Barra anterior">◀</button><button type="button" class="cz-next" aria-label="Próxima barra">▶</button><button type="button" class="cz-x" aria-label="Fechar">✕</button></div></div>
+   <div class="cz-rows"></div>
+  </div>
+ </div>
+ <div class="cz-row cz-actions">
+  <button type="button" class="cz-btn" id="cz-csv">Copiar dados do gráfico (CSV)</button>
+  <span id="cz-csv-msg" class="cz-mute"></span>
+ </div>
+ <div id="cz-csv-box" hidden><textarea id="cz-csv-ta" readonly rows="6" aria-label="Dados do gráfico em CSV"></textarea></div>
+
+ <h3 class="cz-h3">Correlação entre os municípios</h3>
+ <p class="cz-mute">Correlações calculadas nos municípios do recorte (não nas barras). Pearson mede a relação linear; Spearman, a relação por postos (menos sensível a valores extremos). Correlação não é causa.</p>
+ <div class="cz-cards" id="cz-cor-cards"></div>
+ <div class="cz-matrix" id="cz-mx"></div>
+ <h3 class="cz-h3">Variáveis mais correlacionadas com <span id="cz-rk-name"></span></h3>
+ <div class="cz-row">
+  <label class="cz-f"><span class="cz-lab">Quantas mostrar</span><select id="cz-rk-n"><option value="12">12</option><option value="20" selected>20</option><option value="30">30</option><option value="50">50</option></select></label>
+  <label class="cz-ck"><input type="checkbox" id="cz-rk-w"> Ponderar pelo peso</label>
+  <label class="cz-ck"><input type="checkbox" id="cz-rk-x"> Ocultar variáveis do mesmo grupo da medida</label>
+ </div>
+ <p class="cz-mute">Barra cheia: Pearson. Contorno: Spearman. Toque numa linha para ver os valores e usar a variável como grupo ou medida.</p>
+ <div class="cz-chartbox">
+  <div id="cz-rk-st" class="cz-mute"></div>
+  <div class="cz-wrap"><svg id="cz-rk" tabindex="0" role="img" aria-label="Variáveis mais correlacionadas com a medida escolhida"></svg></div>
+  <div class="cz-card cz-empty" id="cz-rcard" role="status" aria-live="polite">
+   <div class="cz-head"><div class="cz-t"><b class="cz-ttl"></b><span class="cz-sub3"></span></div>
+    <div class="cz-nav"><button type="button" class="cz-prev" aria-label="Linha anterior">◀</button><button type="button" class="cz-next" aria-label="Próxima linha">▶</button><button type="button" class="cz-x" aria-label="Fechar">✕</button></div></div>
+   <div class="cz-rows"></div>
+   <div class="cz-row cz-rcard-act"><button type="button" class="cz-btn" id="cz-r-g">Usar como agrupamento</button><button type="button" class="cz-btn" id="cz-r-m">Adicionar às medidas</button></div>
+  </div>
+ </div>
+</div>
+
+<div id="cz-pick" class="cz-pick" hidden role="dialog" aria-modal="true" aria-label="Escolher variável">
+ <div class="cz-pk-bd" id="cz-pk-bd"></div>
+ <div class="cz-pk-sheet">
+  <div class="cz-pk-head"><input type="search" id="cz-pk-q" placeholder="Buscar variável (nome, grupo, fonte)" autocomplete="off" aria-label="Buscar variável"><button type="button" id="cz-pk-x" aria-label="Fechar">✕</button></div>
+  <div class="cz-pk-meta" id="cz-pk-meta"></div>
+  <div class="cz-pk-list" id="cz-pk-list" role="listbox"></div>
+ </div>
+</div>
+</section>

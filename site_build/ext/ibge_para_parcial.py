@@ -118,6 +118,19 @@ def num(v):
     return None if v is None or (isinstance(v, float) and (math.isnan(v) or math.isinf(v))) else float(v)
 
 
+NOTA_EN_PNADC = {
+ "pnadc_desocup_ult": "Table 4099, quarter 2Q2026 (latest available; 3Q2026 not yet released). STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_desocup_3t22": "Table 4099, 3Q2022. STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_subutil_ult": "Table 4099, composite underutilization rate, 2Q2026. STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_subutil_3t22": "Table 4099, composite underutilization rate, 3Q2022. STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_informal_ult": "Table 8529, 2Q2026. STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_informal_3t22": "Table 8529, 3Q2022. STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_renda_pc_2025": "Table 7531, real monthly average at the year's average prices (2025), total. Latest year available. STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_renda_pc_2022": "Table 7531, real monthly average at 2022 average prices (not directly comparable with the 2025 column without deflating). STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_pct_superior_2025": "Table 10367, share of the population by education level (completed higher education), 2025. STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values).",
+ "pnadc_pct_baixa_instr_2025": "Table 10367: sum of 'no schooling or under 1 year' + 'incomplete primary', 2025. There is no 2022 value in this table (SIDRA returns '...'). STATE-level context: the state value is repeated for all its municipalities. PNADC is a sample survey representative only for Brazil, regions and states; not a municipal measure (27 distinct values)."
+}
+
 def main():
     sem_baixar = "--sem-baixar" in sys.argv
     if not sem_baixar:
@@ -469,6 +482,8 @@ def main():
                 arr.append(int(round(x)) if v["dec"] == 0 else round(x, v["dec"] + 2))
         saida_cols[v["k"]] = arr
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    for _v in V:
+        if _v["k"] in NOTA_EN_PNADC: _v["nota_en"] = NOTA_EN_PNADC[_v["k"]]
     json.dump({"fonte": "ibge", "ibge": cods + extras, "vars": V, "cols": saida_cols}, open(OUT, "w", encoding="utf8"), ensure_ascii=False, separators=(",", ":"))
     print(f"ok: {len(cods)} + {len(extras)} extra municípios, {len(V)} variáveis -> {OUT}")
     # diagnóstico

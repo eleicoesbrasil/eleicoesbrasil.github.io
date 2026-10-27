@@ -8,7 +8,7 @@ function inline(o,c){ // copia estilos calculados (cores já resolvidas, sem var
  var st=getComputedStyle(o),s='';
  if(st.display==='none'){c.parentNode&&c.parentNode.removeChild(c);return;}
  if(o.tagName!=='svg'||o.parentNode&&o.parentNode.tagName!=='svg'||true){PROPS.forEach(function(p){var v=st.getPropertyValue(p);if(v)s+=p+':'+v+';';});}
- if(c.setAttribute)c.setAttribute('style',s);
+ if(c.setAttribute){c.setAttribute('style',s);Array.prototype.slice.call(c.attributes).forEach(function(a){if(a.value.indexOf('var(')>=0)c.removeAttribute(a.name);});}
  var oc=o.children,cc=c.children,i,list=[];for(i=0;i<cc.length;i++)list.push(cc[i]);
  for(i=0;i<oc.length&&i<list.length;i++)inline(oc[i],list[i]);}
 function svgText(svg){
