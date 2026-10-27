@@ -76,11 +76,23 @@ function drawS(){
  g.globalAlpha=1;var r=D.rP[x][y],bsl=D.sd[x]?r*D.sd[y]/D.sd[x]:0,y0=D.mean[y]+bsl*(xl-D.mean[x]),y1=D.mean[y]+bsl*(xh-D.mean[x]);
  g.strokeStyle=col('--lula');g.lineWidth=2.5;g.beginPath();g.moveTo(SX(xl),SY(y0));g.lineTo(SX(xh),SY(y1));g.stroke();
  if(pick!==null){g.strokeStyle=col('--fg');g.lineWidth=2;g.beginPath();g.arc(SX(X[pick]),SY(Yv[pick]),7,0,6.3);g.stroke();}
- g.restore();SC={SX:SX,SY:SY,X:X,Y:Yv,w:w,h:h,m:m};
+ g.restore();SC={SX:SX,SY:SY,X:X,Y:Yv,w:w,h:h,m:m,xl:xl,xh:xh,yl:yl,yh:yh,x:x,y:y,y0:y0,y1:y1};
  $('ac-leg').innerHTML='<span><i style="background:var(--flavio);opacity:.5;border-radius:50%"></i>'+S('Seções (amostra de '+fm(n)+')','Sections (sample of '+fm(n)+')')+'</span><span><i style="background:var(--lula)"></i>'+S('Reta de ajuste (mínimos quadrados, todas as seções)','Fitted line (least squares, all sections)')+'</span>';
  cards([[ri(D.rP[x][y]),S('Pearson, todas as '+fm(D.n)+' seções','Pearson, all '+fm(D.n)+' sections')],[ri(D.rS[x][y]),S('Spearman, todas as seções','Spearman, all sections')],[dc(D.rP[x][y]*D.rP[x][y],3),S('r² (Pearson ao quadrado)','r² (Pearson squared)')],[(bsl>=0?'+':'−')+dc(Math.abs(bsl),4),S('inclinação: variação em Y por unidade de X','slope: change in Y per unit of X')]]);
  info();
 }
+
+window.__plotVector=window.__plotVector||{};
+window.__plotVector['ac-cv']=function(){ if(!SC||!D)return null;
+ var css=getComputedStyle(document.documentElement),c=function(v){return css.getPropertyValue(v).trim()||'#888';},w=SC.w,h=SC.h,m=SC.m,x=SC.x,y=SC.y,fs=nar()?12:13,o=[];
+ o.push('<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" font-family="system-ui,sans-serif" font-size="'+fs+'"><rect width="'+w+'" height="'+h+'" fill="'+getComputedStyle(document.body).backgroundColor+'"/>');
+ o.push('<title>'+LV(y)+' × '+LV(x)+'</title><clipPath id="c"><rect x="'+m.l+'" y="'+m.t+'" width="'+(w-m.l-m.r)+'" height="'+(h-m.t-m.b)+'"/></clipPath>');
+ nice(SC.yl,SC.yh).forEach(function(t){var yy=SC.SY(t);o.push('<line x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+yy+'" y2="'+yy+'" stroke="'+c('--line')+'"/><text x="'+(m.l-6)+'" y="'+(yy+4)+'" text-anchor="end" fill="'+c('--mute')+'">'+fv(t,y)+'</text>');});
+ nice(SC.xl,SC.xh).forEach(function(t){var xx=SC.SX(t);o.push('<line x1="'+xx+'" x2="'+xx+'" y1="'+m.t+'" y2="'+(h-m.b)+'" stroke="'+c('--line')+'"/><text x="'+xx+'" y="'+(h-m.b+16)+'" text-anchor="middle" fill="'+c('--mute')+'">'+fv(t,x)+'</text>');});
+ o.push('<text x="'+(m.l+(w-m.l-m.r)/2)+'" y="'+(h-6)+'" text-anchor="middle" fill="'+c('--mute')+'">'+LV(x)+'</text><g clip-path="url(#c)" fill="'+c('--flavio')+'" fill-opacity=".28">');
+ for(var i=0;i<SC.X.length;i++)o.push('<circle cx="'+SC.SX(SC.X[i]).toFixed(1)+'" cy="'+SC.SY(SC.Y[i]).toFixed(1)+'" r="2"/>');
+ o.push('</g><line clip-path="url(#c)" x1="'+SC.SX(SC.xl)+'" y1="'+SC.SY(SC.y0)+'" x2="'+SC.SX(SC.xh)+'" y2="'+SC.SY(SC.y1)+'" stroke="'+c('--lula')+'" stroke-width="2.5"/></svg>');
+ return o.join('');};
 function infoS(){ if(pick===null){$('ac-info').textContent=S('Toque num ponto para ler os valores daquela seção (amostra).','Tap a dot to read the values of that section (sample).');return;}
  var x=xi(),y=yi();$('ac-info').innerHTML='<strong>'+S('Seção da amostra','Sample section')+'</strong><br>'+LV(x)+': '+fv(SC.X[pick],x)+' · '+LV(y)+': '+fv(SC.Y[pick],y);}
 function info(){ if(mode==='f')infoF();else infoS(); }
