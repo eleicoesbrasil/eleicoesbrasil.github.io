@@ -53,6 +53,16 @@ SELECT sum(votos_13) lula, sum(votos_22) flavio FROM 'docs/dados/parquet/preside
 * A leitura direta dos boletins originais está em `pipeline/eleicoes_pipeline/urnas_parse.py`. O projeto
   [DataUrnas-BR](https://github.com/alissonlinneker/DataUrnas-BR) decodifica os mesmos boletins por outro código, para conferência cruzada.
 
+## Testes do site
+
+`site_build/tests/test_i18n_en.py` abre cada aba com a página em inglês (celular e desktop) e falha se sobrar texto visível em português:
+
+```
+uv run --with playwright python site_build/tests/test_i18n_en.py --docs docs [--viewport 1280x900] [--verbose]
+```
+
+Depois de mudar textos do painel, rode o teste; novos textos entram em `site_build/modelos/i18n_extra_*.py` (ou são traduzidos no próprio JS com `window.__LANG`).
+
 ## Licenças
 
 Código: MIT (`LICENSE`). Dados: Tribunal Superior Eleitoral, Creative Commons Atribuição (CC BY); ver `DADOS.md`.
