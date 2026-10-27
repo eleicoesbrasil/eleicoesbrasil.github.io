@@ -1,0 +1,31 @@
+<section id="ach-root" data-ready="">
+<h2>Achados: o que mais se destaca entre os municípios</h2>
+<p class="sub">Varredura automática de relações entre o resultado de 2026 e as características dos municípios (Censo, economia, religião, internet e outras). Cada cartão descreve uma relação entre municípios, na ordem em que se destacam. Nada aqui prova causa, e municípios não são eleitores.</p>
+<details class="ach-how" id="ach-how">
+<summary>Como ler estes números (e o que eles não dizem)</summary>
+<div class="ach-howb">
+<p><strong>Descritivo, não causal.</strong> Uma relação forte quer dizer que os municípios com mais de uma coisa tendem a ter mais (ou menos) de outra. Pode haver terceiros fatores por trás, como região, história ou composição da população.</p>
+<p><strong>Falácia ecológica.</strong> A relação vale para municípios, não para pessoas. Um município de renda alta votar de um jeito não diz como cada morador de renda alta votou.</p>
+<p><strong>Municípios vizinhos se parecem.</strong> Por isso o p comum (naïve) é otimista: ele trata os 5.570 municípios como se fossem independentes. O p robusto trata cada UF como um bloco e é bem mais conservador.</p>
+<p><strong>r</strong> vai de −1 a +1: perto de 0 quase não há relação; perto de ±1, os pontos quase formam uma reta. <strong>r dentro da UF</strong> é o mesmo cálculo depois de tirar a média de cada estado: mostra se a relação sobrevive ao efeito “estado”.</p>
+<p><strong>p</strong> é a chance de ver uma relação tão forte por puro acaso se, na verdade, não houvesse nenhuma. Com milhares de municípios, p fica minúsculo até para relações fracas, então olhe sempre o tamanho do efeito. <strong>q</strong> é o p corrigido por varrermos muitos pares (Benjamini–Hochberg): ele desconta o fato de que, testando milhares de combinações, algumas parecem fortes por sorte.</p>
+<p id="ach-meth" class="ach-meth"></p>
+</div>
+</details>
+<div id="ach-status" class="ach-status" role="status" aria-live="polite">Carregando os achados…</div>
+<div id="ach-main" hidden>
+ <div class="ach-panel">
+  <div class="ach-grid">
+   <label class="ach-f"><span class="ach-lab">Resultado (alvo)</span><select id="ach-alvo"></select></label>
+   <label class="ach-f"><span class="ach-lab">Direção</span><select id="ach-dir"><option value="">Todas</option><option value="pos">Positiva: sobem juntos</option><option value="neg">Negativa: um sobe, o outro cai</option></select></label>
+   <label class="ach-f"><span class="ach-lab">Limiar de q</span><select id="ach-q"><option value="">Qualquer</option><option value="0.05">q ≤ 0,05</option><option value="0.01">q ≤ 0,01</option><option value="0.001">q ≤ 0,001</option></select></label>
+   <label class="ach-f"><span class="ach-lab">Ordenar por</span><select id="ach-ord"><option value="pt">Pontuação</option><option value="r">Força da relação (|r|)</option><option value="ef">Diferença entre quintis</option><option value="uf">r dentro da UF</option></select></label>
+  </div>
+  <label class="ach-f ach-fw"><span class="ach-lab">Buscar preditor</span><input type="search" id="ach-busca" placeholder="ex.: renda, evangélica, internet" autocomplete="off" aria-label="Buscar preditor"></label>
+  <button type="button" class="ach-chip" id="ach-rob" aria-pressed="false">Só robustos</button>
+ </div>
+ <p id="ach-count" class="ach-count" aria-live="polite"></p>
+ <div id="ach-list" class="ach-list"></div>
+ <div class="ach-more"><button type="button" class="ach-btn" id="ach-more" hidden></button></div>
+</div>
+</section>

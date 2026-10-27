@@ -1,0 +1,3199 @@
+{
+ "gerado": "2026-10-27 19:49",
+ "n_municipios": 5571,
+ "familia": 768,
+ "familia_q05": 633,
+ "familia_q05_cluster": 384,
+ "n_pares_total": 848,
+ "metodo_pt": "Varredura de 16 alvos eleitorais × 48 preditores municipais (família = 768 pares; 5 preditores foram agrupados por |r|>0.98 com um representante por grupo para evitar pares tautológicos; resultados em votos/contagens, margens e % do adversário ficam fora dos alvos por serem redundantes ou dominados pelo tamanho). Para cada par: Pearson com IC95% de Fisher, Spearman, correlação ponderada por eleitores aptos, correlação dentro das UFs (centrada por UF), p ingênuo (teste t), p robusto a clusters de UF (CR1, 26 gl), q de Benjamini–Hochberg e Bonferroni, médias do alvo nos quintis do preditor (diferença Q5−Q1 em pp com IC95% por bootstrap em clusters de UF, 1000 reamostragens, semente fixa), r por grande região e robustez a outliers (r de postos e r após remover o 1% mais extremo). Elegíveis: q<0,05 (BH, ingênuo e por clusters) e |r|≥0,3. Pontuação = 100·(0,45·|r| + 0,25·min(|dif|/(2,5·DP do alvo),1))/0,70 · (0,4 + 0,6·robustez), onde robustez é a média de: r dentro da UF / r (mesmo sinal), fração de regiões com relação comparável, min(r de postos, r sem extremos)/r e −log10 p cluster (teto 4)/4. Seleção gulosa: até 40 achados, no máx. 10 por alvo e 3 por preditor, sem preditores quase iguais (|r|>0.9) para o mesmo alvo. Variáveis constantes dentro da UF (ex.: PNADC) são analisadas à parte com n = 27 UFs. Correlações ecológicas, não causais; municípios vizinhos não são independentes.",
+ "metodo_en": "Sweep of 16 electoral targets × 48 municipal predictors (family = 768 pairs; 5 predictors were merged into clusters at |r|>0.98, keeping one representative, to avoid tautological pairs; vote counts, margins and opponent % are excluded as targets because they are redundant or size-dominated). Per pair: Pearson with Fisher 95% CI, Spearman, voter-weighted correlation, within-state correlation (state-centered), naive t-test p, state-cluster-robust p (CR1, 26 df), Benjamini–Hochberg q and Bonferroni, target means by predictor quintile (Q5−Q1 difference in pp with 95% state-cluster bootstrap CI, 1000 resamples, fixed seed), per-region r, and outlier robustness (rank r and r after dropping the most extreme 1%). Eligible: q<0.05 (BH, naive and cluster-based) and |r|≥0.3. Score = 100·(0.45·|r| + 0.25·min(|diff|/(2.5·target SD),1))/0.70 · (0.4 + 0.6·robustness), robustness being the mean of: within-state r / r (same sign), share of regions with a comparable relationship, min(rank r, trimmed r)/r and −log10 cluster p (cap 4)/4. Greedy selection: up to 40 findings, max 10 per target and 3 per predictor, no near-duplicate predictors (|r|>0.9) for the same target. Variables constant within state (e.g. PNADC) are analysed separately with n = 27 states. Ecological, non-causal correlations; neighbouring municipalities are not independent.",
+ "alvos": [
+  {
+   "k": "res22_t1_plula",
+   "pt": "% dos votos válidos de Lula — 1º turno 2022",
+   "en": "Lula's % of valid votes — 1st round 2022"
+  },
+  {
+   "k": "res22_t2_plula",
+   "pt": "% dos votos válidos de Lula — 2º turno 2022",
+   "en": "Lula's % of valid votes — 2nd round 2022"
+  },
+  {
+   "k": "res26_t1_plula",
+   "pt": "% dos votos válidos de Lula — 1º turno 2026",
+   "en": "Lula's % of valid votes — 1st round 2026"
+  },
+  {
+   "k": "res26_t2_plula",
+   "pt": "% dos votos válidos de Lula — 2º turno 2026",
+   "en": "Lula's % of valid votes — 2nd round 2026"
+  },
+  {
+   "k": "res22_t1_abst",
+   "pt": "Abstenção (%) — 1º turno 2022",
+   "en": "Abstention (%) — 1st round 2022"
+  },
+  {
+   "k": "res22_t2_abst",
+   "pt": "Abstenção (%) — 2º turno 2022",
+   "en": "Abstention (%) — 2nd round 2022"
+  },
+  {
+   "k": "res26_t1_abst",
+   "pt": "Abstenção (%) — 1º turno 2026",
+   "en": "Abstention (%) — 1st round 2026"
+  },
+  {
+   "k": "res26_t2_abst",
+   "pt": "Abstenção (%) — 2º turno 2026",
+   "en": "Abstention (%) — 2nd round 2026"
+  },
+  {
+   "k": "res22_d21_lula",
+   "pt": "Variação do % de Lula (2º−1º turno, pp) — 2022",
+   "en": "Change in Lula's % (2nd−1st round, pp) — 2022"
+  },
+  {
+   "k": "res26_d21_lula",
+   "pt": "Variação do % de Lula (2º−1º turno, pp) — 2026",
+   "en": "Change in Lula's % (2nd−1st round, pp) — 2026"
+  },
+  {
+   "k": "res22_d21_abst",
+   "pt": "Variação da abstenção (2º−1º turno, pp) — 2022",
+   "en": "Change in abstention (2nd−1st round, pp) — 2022"
+  },
+  {
+   "k": "res26_d21_abst",
+   "pt": "Variação da abstenção (2º−1º turno, pp) — 2026",
+   "en": "Change in abstention (2nd−1st round, pp) — 2026"
+  },
+  {
+   "k": "res26_d2622_t1_lula",
+   "pt": "Variação do % de Lula (2026−2022, pp) — 1º turno",
+   "en": "Change in Lula's % (2026−2022, pp) — 1st round"
+  },
+  {
+   "k": "res26_d2622_t2_lula",
+   "pt": "Variação do % de Lula (2026−2022, pp) — 2º turno",
+   "en": "Change in Lula's % (2026−2022, pp) — 2nd round"
+  },
+  {
+   "k": "res26_d2622_t1_abst",
+   "pt": "Variação da abstenção (2026−2022, pp) — 1º turno",
+   "en": "Change in abstention (2026−2022, pp) — 1st round"
+  },
+  {
+   "k": "res26_d2622_t2_abst",
+   "pt": "Variação da abstenção (2026−2022, pp) — 2º turno",
+   "en": "Change in abstention (2026−2022, pp) — 2nd round"
+  }
+ ],
+ "achados": [
+  {
+   "id": "a1",
+   "alvo": "res26_t1_plula",
+   "preditor": "pib_pc_2023",
+   "n": 5570,
+   "pearson": -0.4286,
+   "ci": [
+    -0.4498,
+    -0.4069
+   ],
+   "spearman": -0.7479,
+   "r_ponderado": -0.3319,
+   "r_dentro_uf": -0.1948,
+   "r_sem_extremos": -0.5755,
+   "r_sem_uf": [
+    -0.4522,
+    -0.4153
+   ],
+   "p_log10": -246.98,
+   "p_cluster_log10": -4.63,
+   "q_bh": 4.899232753122839e-246,
+   "q_bh_log10": -245.31,
+   "q_bonf_log10": -244.1,
+   "q_cluster_bh_log10": -3.77,
+   "efeito_pp": {
+    "q1": 71.78,
+    "q5": 33.35,
+    "dif": -38.42,
+    "dif_ic": [
+     -42.73,
+     -32.64
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     12813.0,
+     18753.0,
+     29895.0,
+     44858.0,
+     75382.5
+    ],
+    "alvo": [
+     71.777,
+     59.087,
+     42.495,
+     35.499,
+     33.354
+    ],
+    "n": [
+     1113,
+     1115,
+     1114,
+     1114,
+     1114
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.283,
+    "Nordeste": -0.206,
+    "Norte": -0.355,
+    "Sudeste": -0.266,
+    "Sul": -0.248
+   },
+   "pontuacao": 50.16,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde PIB per capita 2023 é maior, % dos votos válidos de Lula — 1º turno 2026 tende a ser menor (r = −0,43, IC95% −0,45 a −0,41). Média no quintil mais baixo do preditor: 71,8; no mais alto: 33,4 (diferença −38,4 pp, IC95% por UF −42,7 a −32,6). Dentro das UFs, r = −0,19; p ≈ 2,3×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where GDP per capita 2023 is higher, lula's % of valid votes — 1st round 2026 tends to be lower (r = −0.43, 95% CI −0.45 to −0.41). Mean in the lowest predictor quintile: 71.8; in the highest: 33.4 (difference −38.4 pp, state-cluster bootstrap 95% CI −42.7 to −32.6). Within states, r = −0.19; p ≈ 2.3×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a2",
+   "alvo": "res26_t2_plula",
+   "preditor": "pib_pc_2023",
+   "n": 5570,
+   "pearson": -0.4228,
+   "ci": [
+    -0.4441,
+    -0.401
+   ],
+   "spearman": -0.7414,
+   "r_ponderado": -0.3103,
+   "r_dentro_uf": -0.1819,
+   "r_sem_extremos": -0.57,
+   "r_sem_uf": [
+    -0.4469,
+    -0.4091
+   ],
+   "p_log10": -239.69,
+   "p_cluster_log10": -4.44,
+   "q_bh": 7.6245081121711e-239,
+   "q_bh_log10": -238.12,
+   "q_bonf_log10": -236.8,
+   "q_cluster_bh_log10": -3.61,
+   "efeito_pp": {
+    "q1": 76.15,
+    "q5": 39.05,
+    "dif": -37.1,
+    "dif_ic": [
+     -41.68,
+     -31.35
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     12813.0,
+     18753.0,
+     29895.0,
+     44858.0,
+     75382.5
+    ],
+    "alvo": [
+     76.149,
+     64.234,
+     48.278,
+     41.005,
+     39.052
+    ],
+    "n": [
+     1113,
+     1115,
+     1114,
+     1114,
+     1114
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.339,
+    "Nordeste": -0.197,
+    "Norte": -0.349,
+    "Sudeste": -0.244,
+    "Sul": -0.243
+   },
+   "pontuacao": 49.18,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde PIB per capita 2023 é maior, % dos votos válidos de Lula — 2º turno 2026 tende a ser menor (r = −0,42, IC95% −0,44 a −0,40). Média no quintil mais baixo do preditor: 76,1; no mais alto: 39,1 (diferença −37,1 pp, IC95% por UF −41,7 a −31,3). Dentro das UFs, r = −0,18; p ≈ 3,6×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where GDP per capita 2023 is higher, lula's % of valid votes — 2nd round 2026 tends to be lower (r = −0.42, 95% CI −0.44 to −0.40). Mean in the lowest predictor quintile: 76.1; in the highest: 39.1 (difference −37.1 pp, state-cluster bootstrap 95% CI −41.7 to −31.3). Within states, r = −0.18; p ≈ 3.6×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a3",
+   "alvo": "res22_t2_plula",
+   "preditor": "pib_pc_2023",
+   "n": 5570,
+   "pearson": -0.4195,
+   "ci": [
+    -0.4409,
+    -0.3977
+   ],
+   "spearman": -0.7343,
+   "r_ponderado": -0.3358,
+   "r_dentro_uf": -0.1767,
+   "r_sem_extremos": -0.5634,
+   "r_sem_uf": [
+    -0.4415,
+    -0.4059
+   ],
+   "p_log10": -235.68,
+   "p_cluster_log10": -4.79,
+   "q_bh": 7.067666079437744e-235,
+   "q_bh_log10": -234.15,
+   "q_bonf_log10": -232.79,
+   "q_cluster_bh_log10": -3.88,
+   "efeito_pp": {
+    "q1": 78.41,
+    "q5": 41.29,
+    "dif": -37.12,
+    "dif_ic": [
+     -41.43,
+     -31.29
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     12813.0,
+     18753.0,
+     29895.0,
+     44858.0,
+     75382.5
+    ],
+    "alvo": [
+     78.41,
+     66.11,
+     50.352,
+     43.436,
+     41.286
+    ],
+    "n": [
+     1113,
+     1115,
+     1114,
+     1114,
+     1114
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.315,
+    "Nordeste": -0.19,
+    "Norte": -0.318,
+    "Sudeste": -0.251,
+    "Sul": -0.247
+   },
+   "pontuacao": 48.78,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde PIB per capita 2023 é maior, % dos votos válidos de Lula — 2º turno 2022 tende a ser menor (r = −0,42, IC95% −0,44 a −0,40). Média no quintil mais baixo do preditor: 78,4; no mais alto: 41,3 (diferença −37,1 pp, IC95% por UF −41,4 a −31,3). Dentro das UFs, r = −0,18; p ≈ 1,6×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where GDP per capita 2023 is higher, lula's % of valid votes — 2nd round 2022 tends to be lower (r = −0.42, 95% CI −0.44 to −0.40). Mean in the lowest predictor quintile: 78.4; in the highest: 41.3 (difference −37.1 pp, state-cluster bootstrap 95% CI −41.4 to −31.3). Within states, r = −0.18; p ≈ 1.6×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a4",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "pib_pct_agro_2021",
+   "n": 5569,
+   "pearson": -0.454,
+   "ci": [
+    -0.4746,
+    -0.4329
+   ],
+   "spearman": -0.4799,
+   "r_ponderado": -0.6246,
+   "r_dentro_uf": -0.4022,
+   "r_sem_extremos": -0.4465,
+   "r_sem_uf": [
+    -0.472,
+    -0.3968
+   ],
+   "p_log10": -280.71,
+   "p_cluster_log10": -6.01,
+   "q_bh": 6.886217034600745e-279,
+   "q_bh_log10": -278.16,
+   "q_bonf_log10": -277.83,
+   "q_cluster_bh_log10": -4.96,
+   "efeito_pp": {
+    "q1": -0.02,
+    "q5": -4.08,
+    "dif": -4.06,
+    "dif_ic": [
+     -4.93,
+     -2.94
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     3.0,
+     10.6,
+     19.1,
+     32.4,
+     52.0
+    ],
+    "alvo": [
+     -0.016,
+     -1.711,
+     -2.24,
+     -2.83,
+     -4.079
+    ],
+    "n": [
+     1116,
+     1117,
+     1112,
+     1107,
+     1117
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.259,
+    "Nordeste": -0.226,
+    "Norte": -0.357,
+    "Sudeste": -0.465,
+    "Sul": -0.563
+   },
+   "pontuacao": 47.33,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.569 municípios, onde % agropecuária no valor adicionado (2021) é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser menor (r = −0,45, IC95% −0,47 a −0,43). Média no quintil mais baixo do preditor: −0,0; no mais alto: −4,1 (diferença −4,1 pp, IC95% por UF −4,9 a −2,9). Dentro das UFs, r = −0,40; p ≈ 9,8×10⁻⁷ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,569 municipalities, where % agriculture in value added (2021) is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be lower (r = −0.45, 95% CI −0.47 to −0.43). Mean in the lowest predictor quintile: −0.0; in the highest: −4.1 (difference −4.1 pp, state-cluster bootstrap 95% CI −4.9 to −2.9). Within states, r = −0.40; p ≈ 9.8×10⁻⁷ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a5",
+   "alvo": "res22_t1_plula",
+   "preditor": "pib_pc_2022",
+   "n": 5570,
+   "pearson": -0.3743,
+   "ci": [
+    -0.3967,
+    -0.3515
+   ],
+   "spearman": -0.7227,
+   "r_ponderado": -0.3172,
+   "r_dentro_uf": -0.1595,
+   "r_sem_extremos": -0.5257,
+   "r_sem_uf": [
+    -0.4004,
+    -0.3617
+   ],
+   "p_log10": -184.07,
+   "p_cluster_log10": -4.17,
+   "q_bh": 1.1430093508833716e-183,
+   "q_bh_log10": -182.94,
+   "q_bonf_log10": -181.18,
+   "q_cluster_bh_log10": -3.37,
+   "efeito_pp": {
+    "q1": 76.06,
+    "q5": 40.79,
+    "dif": -35.26,
+    "dif_ic": [
+     -39.26,
+     -29.24
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     11417.0,
+     16652.0,
+     26264.0,
+     39370.0,
+     67895.0
+    ],
+    "alvo": [
+     76.058,
+     64.054,
+     48.826,
+     42.061,
+     40.793
+    ],
+    "n": [
+     1114,
+     1114,
+     1114,
+     1113,
+     1115
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.273,
+    "Nordeste": -0.172,
+    "Norte": -0.288,
+    "Sudeste": -0.224,
+    "Sul": -0.203
+   },
+   "pontuacao": 45.72,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde PIB per capita 2022 é maior, % dos votos válidos de Lula — 1º turno 2022 tende a ser menor (r = −0,37, IC95% −0,40 a −0,35). Média no quintil mais baixo do preditor: 76,1; no mais alto: 40,8 (diferença −35,3 pp, IC95% por UF −39,3 a −29,2). Dentro das UFs, r = −0,16; p ≈ 6,8×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where GDP per capita 2022 is higher, lula's % of valid votes — 1st round 2022 tends to be lower (r = −0.37, 95% CI −0.40 to −0.35). Mean in the lowest predictor quintile: 76.1; in the highest: 40.8 (difference −35.3 pp, state-cluster bootstrap 95% CI −39.3 to −29.2). Within states, r = −0.16; p ≈ 6.8×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a6",
+   "alvo": "res26_d21_lula",
+   "preditor": "censo_pct_urbana",
+   "n": 5570,
+   "pearson": 0.4294,
+   "ci": [
+    0.4078,
+    0.4506
+   ],
+   "spearman": 0.4776,
+   "r_ponderado": 0.665,
+   "r_dentro_uf": 0.3191,
+   "r_sem_extremos": 0.4504,
+   "r_sem_uf": [
+    0.4049,
+    0.4513
+   ],
+   "p_log10": -248.08,
+   "p_cluster_log10": -7.85,
+   "q_bh": 4.250404353095596e-247,
+   "q_bh_log10": -246.37,
+   "q_bonf_log10": -245.19,
+   "q_cluster_bh_log10": -6.6,
+   "efeito_pp": {
+    "q1": 4.46,
+    "q5": 6.6,
+    "dif": 2.14,
+    "dif_ic": [
+     1.61,
+     2.58
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     40.6,
+     57.6,
+     70.8,
+     83.3,
+     94.5
+    ],
+    "alvo": [
+     4.456,
+     4.628,
+     5.174,
+     5.656,
+     6.595
+    ],
+    "n": [
+     1115,
+     1113,
+     1116,
+     1113,
+     1113
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.222,
+    "Nordeste": 0.342,
+    "Norte": 0.406,
+    "Sudeste": 0.393,
+    "Sul": 0.361
+   },
+   "pontuacao": 43.65,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde População urbana é maior, variação do % de Lula (2º−1º turno, pp) — 2026 tende a ser maior (r = 0,43, IC95% 0,41 a 0,45). Média no quintil mais baixo do preditor: 4,5; no mais alto: 6,6 (diferença +2,1 pp, IC95% por UF +1,6 a +2,6). Dentro das UFs, r = 0,32; p ≈ 1,4×10⁻⁸ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Urban population is higher, change in Lula's % (2nd−1st round, pp) — 2026 tends to be higher (r = 0.43, 95% CI 0.41 to 0.45). Mean in the lowest predictor quintile: 4.5; in the highest: 6.6 (difference +2.1 pp, state-cluster bootstrap 95% CI +1.6 to +2.6). Within states, r = 0.32; p ≈ 1.4×10⁻⁸ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a7",
+   "alvo": "res26_d21_lula",
+   "preditor": "censo_pct_instr_baixa",
+   "n": 5570,
+   "pearson": -0.4247,
+   "ci": [
+    -0.446,
+    -0.403
+   ],
+   "spearman": -0.4334,
+   "r_ponderado": -0.6702,
+   "r_dentro_uf": -0.4,
+   "r_sem_extremos": -0.44,
+   "r_sem_uf": [
+    -0.4608,
+    -0.3766
+   ],
+   "p_log10": -242.12,
+   "p_cluster_log10": -6.75,
+   "q_bh": 3.173611989652868e-241,
+   "q_bh_log10": -240.5,
+   "q_bonf_log10": -239.23,
+   "q_cluster_bh_log10": -5.61,
+   "efeito_pp": {
+    "q1": 6.47,
+    "q5": 4.42,
+    "dif": -2.05,
+    "dif_ic": [
+     -2.57,
+     -1.34
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     31.5,
+     40.5,
+     46.1,
+     51.35,
+     57.6
+    ],
+    "alvo": [
+     6.469,
+     5.57,
+     5.251,
+     4.802,
+     4.417
+    ],
+    "n": [
+     1112,
+     1117,
+     1114,
+     1110,
+     1117
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.054,
+    "Nordeste": -0.357,
+    "Norte": -0.39,
+    "Sudeste": -0.473,
+    "Sul": -0.322
+   },
+   "pontuacao": 42.66,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Instrução 18+: sem instrução ou fundamental incompleto é maior, variação do % de Lula (2º−1º turno, pp) — 2026 tende a ser menor (r = −0,42, IC95% −0,45 a −0,40). Média no quintil mais baixo do preditor: 6,5; no mais alto: 4,4 (diferença −2,1 pp, IC95% por UF −2,6 a −1,3). Dentro das UFs, r = −0,40; p ≈ 1,8×10⁻⁷ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Education 18+: none or incomplete primary is higher, change in Lula's % (2nd−1st round, pp) — 2026 tends to be lower (r = −0.42, 95% CI −0.45 to −0.40). Mean in the lowest predictor quintile: 6.5; in the highest: 4.4 (difference −2.1 pp, state-cluster bootstrap 95% CI −2.6 to −1.3). Within states, r = −0.40; p ≈ 1.8×10⁻⁷ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a8",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "censo_razao_sexo",
+   "n": 5570,
+   "pearson": -0.3882,
+   "ci": [
+    -0.4103,
+    -0.3657
+   ],
+   "spearman": -0.4284,
+   "r_ponderado": -0.6737,
+   "r_dentro_uf": -0.3843,
+   "r_sem_extremos": -0.4253,
+   "r_sem_uf": [
+    -0.4078,
+    -0.3712
+   ],
+   "p_log10": -199.04,
+   "p_cluster_log10": -6.09,
+   "q_bh": 1.808814355495691e-198,
+   "q_bh_log10": -197.74,
+   "q_bonf_log10": -196.15,
+   "q_cluster_bh_log10": -5.03,
+   "efeito_pp": {
+    "q1": -0.22,
+    "q5": -3.6,
+    "dif": -3.38,
+    "dif_ic": [
+     -4.03,
+     -2.71
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     93.5,
+     97.0,
+     99.5,
+     102.2,
+     106.4
+    ],
+    "alvo": [
+     -0.224,
+     -1.615,
+     -2.413,
+     -3.034,
+     -3.603
+    ],
+    "n": [
+     1110,
+     1131,
+     1116,
+     1101,
+     1112
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.299,
+    "Nordeste": -0.448,
+    "Norte": -0.317,
+    "Sudeste": -0.374,
+    "Sul": -0.49
+   },
+   "pontuacao": 42.03,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Razão de sexo é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser menor (r = −0,39, IC95% −0,41 a −0,37). Média no quintil mais baixo do preditor: −0,2; no mais alto: −3,6 (diferença −3,4 pp, IC95% por UF −4,0 a −2,7). Dentro das UFs, r = −0,38; p ≈ 8,0×10⁻⁷ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Sex ratio is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be lower (r = −0.39, 95% CI −0.41 to −0.37). Mean in the lowest predictor quintile: −0.2; in the highest: −3.6 (difference −3.4 pp, state-cluster bootstrap 95% CI −4.0 to −2.7). Within states, r = −0.38; p ≈ 8.0×10⁻⁷ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a9",
+   "alvo": "res26_t2_plula",
+   "preditor": "censo_pct_preta",
+   "n": 5570,
+   "pearson": 0.4315,
+   "ci": [
+    0.4098,
+    0.4526
+   ],
+   "spearman": 0.4693,
+   "r_ponderado": 0.397,
+   "r_dentro_uf": 0.2141,
+   "r_sem_extremos": 0.4255,
+   "r_sem_uf": [
+    0.3838,
+    0.4642
+   ],
+   "p_log10": -250.66,
+   "p_cluster_log10": -4.05,
+   "q_bh": 1.1803572808698796e-249,
+   "q_bh_log10": -248.93,
+   "q_bonf_log10": -247.78,
+   "q_cluster_bh_log10": -3.27,
+   "efeito_pp": {
+    "q1": 39.25,
+    "q5": 65.34,
+    "dif": 26.09,
+    "dif_ic": [
+     12.27,
+     33.15
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     2.5,
+     5.1,
+     7.0,
+     10.0,
+     15.8
+    ],
+    "alvo": [
+     39.25,
+     51.192,
+     54.854,
+     57.847,
+     65.34
+    ],
+    "n": [
+     1095,
+     1120,
+     1125,
+     1120,
+     1110
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.319,
+    "Nordeste": 0.023,
+    "Norte": -0.002,
+    "Sudeste": 0.541,
+    "Sul": 0.408
+   },
+   "pontuacao": 41.15,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % preta é maior, % dos votos válidos de Lula — 2º turno 2026 tende a ser maior (r = 0,43, IC95% 0,41 a 0,45). Média no quintil mais baixo do preditor: 39,2; no mais alto: 65,3 (diferença +26,1 pp, IC95% por UF +12,3 a +33,2). Dentro das UFs, r = 0,21; p ≈ 9,0×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % Black (preta) is higher, lula's % of valid votes — 2nd round 2026 tends to be higher (r = 0.43, 95% CI 0.41 to 0.45). Mean in the lowest predictor quintile: 39.2; in the highest: 65.3 (difference +26.1 pp, state-cluster bootstrap 95% CI +12.3 to +33.2). Within states, r = 0.21; p ≈ 9.0×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a10",
+   "alvo": "res26_d2622_t1_lula",
+   "preditor": "pib_pct_agro_2021",
+   "n": 5569,
+   "pearson": -0.4373,
+   "ci": [
+    -0.4583,
+    -0.4158
+   ],
+   "spearman": -0.4359,
+   "r_ponderado": -0.5299,
+   "r_dentro_uf": -0.3259,
+   "r_sem_extremos": -0.4381,
+   "r_sem_uf": [
+    -0.4593,
+    -0.3929
+   ],
+   "p_log10": -258.12,
+   "p_cluster_log10": -6.68,
+   "q_bh": 5.408153329992875e-257,
+   "q_bh_log10": -256.27,
+   "q_bonf_log10": -255.23,
+   "q_cluster_bh_log10": -5.55,
+   "efeito_pp": {
+    "q1": -4.22,
+    "q5": -8.27,
+    "dif": -4.05,
+    "dif_ic": [
+     -4.9,
+     -2.78
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     3.0,
+     10.6,
+     19.1,
+     32.4,
+     52.0
+    ],
+    "alvo": [
+     -4.221,
+     -4.853,
+     -5.593,
+     -6.649,
+     -8.269
+    ],
+    "n": [
+     1116,
+     1117,
+     1112,
+     1107,
+     1117
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.056,
+    "Nordeste": -0.18,
+    "Norte": -0.316,
+    "Sudeste": -0.398,
+    "Sul": -0.454
+   },
+   "pontuacao": 41.14,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.569 municípios, onde % agropecuária no valor adicionado (2021) é maior, variação do % de Lula (2026−2022, pp) — 1º turno tende a ser menor (r = −0,44, IC95% −0,46 a −0,42). Média no quintil mais baixo do preditor: −4,2; no mais alto: −8,3 (diferença −4,0 pp, IC95% por UF −4,9 a −2,8). Dentro das UFs, r = −0,33; p ≈ 2,1×10⁻⁷ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,569 municipalities, where % agriculture in value added (2021) is higher, change in Lula's % (2026−2022, pp) — 1st round tends to be lower (r = −0.44, 95% CI −0.46 to −0.42). Mean in the lowest predictor quintile: −4.2; in the highest: −8.3 (difference −4.0 pp, state-cluster bootstrap 95% CI −4.9 to −2.8). Within states, r = −0.33; p ≈ 2.1×10⁻⁷ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a11",
+   "alvo": "res22_t2_abst",
+   "preditor": "censo_pct_0a14",
+   "n": 5570,
+   "pearson": 0.4372,
+   "ci": [
+    0.4157,
+    0.4582
+   ],
+   "spearman": 0.3726,
+   "r_ponderado": 0.3005,
+   "r_dentro_uf": 0.2458,
+   "r_sem_extremos": 0.4136,
+   "r_sem_uf": [
+    0.3727,
+    0.5036
+   ],
+   "p_log10": -258.07,
+   "p_cluster_log10": -4.62,
+   "q_bh": 5.53601464506149e-257,
+   "q_bh_log10": -256.26,
+   "q_bonf_log10": -255.18,
+   "q_cluster_bh_log10": -3.77,
+   "efeito_pp": {
+    "q1": 18.81,
+    "q5": 24.64,
+    "dif": 5.82,
+    "dif_ic": [
+     3.35,
+     8.58
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     16.2,
+     18.2,
+     19.7,
+     21.5,
+     24.6
+    ],
+    "alvo": [
+     18.812,
+     20.243,
+     20.864,
+     21.613,
+     24.636
+    ],
+    "n": [
+     1138,
+     1084,
+     1125,
+     1118,
+     1105
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.478,
+    "Nordeste": 0.349,
+    "Norte": 0.485,
+    "Sudeste": 0.245,
+    "Sul": 0.415
+   },
+   "pontuacao": 40.65,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % 0 a 14 anos é maior, abstenção (%) — 2º turno 2022 tende a ser maior (r = 0,44, IC95% 0,42 a 0,46). Média no quintil mais baixo do preditor: 18,8; no mais alto: 24,6 (diferença +5,8 pp, IC95% por UF +3,3 a +8,6). Dentro das UFs, r = 0,25; p ≈ 2,4×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % aged 0-14 is higher, abstention (%) — 2nd round 2022 tends to be higher (r = 0.44, 95% CI 0.42 to 0.46). Mean in the lowest predictor quintile: 18.8; in the highest: 24.6 (difference +5.8 pp, state-cluster bootstrap 95% CI +3.3 to +8.6). Within states, r = 0.25; p ≈ 2.4×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a12",
+   "alvo": "res26_t1_plula",
+   "preditor": "censo_pct_preta",
+   "n": 5570,
+   "pearson": 0.4221,
+   "ci": [
+    0.4003,
+    0.4435
+   ],
+   "spearman": 0.457,
+   "r_ponderado": 0.3725,
+   "r_dentro_uf": 0.1876,
+   "r_sem_extremos": 0.4132,
+   "r_sem_uf": [
+    0.3743,
+    0.4543
+   ],
+   "p_log10": -238.88,
+   "p_cluster_log10": -4.26,
+   "q_bh": 4.67071897578368e-238,
+   "q_bh_log10": -237.33,
+   "q_bonf_log10": -235.99,
+   "q_cluster_bh_log10": -3.45,
+   "efeito_pp": {
+    "q1": 34.45,
+    "q5": 60.04,
+    "dif": 25.59,
+    "dif_ic": [
+     11.68,
+     33.44
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     2.5,
+     5.1,
+     7.0,
+     10.0,
+     15.8
+    ],
+    "alvo": [
+     34.45,
+     45.822,
+     49.379,
+     52.292,
+     60.044
+    ],
+    "n": [
+     1095,
+     1120,
+     1125,
+     1120,
+     1110
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.283,
+    "Nordeste": 0.04,
+    "Norte": -0.013,
+    "Sudeste": 0.513,
+    "Sul": 0.369
+   },
+   "pontuacao": 39.6,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % preta é maior, % dos votos válidos de Lula — 1º turno 2026 tende a ser maior (r = 0,42, IC95% 0,40 a 0,44). Média no quintil mais baixo do preditor: 34,5; no mais alto: 60,0 (diferença +25,6 pp, IC95% por UF +11,7 a +33,4). Dentro das UFs, r = 0,19; p ≈ 5,5×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % Black (preta) is higher, lula's % of valid votes — 1st round 2026 tends to be higher (r = 0.42, 95% CI 0.40 to 0.44). Mean in the lowest predictor quintile: 34.5; in the highest: 60.0 (difference +25.6 pp, state-cluster bootstrap 95% CI +11.7 to +33.4). Within states, r = 0.19; p ≈ 5.5×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a13",
+   "alvo": "res26_t2_abst",
+   "preditor": "censo_pct_branca",
+   "n": 5570,
+   "pearson": -0.3825,
+   "ci": [
+    -0.4047,
+    -0.3598
+   ],
+   "spearman": -0.3476,
+   "r_ponderado": -0.0389,
+   "r_dentro_uf": -0.3638,
+   "r_sem_extremos": -0.3711,
+   "r_sem_uf": [
+    -0.4418,
+    -0.3294
+   ],
+   "p_log10": -192.76,
+   "p_cluster_log10": -3.39,
+   "q_bh": 2.999549398180309e-192,
+   "q_bh_log10": -191.52,
+   "q_bonf_log10": -189.88,
+   "q_cluster_bh_log10": -2.75,
+   "efeito_pp": {
+    "q1": 21.9,
+    "q5": 16.75,
+    "dif": -5.15,
+    "dif_ic": [
+     -8.08,
+     -2.52
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     16.45,
+     26.1,
+     38.1,
+     56.3,
+     77.5
+    ],
+    "alvo": [
+     21.897,
+     20.049,
+     19.174,
+     19.137,
+     16.748
+    ],
+    "n": [
+     1112,
+     1122,
+     1108,
+     1113,
+     1115
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.349,
+    "Nordeste": -0.351,
+    "Norte": -0.26,
+    "Sudeste": -0.479,
+    "Sul": -0.443
+   },
+   "pontuacao": 39.53,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % branca é maior, abstenção (%) — 2º turno 2026 tende a ser menor (r = −0,38, IC95% −0,40 a −0,36). Média no quintil mais baixo do preditor: 21,9; no mais alto: 16,7 (diferença −5,1 pp, IC95% por UF −8,1 a −2,5). Dentro das UFs, r = −0,36; p ≈ 4,1×10⁻⁴ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % White is higher, abstention (%) — 2nd round 2026 tends to be lower (r = −0.38, 95% CI −0.40 to −0.36). Mean in the lowest predictor quintile: 21.9; in the highest: 16.7 (difference −5.1 pp, state-cluster bootstrap 95% CI −8.1 to −2.5). Within states, r = −0.36; p ≈ 4.1×10⁻⁴ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a14",
+   "alvo": "res26_d21_lula",
+   "preditor": "censo_pct_instr_medio",
+   "n": 5570,
+   "pearson": 0.382,
+   "ci": [
+    0.3594,
+    0.4042
+   ],
+   "spearman": 0.3885,
+   "r_ponderado": 0.5929,
+   "r_dentro_uf": 0.336,
+   "r_sem_extremos": 0.3914,
+   "r_sem_uf": [
+    0.3363,
+    0.4161
+   ],
+   "p_log10": -192.29,
+   "p_cluster_log10": -9.78,
+   "q_bh": 8.602212922970543e-192,
+   "q_bh_log10": -191.07,
+   "q_bonf_log10": -189.41,
+   "q_cluster_bh_log10": -8.07,
+   "efeito_pp": {
+    "q1": 4.51,
+    "q5": 6.36,
+    "dif": 1.86,
+    "dif_ic": [
+     1.33,
+     2.26
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     21.7,
+     25.7,
+     28.9,
+     32.5,
+     38.0
+    ],
+    "alvo": [
+     4.505,
+     4.884,
+     5.139,
+     5.618,
+     6.36
+    ],
+    "n": [
+     1109,
+     1102,
+     1136,
+     1113,
+     1110
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.249,
+    "Nordeste": 0.272,
+    "Norte": 0.395,
+    "Sudeste": 0.407,
+    "Sul": 0.266
+   },
+   "pontuacao": 39.26,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Instrução 18+: médio completo / superior incompleto é maior, variação do % de Lula (2º−1º turno, pp) — 2026 tende a ser maior (r = 0,38, IC95% 0,36 a 0,40). Média no quintil mais baixo do preditor: 4,5; no mais alto: 6,4 (diferença +1,9 pp, IC95% por UF +1,3 a +2,3). Dentro das UFs, r = 0,34; p ≈ 1,7×10⁻¹⁰ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Education 18+: complete secondary / incomplete tertiary is higher, change in Lula's % (2nd−1st round, pp) — 2026 tends to be higher (r = 0.38, 95% CI 0.36 to 0.40). Mean in the lowest predictor quintile: 4.5; in the highest: 6.4 (difference +1.9 pp, state-cluster bootstrap 95% CI +1.3 to +2.3). Within states, r = 0.34; p ≈ 1.7×10⁻¹⁰ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a15",
+   "alvo": "res22_d21_abst",
+   "preditor": "censo_pct_branca",
+   "n": 5570,
+   "pearson": -0.4229,
+   "ci": [
+    -0.4443,
+    -0.4011
+   ],
+   "spearman": -0.4797,
+   "r_ponderado": -0.339,
+   "r_dentro_uf": -0.2,
+   "r_sem_extremos": -0.4421,
+   "r_sem_uf": [
+    -0.4605,
+    -0.4024
+   ],
+   "p_log10": -239.89,
+   "p_cluster_log10": -3.51,
+   "q_bh": 5.022773816363816e-239,
+   "q_bh_log10": -238.3,
+   "q_bonf_log10": -237.01,
+   "q_cluster_bh_log10": -2.84,
+   "efeito_pp": {
+    "q1": 1.7,
+    "q5": -0.94,
+    "dif": -2.63,
+    "dif_ic": [
+     -3.9,
+     -1.72
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     16.45,
+     26.1,
+     38.1,
+     56.3,
+     77.5
+    ],
+    "alvo": [
+     1.698,
+     0.296,
+     -0.455,
+     -0.851,
+     -0.935
+    ],
+    "n": [
+     1112,
+     1122,
+     1108,
+     1113,
+     1115
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.372,
+    "Nordeste": -0.235,
+    "Norte": -0.388,
+    "Sudeste": -0.158,
+    "Sul": -0.099
+   },
+   "pontuacao": 38.75,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % branca é maior, variação da abstenção (2º−1º turno, pp) — 2022 tende a ser menor (r = −0,42, IC95% −0,44 a −0,40). Média no quintil mais baixo do preditor: 1,7; no mais alto: −0,9 (diferença −2,6 pp, IC95% por UF −3,9 a −1,7). Dentro das UFs, r = −0,20; p ≈ 3,1×10⁻⁴ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % White is higher, change in abstention (2nd−1st round, pp) — 2022 tends to be lower (r = −0.42, 95% CI −0.44 to −0.40). Mean in the lowest predictor quintile: 1.7; in the highest: −0.9 (difference −2.6 pp, state-cluster bootstrap 95% CI −3.9 to −1.7). Within states, r = −0.20; p ≈ 3.1×10⁻⁴ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a16",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "censo_pct_instr_medio",
+   "n": 5570,
+   "pearson": 0.3772,
+   "ci": [
+    0.3544,
+    0.3995
+   ],
+   "spearman": 0.3538,
+   "r_ponderado": 0.6138,
+   "r_dentro_uf": 0.3936,
+   "r_sem_extremos": 0.3669,
+   "r_sem_uf": [
+    0.3346,
+    0.3921
+   ],
+   "p_log10": -187.11,
+   "p_cluster_log10": -5.24,
+   "q_bh": 1.170741269545782e-186,
+   "q_bh_log10": -185.93,
+   "q_bonf_log10": -184.22,
+   "q_cluster_bh_log10": -4.23,
+   "efeito_pp": {
+    "q1": -3.2,
+    "q5": -0.32,
+    "dif": 2.88,
+    "dif_ic": [
+     1.99,
+     3.88
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     21.7,
+     25.7,
+     28.9,
+     32.5,
+     38.0
+    ],
+    "alvo": [
+     -3.203,
+     -2.949,
+     -2.558,
+     -1.842,
+     -0.321
+    ],
+    "n": [
+     1109,
+     1102,
+     1136,
+     1113,
+     1110
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.245,
+    "Nordeste": 0.278,
+    "Norte": 0.207,
+    "Sudeste": 0.43,
+    "Sul": 0.589
+   },
+   "pontuacao": 38.51,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Instrução 18+: médio completo / superior incompleto é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser maior (r = 0,38, IC95% 0,35 a 0,40). Média no quintil mais baixo do preditor: −3,2; no mais alto: −0,3 (diferença +2,9 pp, IC95% por UF +2,0 a +3,9). Dentro das UFs, r = 0,39; p ≈ 5,7×10⁻⁶ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Education 18+: complete secondary / incomplete tertiary is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be higher (r = 0.38, 95% CI 0.35 to 0.40). Mean in the lowest predictor quintile: −3.2; in the highest: −0.3 (difference +2.9 pp, state-cluster bootstrap 95% CI +2.0 to +3.9). Within states, r = 0.39; p ≈ 5.7×10⁻⁶ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a17",
+   "alvo": "res26_d21_lula",
+   "preditor": "censo_pct_lixo_coletado",
+   "n": 5570,
+   "pearson": 0.3866,
+   "ci": [
+    0.364,
+    0.4087
+   ],
+   "spearman": 0.4571,
+   "r_ponderado": 0.6228,
+   "r_dentro_uf": 0.277,
+   "r_sem_extremos": 0.4148,
+   "r_sem_uf": [
+    0.3591,
+    0.4279
+   ],
+   "p_log10": -197.29,
+   "p_cluster_log10": -5.75,
+   "q_bh": 9.911756212219732e-197,
+   "q_bh_log10": -196.0,
+   "q_bonf_log10": -194.4,
+   "q_cluster_bh_log10": -4.71,
+   "efeito_pp": {
+    "q1": 4.38,
+    "q5": 6.35,
+    "dif": 1.97,
+    "dif_ic": [
+     1.21,
+     2.56
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     54.8,
+     73.4,
+     85.5,
+     93.8,
+     98.5
+    ],
+    "alvo": [
+     4.377,
+     4.749,
+     5.281,
+     5.75,
+     6.346
+    ],
+    "n": [
+     1116,
+     1114,
+     1108,
+     1109,
+     1123
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.234,
+    "Nordeste": 0.328,
+    "Norte": 0.422,
+    "Sudeste": 0.4,
+    "Sul": 0.172
+   },
+   "pontuacao": 38.24,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Domicílios com lixo coletado é maior, variação do % de Lula (2º−1º turno, pp) — 2026 tende a ser maior (r = 0,39, IC95% 0,36 a 0,41). Média no quintil mais baixo do preditor: 4,4; no mais alto: 6,3 (diferença +2,0 pp, IC95% por UF +1,2 a +2,6). Dentro das UFs, r = 0,28; p ≈ 1,8×10⁻⁶ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Dwellings with waste collection is higher, change in Lula's % (2nd−1st round, pp) — 2026 tends to be higher (r = 0.39, 95% CI 0.36 to 0.41). Mean in the lowest predictor quintile: 4.4; in the highest: 6.3 (difference +2.0 pp, state-cluster bootstrap 95% CI +1.2 to +2.6). Within states, r = 0.28; p ≈ 1.8×10⁻⁶ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a18",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "pib_pct_servicos_2021",
+   "n": 5569,
+   "pearson": 0.3652,
+   "ci": [
+    0.3422,
+    0.3878
+   ],
+   "spearman": 0.3453,
+   "r_ponderado": 0.5313,
+   "r_dentro_uf": 0.394,
+   "r_sem_extremos": 0.3582,
+   "r_sem_uf": [
+    0.3143,
+    0.3779
+   ],
+   "p_log10": -174.59,
+   "p_cluster_log10": -7.51,
+   "q_bh": 3.1102892745217983e-174,
+   "q_bh_log10": -173.51,
+   "q_bonf_log10": -171.71,
+   "q_cluster_bh_log10": -6.3,
+   "efeito_pp": {
+    "q1": -3.2,
+    "q5": -0.26,
+    "dif": 2.94,
+    "dif_ic": [
+     2.1,
+     3.66
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     16.6,
+     23.2,
+     29.2,
+     37.0,
+     50.9
+    ],
+    "alvo": [
+     -3.205,
+     -2.78,
+     -2.675,
+     -1.936,
+     -0.263
+    ],
+    "n": [
+     1113,
+     1107,
+     1131,
+     1109,
+     1109
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.333,
+    "Nordeste": 0.188,
+    "Norte": 0.212,
+    "Sudeste": 0.483,
+    "Sul": 0.539
+   },
+   "pontuacao": 38.09,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.569 municípios, onde % serviços (excl. adm. pública) no valor adicionado (2021) é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser maior (r = 0,37, IC95% 0,34 a 0,39). Média no quintil mais baixo do preditor: −3,2; no mais alto: −0,3 (diferença +2,9 pp, IC95% por UF +2,1 a +3,7). Dentro das UFs, r = 0,39; p ≈ 3,1×10⁻⁸ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,569 municipalities, where % services (excl. public admin.) in value added (2021) is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be higher (r = 0.37, 95% CI 0.34 to 0.39). Mean in the lowest predictor quintile: −3.2; in the highest: −0.3 (difference +2.9 pp, state-cluster bootstrap 95% CI +2.1 to +3.7). Within states, r = 0.39; p ≈ 3.1×10⁻⁸ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a19",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "censo_pct_instr_baixa",
+   "n": 5570,
+   "pearson": -0.37,
+   "ci": [
+    -0.3924,
+    -0.3471
+   ],
+   "spearman": -0.3404,
+   "r_ponderado": -0.6747,
+   "r_dentro_uf": -0.4768,
+   "r_sem_extremos": -0.3645,
+   "r_sem_uf": [
+    -0.391,
+    -0.3131
+   ],
+   "p_log10": -179.55,
+   "p_cluster_log10": -5.89,
+   "q_bh": 3.60339839363192e-179,
+   "q_bh_log10": -178.44,
+   "q_bonf_log10": -176.66,
+   "q_cluster_bh_log10": -4.84,
+   "efeito_pp": {
+    "q1": -0.09,
+    "q5": -2.95,
+    "dif": -2.87,
+    "dif_ic": [
+     -3.72,
+     -2.1
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     31.5,
+     40.5,
+     46.1,
+     51.35,
+     57.6
+    ],
+    "alvo": [
+     -0.085,
+     -2.13,
+     -2.84,
+     -2.866,
+     -2.95
+    ],
+    "n": [
+     1112,
+     1117,
+     1114,
+     1110,
+     1117
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.361,
+    "Nordeste": -0.305,
+    "Norte": -0.277,
+    "Sudeste": -0.556,
+    "Sul": -0.629
+   },
+   "pontuacao": 37.86,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Instrução 18+: sem instrução ou fundamental incompleto é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser menor (r = −0,37, IC95% −0,39 a −0,35). Média no quintil mais baixo do preditor: −0,1; no mais alto: −3,0 (diferença −2,9 pp, IC95% por UF −3,7 a −2,1). Dentro das UFs, r = −0,48; p ≈ 1,3×10⁻⁶ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Education 18+: none or incomplete primary is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be lower (r = −0.37, 95% CI −0.39 to −0.35). Mean in the lowest predictor quintile: −0.1; in the highest: −3.0 (difference −2.9 pp, state-cluster bootstrap 95% CI −3.7 to −2.1). Within states, r = −0.48; p ≈ 1.3×10⁻⁶ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a20",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "censo_pct_urbana",
+   "n": 5570,
+   "pearson": 0.3761,
+   "ci": [
+    0.3533,
+    0.3984
+   ],
+   "spearman": 0.3856,
+   "r_ponderado": 0.6329,
+   "r_dentro_uf": 0.3876,
+   "r_sem_extremos": 0.3618,
+   "r_sem_uf": [
+    0.3306,
+    0.3952
+   ],
+   "p_log10": -185.91,
+   "p_cluster_log10": -5.05,
+   "q_bh": 1.7332995945947918e-185,
+   "q_bh_log10": -184.76,
+   "q_bonf_log10": -183.03,
+   "q_cluster_bh_log10": -4.08,
+   "efeito_pp": {
+    "q1": -3.33,
+    "q5": -0.14,
+    "dif": 3.19,
+    "dif_ic": [
+     2.25,
+     4.1
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     40.6,
+     57.6,
+     70.8,
+     83.3,
+     94.5
+    ],
+    "alvo": [
+     -3.329,
+     -2.973,
+     -2.539,
+     -1.892,
+     -0.138
+    ],
+    "n": [
+     1115,
+     1113,
+     1116,
+     1113,
+     1113
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.149,
+    "Nordeste": 0.342,
+    "Norte": -0.037,
+    "Sudeste": 0.421,
+    "Sul": 0.616
+   },
+   "pontuacao": 37.71,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde População urbana é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser maior (r = 0,38, IC95% 0,35 a 0,40). Média no quintil mais baixo do preditor: −3,3; no mais alto: −0,1 (diferença +3,2 pp, IC95% por UF +2,2 a +4,1). Dentro das UFs, r = 0,39; p ≈ 8,9×10⁻⁶ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Urban population is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be higher (r = 0.38, 95% CI 0.35 to 0.40). Mean in the lowest predictor quintile: −3.3; in the highest: −0.1 (difference +3.2 pp, state-cluster bootstrap 95% CI +2.2 to +4.1). Within states, r = 0.39; p ≈ 8.9×10⁻⁶ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a21",
+   "alvo": "res26_t1_plula",
+   "preditor": "censo_pct_40a59",
+   "n": 5570,
+   "pearson": -0.4391,
+   "ci": [
+    -0.4601,
+    -0.4177
+   ],
+   "spearman": -0.4694,
+   "r_ponderado": -0.3758,
+   "r_dentro_uf": -0.1612,
+   "r_sem_extremos": -0.4528,
+   "r_sem_uf": [
+    -0.4566,
+    -0.4018
+   ],
+   "p_log10": -260.64,
+   "p_cluster_log10": -5.44,
+   "q_bh": 2.3009277747740818e-259,
+   "q_bh_log10": -258.64,
+   "q_bonf_log10": -257.76,
+   "q_cluster_bh_log10": -4.43,
+   "efeito_pp": {
+    "q1": 62.35,
+    "q5": 38.44,
+    "dif": -23.9,
+    "dif_ic": [
+     -30.06,
+     -16.52
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     22.9,
+     25.3,
+     26.7,
+     27.8,
+     29.1
+    ],
+    "alvo": [
+     62.347,
+     56.967,
+     45.3,
+     39.632,
+     38.444
+    ],
+    "n": [
+     1090,
+     1104,
+     1146,
+     1110,
+     1120
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.056,
+    "Nordeste": -0.018,
+    "Norte": -0.407,
+    "Sudeste": -0.26,
+    "Sul": -0.073
+   },
+   "pontuacao": 37.67,
+   "tags": [
+    "alerta"
+   ],
+   "alerta_pt": "a relação enfraquece ou some dentro das UFs (r dentro da UF = −0,16): parte do padrão é diferença entre estados; instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "the relationship weakens or vanishes within states (within-state r = −0.16): part of the pattern is between-state difference; unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.570 municípios, onde % 40 a 59 anos é maior, % dos votos válidos de Lula — 1º turno 2026 tende a ser menor (r = −0,44, IC95% −0,46 a −0,42). Média no quintil mais baixo do preditor: 62,3; no mais alto: 38,4 (diferença −23,9 pp, IC95% por UF −30,1 a −16,5). Dentro das UFs, r = −0,16; p ≈ 3,6×10⁻⁶ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: a relação enfraquece ou some dentro das UFs (r dentro da UF = −0,16): parte do padrão é diferença entre estados; instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,570 municipalities, where % aged 40-59 is higher, lula's % of valid votes — 1st round 2026 tends to be lower (r = −0.44, 95% CI −0.46 to −0.42). Mean in the lowest predictor quintile: 62.3; in the highest: 38.4 (difference −23.9 pp, state-cluster bootstrap 95% CI −30.1 to −16.5). Within states, r = −0.16; p ≈ 3.6×10⁻⁶ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: the relationship weakens or vanishes within states (within-state r = −0.16): part of the pattern is between-state difference; unstable across regions (comparable in only 2 of 5 regions)."
+  },
+  {
+   "id": "a22",
+   "alvo": "res22_t2_plula",
+   "preditor": "censo_pct_preta",
+   "n": 5570,
+   "pearson": 0.4022,
+   "ci": [
+    0.3799,
+    0.424
+   ],
+   "spearman": 0.4281,
+   "r_ponderado": 0.3457,
+   "r_dentro_uf": 0.1553,
+   "r_sem_extremos": 0.3937,
+   "r_sem_uf": [
+    0.3586,
+    0.4328
+   ],
+   "p_log10": -214.91,
+   "p_cluster_log10": -4.12,
+   "q_bh": 2.9918445892345502e-214,
+   "q_bh_log10": -213.52,
+   "q_bonf_log10": -212.03,
+   "q_cluster_bh_log10": -3.33,
+   "efeito_pp": {
+    "q1": 42.83,
+    "q5": 66.84,
+    "dif": 24.01,
+    "dif_ic": [
+     10.11,
+     32.0
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     2.5,
+     5.1,
+     7.0,
+     10.0,
+     15.8
+    ],
+    "alvo": [
+     42.829,
+     53.136,
+     56.743,
+     59.837,
+     66.84
+    ],
+    "n": [
+     1095,
+     1120,
+     1125,
+     1120,
+     1110
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.29,
+    "Nordeste": -0.009,
+    "Norte": 0.05,
+    "Sudeste": 0.481,
+    "Sul": 0.293
+   },
+   "pontuacao": 37.28,
+   "tags": [
+    "alerta"
+   ],
+   "alerta_pt": "a relação enfraquece ou some dentro das UFs (r dentro da UF = 0,16): parte do padrão é diferença entre estados",
+   "alerta_en": "the relationship weakens or vanishes within states (within-state r = 0.16): part of the pattern is between-state difference",
+   "texto_pt": "Entre 5.570 municípios, onde % preta é maior, % dos votos válidos de Lula — 2º turno 2022 tende a ser maior (r = 0,40, IC95% 0,38 a 0,42). Média no quintil mais baixo do preditor: 42,8; no mais alto: 66,8 (diferença +24,0 pp, IC95% por UF +10,1 a +32,0). Dentro das UFs, r = 0,16; p ≈ 7,5×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: a relação enfraquece ou some dentro das UFs (r dentro da UF = 0,16): parte do padrão é diferença entre estados.",
+   "texto_en": "Across 5,570 municipalities, where % Black (preta) is higher, lula's % of valid votes — 2nd round 2022 tends to be higher (r = 0.40, 95% CI 0.38 to 0.42). Mean in the lowest predictor quintile: 42.8; in the highest: 66.8 (difference +24.0 pp, state-cluster bootstrap 95% CI +10.1 to +32.0). Within states, r = 0.16; p ≈ 7.5×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: the relationship weakens or vanishes within states (within-state r = 0.16): part of the pattern is between-state difference."
+  },
+  {
+   "id": "a23",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "censo_pct_sem_religiao",
+   "n": 5570,
+   "pearson": 0.3468,
+   "ci": [
+    0.3235,
+    0.3697
+   ],
+   "spearman": 0.3801,
+   "r_ponderado": 0.525,
+   "r_dentro_uf": 0.2935,
+   "r_sem_extremos": 0.3605,
+   "r_sem_uf": [
+    0.3195,
+    0.3675
+   ],
+   "p_log10": -156.48,
+   "p_cluster_log10": -5.11,
+   "q_bh": 3.1130127450708643e-156,
+   "q_bh_log10": -155.51,
+   "q_bonf_log10": -153.59,
+   "q_cluster_bh_log10": -4.13,
+   "efeito_pp": {
+    "q1": -4.01,
+    "q5": -0.74,
+    "dif": 3.27,
+    "dif_ic": [
+     2.07,
+     4.43
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     1.0,
+     2.5,
+     4.2,
+     6.7,
+     12.0
+    ],
+    "alvo": [
+     -4.013,
+     -2.526,
+     -1.986,
+     -1.634,
+     -0.744
+    ],
+    "n": [
+     1087,
+     1147,
+     1117,
+     1107,
+     1112
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.206,
+    "Nordeste": 0.314,
+    "Norte": 0.154,
+    "Sudeste": 0.437,
+    "Sul": 0.335
+   },
+   "pontuacao": 36.82,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % sem religião é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser maior (r = 0,35, IC95% 0,32 a 0,37). Média no quintil mais baixo do preditor: −4,0; no mais alto: −0,7 (diferença +3,3 pp, IC95% por UF +2,1 a +4,4). Dentro das UFs, r = 0,29; p ≈ 7,8×10⁻⁶ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % no religion is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be higher (r = 0.35, 95% CI 0.32 to 0.37). Mean in the lowest predictor quintile: −4.0; in the highest: −0.7 (difference +3.3 pp, state-cluster bootstrap 95% CI +2.1 to +4.4). Within states, r = 0.29; p ≈ 7.8×10⁻⁶ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a24",
+   "alvo": "res22_t2_abst",
+   "preditor": "censo_pct_15a24",
+   "n": 5570,
+   "pearson": 0.4089,
+   "ci": [
+    0.3868,
+    0.4305
+   ],
+   "spearman": 0.3353,
+   "r_ponderado": 0.2173,
+   "r_dentro_uf": 0.2023,
+   "r_sem_extremos": 0.3754,
+   "r_sem_uf": [
+    0.3244,
+    0.4486
+   ],
+   "p_log10": -222.81,
+   "p_cluster_log10": -3.94,
+   "q_bh": 4.2595401910349154e-222,
+   "q_bh_log10": -221.37,
+   "q_bonf_log10": -219.92,
+   "q_cluster_bh_log10": -3.19,
+   "efeito_pp": {
+    "q1": 18.6,
+    "q5": 24.36,
+    "dif": 5.76,
+    "dif_ic": [
+     2.37,
+     8.39
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     11.8,
+     13.2,
+     14.35,
+     15.6,
+     17.3
+    ],
+    "alvo": [
+     18.599,
+     20.672,
+     21.064,
+     21.452,
+     24.356
+    ],
+    "n": [
+     1122,
+     1063,
+     1204,
+     1073,
+     1108
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.19,
+    "Nordeste": 0.311,
+    "Norte": 0.46,
+    "Sudeste": 0.254,
+    "Sul": 0.374
+   },
+   "pontuacao": 36.81,
+   "tags": [],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % 15 a 24 anos é maior, abstenção (%) — 2º turno 2022 tende a ser maior (r = 0,41, IC95% 0,39 a 0,43). Média no quintil mais baixo do preditor: 18,6; no mais alto: 24,4 (diferença +5,8 pp, IC95% por UF +2,4 a +8,4). Dentro das UFs, r = 0,20; p ≈ 1,1×10⁻⁴ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % aged 15-24 is higher, abstention (%) — 2nd round 2022 tends to be higher (r = 0.41, 95% CI 0.39 to 0.43). Mean in the lowest predictor quintile: 18.6; in the highest: 24.4 (difference +5.8 pp, state-cluster bootstrap 95% CI +2.4 to +8.4). Within states, r = 0.20; p ≈ 1.1×10⁻⁴ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a25",
+   "alvo": "res26_t2_plula",
+   "preditor": "censo_pct_40a59",
+   "n": 5570,
+   "pearson": -0.4259,
+   "ci": [
+    -0.4472,
+    -0.4042
+   ],
+   "spearman": -0.4618,
+   "r_ponderado": -0.3361,
+   "r_dentro_uf": -0.1595,
+   "r_sem_extremos": -0.4399,
+   "r_sem_uf": [
+    -0.4451,
+    -0.3876
+   ],
+   "p_log10": -243.6,
+   "p_cluster_log10": -4.99,
+   "q_bh": 1.1201360320714126e-242,
+   "q_bh_log10": -241.95,
+   "q_bonf_log10": -240.71,
+   "q_cluster_bh_log10": -4.03,
+   "efeito_pp": {
+    "q1": 67.05,
+    "q5": 44.23,
+    "dif": -22.82,
+    "dif_ic": [
+     -29.95,
+     -14.47
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     22.9,
+     25.3,
+     26.7,
+     27.8,
+     29.1
+    ],
+    "alvo": [
+     67.05,
+     61.912,
+     50.694,
+     45.286,
+     44.234
+    ],
+    "n": [
+     1090,
+     1104,
+     1146,
+     1110,
+     1120
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.136,
+    "Nordeste": -0.024,
+    "Norte": -0.406,
+    "Sudeste": -0.246,
+    "Sul": -0.089
+   },
+   "pontuacao": 36.61,
+   "tags": [
+    "alerta"
+   ],
+   "alerta_pt": "a relação enfraquece ou some dentro das UFs (r dentro da UF = −0,16): parte do padrão é diferença entre estados; instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "the relationship weakens or vanishes within states (within-state r = −0.16): part of the pattern is between-state difference; unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.570 municípios, onde % 40 a 59 anos é maior, % dos votos válidos de Lula — 2º turno 2026 tende a ser menor (r = −0,43, IC95% −0,45 a −0,40). Média no quintil mais baixo do preditor: 67,1; no mais alto: 44,2 (diferença −22,8 pp, IC95% por UF −30,0 a −14,5). Dentro das UFs, r = −0,16; p ≈ 1,0×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: a relação enfraquece ou some dentro das UFs (r dentro da UF = −0,16): parte do padrão é diferença entre estados; instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,570 municipalities, where % aged 40-59 is higher, lula's % of valid votes — 2nd round 2026 tends to be lower (r = −0.43, 95% CI −0.45 to −0.40). Mean in the lowest predictor quintile: 67.1; in the highest: 44.2 (difference −22.8 pp, state-cluster bootstrap 95% CI −30.0 to −14.5). Within states, r = −0.16; p ≈ 1.0×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: the relationship weakens or vanishes within states (within-state r = −0.16): part of the pattern is between-state difference; unstable across regions (comparable in only 2 of 5 regions)."
+  },
+  {
+   "id": "a26",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "censo_pct_catolica",
+   "n": 5570,
+   "pearson": -0.3536,
+   "ci": [
+    -0.3764,
+    -0.3304
+   ],
+   "spearman": -0.3363,
+   "r_ponderado": -0.5931,
+   "r_dentro_uf": -0.3582,
+   "r_sem_extremos": -0.3468,
+   "r_sem_uf": [
+    -0.3731,
+    -0.327
+   ],
+   "p_log10": -163.03,
+   "p_cluster_log10": -6.59,
+   "q_bh": 9.826174347737281e-163,
+   "q_bh_log10": -162.01,
+   "q_bonf_log10": -160.14,
+   "q_cluster_bh_log10": -5.48,
+   "efeito_pp": {
+    "q1": -0.65,
+    "q5": -3.41,
+    "dif": -2.76,
+    "dif_ic": [
+     -3.61,
+     -1.83
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     48.1,
+     61.0,
+     69.9,
+     78.0,
+     86.0
+    ],
+    "alvo": [
+     -0.65,
+     -1.774,
+     -2.326,
+     -2.718,
+     -3.406
+    ],
+    "n": [
+     1113,
+     1119,
+     1109,
+     1113,
+     1116
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.321,
+    "Nordeste": -0.333,
+    "Norte": -0.366,
+    "Sudeste": -0.477,
+    "Sul": -0.355
+   },
+   "pontuacao": 36.44,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % católica é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser menor (r = −0,35, IC95% −0,38 a −0,33). Média no quintil mais baixo do preditor: −0,7; no mais alto: −3,4 (diferença −2,8 pp, IC95% por UF −3,6 a −1,8). Dentro das UFs, r = −0,36; p ≈ 2,6×10⁻⁷ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % Catholic is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be lower (r = −0.35, 95% CI −0.38 to −0.33). Mean in the lowest predictor quintile: −0.7; in the highest: −3.4 (difference −2.8 pp, state-cluster bootstrap 95% CI −3.6 to −1.8). Within states, r = −0.36; p ≈ 2.6×10⁻⁷ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a27",
+   "alvo": "res26_d21_lula",
+   "preditor": "censo_pct_espirita",
+   "n": 5570,
+   "pearson": 0.329,
+   "ci": [
+    0.3054,
+    0.3522
+   ],
+   "spearman": 0.4416,
+   "r_ponderado": 0.5514,
+   "r_dentro_uf": 0.2152,
+   "r_sem_extremos": 0.4081,
+   "r_sem_uf": [
+    0.3091,
+    0.3593
+   ],
+   "p_log10": -139.98,
+   "p_cluster_log10": -6.13,
+   "q_bh": 7.061850312545e-140,
+   "q_bh_log10": -139.15,
+   "q_bonf_log10": -137.1,
+   "q_cluster_bh_log10": -5.06,
+   "efeito_pp": {
+    "q1": 4.58,
+    "q5": 6.63,
+    "dif": 2.05,
+    "dif_ic": [
+     1.57,
+     2.55
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     0.0,
+     0.1,
+     0.3,
+     0.7,
+     1.9
+    ],
+    "alvo": [
+     4.584,
+     4.739,
+     5.036,
+     5.624,
+     6.633
+    ],
+    "n": [
+     1329,
+     849,
+     1295,
+     1007,
+     1090
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.205,
+    "Nordeste": 0.173,
+    "Norte": 0.232,
+    "Sudeste": 0.241,
+    "Sul": 0.423
+   },
+   "pontuacao": 36.21,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % espírita é maior, variação do % de Lula (2º−1º turno, pp) — 2026 tende a ser maior (r = 0,33, IC95% 0,31 a 0,35). Média no quintil mais baixo do preditor: 4,6; no mais alto: 6,6 (diferença +2,0 pp, IC95% por UF +1,6 a +2,5). Dentro das UFs, r = 0,22; p ≈ 7,4×10⁻⁷ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % Spiritist is higher, change in Lula's % (2nd−1st round, pp) — 2026 tends to be higher (r = 0.33, 95% CI 0.31 to 0.35). Mean in the lowest predictor quintile: 4.6; in the highest: 6.6 (difference +2.0 pp, state-cluster bootstrap 95% CI +1.6 to +2.5). Within states, r = 0.22; p ≈ 7.4×10⁻⁷ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a28",
+   "alvo": "res26_t1_plula",
+   "preditor": "censo_mor_dom",
+   "n": 5570,
+   "pearson": 0.4005,
+   "ci": [
+    0.3782,
+    0.4223
+   ],
+   "spearman": 0.4785,
+   "r_ponderado": 0.3484,
+   "r_dentro_uf": 0.1796,
+   "r_sem_extremos": 0.4397,
+   "r_sem_uf": [
+    0.3602,
+    0.4222
+   ],
+   "p_log10": -212.95,
+   "p_cluster_log10": -3.46,
+   "q_bh": 2.5937840887595624e-212,
+   "q_bh_log10": -211.59,
+   "q_bonf_log10": -210.06,
+   "q_cluster_bh_log10": -2.81,
+   "efeito_pp": {
+    "q1": 37.81,
+    "q5": 62.98,
+    "dif": 25.17,
+    "dif_ic": [
+     17.7,
+     30.29
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     2.6,
+     2.7,
+     2.8,
+     2.9,
+     3.2
+    ],
+    "alvo": [
+     37.808,
+     40.823,
+     47.446,
+     57.622,
+     62.981
+    ],
+    "n": [
+     1342,
+     1126,
+     1022,
+     1191,
+     889
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.045,
+    "Nordeste": 0.027,
+    "Norte": 0.486,
+    "Sudeste": 0.215,
+    "Sul": -0.115
+   },
+   "pontuacao": 36.07,
+   "tags": [
+    "alerta"
+   ],
+   "alerta_pt": "instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.570 municípios, onde Média de moradores por domicílio é maior, % dos votos válidos de Lula — 1º turno 2026 tende a ser maior (r = 0,40, IC95% 0,38 a 0,42). Média no quintil mais baixo do preditor: 37,8; no mais alto: 63,0 (diferença +25,2 pp, IC95% por UF +17,7 a +30,3). Dentro das UFs, r = 0,18; p ≈ 3,5×10⁻⁴ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,570 municipalities, where Average residents per dwelling is higher, lula's % of valid votes — 1st round 2026 tends to be higher (r = 0.40, 95% CI 0.38 to 0.42). Mean in the lowest predictor quintile: 37.8; in the highest: 63.0 (difference +25.2 pp, state-cluster bootstrap 95% CI +17.7 to +30.3). Within states, r = 0.18; p ≈ 3.5×10⁻⁴ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: unstable across regions (comparable in only 2 of 5 regions)."
+  },
+  {
+   "id": "a29",
+   "alvo": "res22_t1_plula",
+   "preditor": "censo_pct_40a59",
+   "n": 5570,
+   "pearson": -0.4153,
+   "ci": [
+    -0.4368,
+    -0.3933
+   ],
+   "spearman": -0.4571,
+   "r_ponderado": -0.4111,
+   "r_dentro_uf": -0.1544,
+   "r_sem_extremos": -0.4315,
+   "r_sem_uf": [
+    -0.4338,
+    -0.3723
+   ],
+   "p_log10": -230.5,
+   "p_cluster_log10": -4.76,
+   "q_bh": 9.82448993633628e-230,
+   "q_bh_log10": -229.01,
+   "q_bonf_log10": -227.61,
+   "q_cluster_bh_log10": -3.86,
+   "efeito_pp": {
+    "q1": 67.28,
+    "q5": 45.7,
+    "dif": -21.58,
+    "dif_ic": [
+     -27.9,
+     -14.59
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     22.9,
+     25.3,
+     26.7,
+     27.8,
+     29.1
+    ],
+    "alvo": [
+     67.283,
+     62.2,
+     51.427,
+     45.625,
+     45.704
+    ],
+    "n": [
+     1090,
+     1104,
+     1146,
+     1110,
+     1120
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.208,
+    "Nordeste": -0.08,
+    "Norte": -0.349,
+    "Sudeste": -0.254,
+    "Sul": -0.035
+   },
+   "pontuacao": 35.59,
+   "tags": [
+    "alerta"
+   ],
+   "alerta_pt": "a relação enfraquece ou some dentro das UFs (r dentro da UF = −0,15): parte do padrão é diferença entre estados; instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "the relationship weakens or vanishes within states (within-state r = −0.15): part of the pattern is between-state difference; unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.570 municípios, onde % 40 a 59 anos é maior, % dos votos válidos de Lula — 1º turno 2022 tende a ser menor (r = −0,42, IC95% −0,44 a −0,39). Média no quintil mais baixo do preditor: 67,3; no mais alto: 45,7 (diferença −21,6 pp, IC95% por UF −27,9 a −14,6). Dentro das UFs, r = −0,15; p ≈ 1,8×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: a relação enfraquece ou some dentro das UFs (r dentro da UF = −0,15): parte do padrão é diferença entre estados; instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,570 municipalities, where % aged 40-59 is higher, lula's % of valid votes — 1st round 2022 tends to be lower (r = −0.42, 95% CI −0.44 to −0.39). Mean in the lowest predictor quintile: 67.3; in the highest: 45.7 (difference −21.6 pp, state-cluster bootstrap 95% CI −27.9 to −14.6). Within states, r = −0.15; p ≈ 1.8×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: the relationship weakens or vanishes within states (within-state r = −0.15): part of the pattern is between-state difference; unstable across regions (comparable in only 2 of 5 regions)."
+  },
+  {
+   "id": "a30",
+   "alvo": "res22_t2_plula",
+   "preditor": "censo_pct_evangelica",
+   "n": 5570,
+   "pearson": -0.3907,
+   "ci": [
+    -0.4128,
+    -0.3682
+   ],
+   "spearman": -0.4038,
+   "r_ponderado": -0.4408,
+   "r_dentro_uf": -0.2552,
+   "r_sem_extremos": -0.3879,
+   "r_sem_uf": [
+    -0.4656,
+    -0.3597
+   ],
+   "p_log10": -201.86,
+   "p_cluster_log10": -2.74,
+   "q_bh": 2.8531829167217664e-201,
+   "q_bh_log10": -200.54,
+   "q_bonf_log10": -198.98,
+   "q_cluster_bh_log10": -2.22,
+   "efeito_pp": {
+    "q1": 66.61,
+    "q5": 46.06,
+    "dif": -20.56,
+    "dif_ic": [
+     -31.34,
+     -8.98
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     10.3,
+     16.3,
+     21.7,
+     27.7,
+     36.6
+    ],
+    "alvo": [
+     66.613,
+     62.261,
+     55.31,
+     49.325,
+     46.058
+    ],
+    "n": [
+     1105,
+     1133,
+     1099,
+     1124,
+     1109
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.256,
+    "Nordeste": -0.573,
+    "Norte": -0.427,
+    "Sudeste": -0.373,
+    "Sul": -0.003
+   },
+   "pontuacao": 35.46,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % evangélica é maior, % dos votos válidos de Lula — 2º turno 2022 tende a ser menor (r = −0,39, IC95% −0,41 a −0,37). Média no quintil mais baixo do preditor: 66,6; no mais alto: 46,1 (diferença −20,6 pp, IC95% por UF −31,3 a −9,0). Dentro das UFs, r = −0,26; p ≈ 1,8×10⁻³ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % Evangelical is higher, lula's % of valid votes — 2nd round 2022 tends to be lower (r = −0.39, 95% CI −0.41 to −0.37). Mean in the lowest predictor quintile: 66.6; in the highest: 46.1 (difference −20.6 pp, state-cluster bootstrap 95% CI −31.3 to −9.0). Within states, r = −0.26; p ≈ 1.8×10⁻³ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a31",
+   "alvo": "res22_d21_abst",
+   "preditor": "censo_pct_internet",
+   "n": 5570,
+   "pearson": -0.4079,
+   "ci": [
+    -0.4296,
+    -0.3858
+   ],
+   "spearman": -0.3601,
+   "r_ponderado": -0.4206,
+   "r_dentro_uf": -0.2277,
+   "r_sem_extremos": -0.397,
+   "r_sem_uf": [
+    -0.4547,
+    -0.3773
+   ],
+   "p_log10": -221.61,
+   "p_cluster_log10": -4.85,
+   "q_bh": 6.508317229142373e-221,
+   "q_bh_log10": -220.19,
+   "q_bonf_log10": -218.72,
+   "q_cluster_bh_log10": -3.92,
+   "efeito_pp": {
+    "q1": 1.26,
+    "q5": -0.83,
+    "dif": -2.09,
+    "dif_ic": [
+     -3.17,
+     -1.34
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     67.6,
+     75.8,
+     81.0,
+     85.3,
+     90.0
+    ],
+    "alvo": [
+     1.256,
+     0.161,
+     -0.253,
+     -0.571,
+     -0.834
+    ],
+    "n": [
+     1109,
+     1119,
+     1119,
+     1105,
+     1118
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.421,
+    "Nordeste": -0.282,
+    "Norte": -0.349,
+    "Sudeste": -0.019,
+    "Sul": -0.188
+   },
+   "pontuacao": 35.23,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Domicílios com internet é maior, variação da abstenção (2º−1º turno, pp) — 2022 tende a ser menor (r = −0,41, IC95% −0,43 a −0,39). Média no quintil mais baixo do preditor: 1,3; no mais alto: −0,8 (diferença −2,1 pp, IC95% por UF −3,2 a −1,3). Dentro das UFs, r = −0,23; p ≈ 1,4×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Dwellings with internet is higher, change in abstention (2nd−1st round, pp) — 2022 tends to be lower (r = −0.41, 95% CI −0.43 to −0.39). Mean in the lowest predictor quintile: 1.3; in the highest: −0.8 (difference −2.1 pp, state-cluster bootstrap 95% CI −3.2 to −1.3). Within states, r = −0.23; p ≈ 1.4×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a32",
+   "alvo": "res26_t2_plula",
+   "preditor": "censo_mor_dom",
+   "n": 5570,
+   "pearson": 0.392,
+   "ci": [
+    0.3695,
+    0.414
+   ],
+   "spearman": 0.4781,
+   "r_ponderado": 0.3176,
+   "r_dentro_uf": 0.179,
+   "r_sem_extremos": 0.4315,
+   "r_sem_uf": [
+    0.3512,
+    0.4131
+   ],
+   "p_log10": -203.25,
+   "p_cluster_log10": -3.32,
+   "q_bh": 1.1961807611829045e-202,
+   "q_bh_log10": -201.92,
+   "q_bonf_log10": -200.37,
+   "q_cluster_bh_log10": -2.7,
+   "efeito_pp": {
+    "q1": 43.38,
+    "q5": 67.64,
+    "dif": 24.25,
+    "dif_ic": [
+     15.97,
+     29.72
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     2.6,
+     2.7,
+     2.8,
+     2.9,
+     3.2
+    ],
+    "alvo": [
+     43.383,
+     46.373,
+     52.884,
+     62.745,
+     67.636
+    ],
+    "n": [
+     1342,
+     1126,
+     1022,
+     1191,
+     889
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.036,
+    "Nordeste": 0.034,
+    "Norte": 0.481,
+    "Sudeste": 0.227,
+    "Sul": -0.118
+   },
+   "pontuacao": 35.15,
+   "tags": [
+    "alerta"
+   ],
+   "alerta_pt": "instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.570 municípios, onde Média de moradores por domicílio é maior, % dos votos válidos de Lula — 2º turno 2026 tende a ser maior (r = 0,39, IC95% 0,37 a 0,41). Média no quintil mais baixo do preditor: 43,4; no mais alto: 67,6 (diferença +24,3 pp, IC95% por UF +16,0 a +29,7). Dentro das UFs, r = 0,18; p ≈ 4,8×10⁻⁴ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,570 municipalities, where Average residents per dwelling is higher, lula's % of valid votes — 2nd round 2026 tends to be higher (r = 0.39, 95% CI 0.37 to 0.41). Mean in the lowest predictor quintile: 43.4; in the highest: 67.6 (difference +24.3 pp, state-cluster bootstrap 95% CI +16.0 to +29.7). Within states, r = 0.18; p ≈ 4.8×10⁻⁴ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: unstable across regions (comparable in only 2 of 5 regions)."
+  },
+  {
+   "id": "a33",
+   "alvo": "res22_t1_plula",
+   "preditor": "censo_pct_evangelica",
+   "n": 5570,
+   "pearson": -0.3892,
+   "ci": [
+    -0.4113,
+    -0.3667
+   ],
+   "spearman": -0.4041,
+   "r_ponderado": -0.4311,
+   "r_dentro_uf": -0.2461,
+   "r_sem_extremos": -0.3867,
+   "r_sem_uf": [
+    -0.4636,
+    -0.3579
+   ],
+   "p_log10": -200.2,
+   "p_cluster_log10": -2.73,
+   "q_bh": 1.2908073667203819e-199,
+   "q_bh_log10": -198.89,
+   "q_bonf_log10": -197.31,
+   "q_cluster_bh_log10": -2.21,
+   "efeito_pp": {
+    "q1": 64.65,
+    "q5": 44.84,
+    "dif": -19.81,
+    "dif_ic": [
+     -31.33,
+     -9.35
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     10.3,
+     16.3,
+     21.7,
+     27.7,
+     36.6
+    ],
+    "alvo": [
+     64.652,
+     60.569,
+     53.809,
+     47.903,
+     44.842
+    ],
+    "n": [
+     1105,
+     1133,
+     1099,
+     1124,
+     1109
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.256,
+    "Nordeste": -0.559,
+    "Norte": -0.436,
+    "Sudeste": -0.366,
+    "Sul": -0.002
+   },
+   "pontuacao": 35.13,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % evangélica é maior, % dos votos válidos de Lula — 1º turno 2022 tende a ser menor (r = −0,39, IC95% −0,41 a −0,37). Média no quintil mais baixo do preditor: 64,7; no mais alto: 44,8 (diferença −19,8 pp, IC95% por UF −31,3 a −9,4). Dentro das UFs, r = −0,25; p ≈ 1,9×10⁻³ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % Evangelical is higher, lula's % of valid votes — 1st round 2022 tends to be lower (r = −0.39, 95% CI −0.41 to −0.37). Mean in the lowest predictor quintile: 64.7; in the highest: 44.8 (difference −19.8 pp, state-cluster bootstrap 95% CI −31.3 to −9.4). Within states, r = −0.25; p ≈ 1.9×10⁻³ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a34",
+   "alvo": "res22_t1_abst",
+   "preditor": "censo_pct_branca",
+   "n": 5570,
+   "pearson": -0.3763,
+   "ci": [
+    -0.3986,
+    -0.3535
+   ],
+   "spearman": -0.3304,
+   "r_ponderado": -0.0802,
+   "r_dentro_uf": -0.3256,
+   "r_sem_extremos": -0.3635,
+   "r_sem_uf": [
+    -0.4385,
+    -0.2688
+   ],
+   "p_log10": -186.14,
+   "p_cluster_log10": -2.69,
+   "q_bh": 1.0514376355661661e-185,
+   "q_bh_log10": -184.98,
+   "q_bonf_log10": -183.25,
+   "q_cluster_bh_log10": -2.18,
+   "efeito_pp": {
+    "q1": 23.29,
+    "q5": 18.15,
+    "dif": -5.14,
+    "dif_ic": [
+     -7.56,
+     -1.19
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     16.45,
+     26.1,
+     38.1,
+     56.3,
+     77.5
+    ],
+    "alvo": [
+     23.289,
+     22.317,
+     21.34,
+     21.258,
+     18.152
+    ],
+    "n": [
+     1112,
+     1122,
+     1108,
+     1113,
+     1115
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.254,
+    "Nordeste": -0.321,
+    "Norte": 0.078,
+    "Sudeste": -0.414,
+    "Sul": -0.518
+   },
+   "pontuacao": 35.06,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde % branca é maior, abstenção (%) — 1º turno 2022 tende a ser menor (r = −0,38, IC95% −0,40 a −0,35). Média no quintil mais baixo do preditor: 23,3; no mais alto: 18,2 (diferença −5,1 pp, IC95% por UF −7,6 a −1,2). Dentro das UFs, r = −0,33; p ≈ 2,0×10⁻³ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where % White is higher, abstention (%) — 1st round 2022 tends to be lower (r = −0.38, 95% CI −0.40 to −0.35). Mean in the lowest predictor quintile: 23.3; in the highest: 18.2 (difference −5.1 pp, state-cluster bootstrap 95% CI −7.6 to −1.2). Within states, r = −0.33; p ≈ 2.0×10⁻³ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a35",
+   "alvo": "res26_d21_abst",
+   "preditor": "pib_pct_servicos_2021",
+   "n": 5569,
+   "pearson": -0.3626,
+   "ci": [
+    -0.3852,
+    -0.3396
+   ],
+   "spearman": -0.3968,
+   "r_ponderado": -0.4076,
+   "r_dentro_uf": -0.196,
+   "r_sem_extremos": -0.3666,
+   "r_sem_uf": [
+    -0.3863,
+    -0.3408
+   ],
+   "p_log10": -171.92,
+   "p_cluster_log10": -4.47,
+   "q_bh": 1.4284982169500636e-171,
+   "q_bh_log10": -170.85,
+   "q_bonf_log10": -169.04,
+   "q_cluster_bh_log10": -3.63,
+   "efeito_pp": {
+    "q1": 0.48,
+    "q5": -2.24,
+    "dif": -2.72,
+    "dif_ic": [
+     -3.76,
+     -1.75
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     16.6,
+     23.2,
+     29.2,
+     37.0,
+     50.9
+    ],
+    "alvo": [
+     0.482,
+     -0.91,
+     -1.763,
+     -2.15,
+     -2.242
+    ],
+    "n": [
+     1113,
+     1107,
+     1131,
+     1109,
+     1109
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.272,
+    "Nordeste": -0.339,
+    "Norte": -0.283,
+    "Sudeste": -0.102,
+    "Sul": -0.114
+   },
+   "pontuacao": 34.16,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.569 municípios, onde % serviços (excl. adm. pública) no valor adicionado (2021) é maior, variação da abstenção (2º−1º turno, pp) — 2026 tende a ser menor (r = −0,36, IC95% −0,39 a −0,34). Média no quintil mais baixo do preditor: 0,5; no mais alto: −2,2 (diferença −2,7 pp, IC95% por UF −3,8 a −1,8). Dentro das UFs, r = −0,20; p ≈ 3,4×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,569 municipalities, where % services (excl. public admin.) in value added (2021) is higher, change in abstention (2nd−1st round, pp) — 2026 tends to be lower (r = −0.36, 95% CI −0.39 to −0.34). Mean in the lowest predictor quintile: 0.5; in the highest: −2.2 (difference −2.7 pp, state-cluster bootstrap 95% CI −3.8 to −1.8). Within states, r = −0.20; p ≈ 3.4×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a36",
+   "alvo": "res22_t1_plula",
+   "preditor": "censo_pct_urbana",
+   "n": 5570,
+   "pearson": -0.3784,
+   "ci": [
+    -0.4007,
+    -0.3557
+   ],
+   "spearman": -0.3933,
+   "r_ponderado": -0.5485,
+   "r_dentro_uf": -0.3202,
+   "r_sem_extremos": -0.3828,
+   "r_sem_uf": [
+    -0.4548,
+    -0.3165
+   ],
+   "p_log10": -188.44,
+   "p_cluster_log10": -3.0,
+   "q_bh": 5.6622016178972685e-188,
+   "q_bh_log10": -187.25,
+   "q_bonf_log10": -185.56,
+   "q_cluster_bh_log10": -2.43,
+   "efeito_pp": {
+    "q1": 62.5,
+    "q5": 42.6,
+    "dif": -19.9,
+    "dif_ic": [
+     -27.66,
+     -11.45
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     40.6,
+     57.6,
+     70.8,
+     83.3,
+     94.5
+    ],
+    "alvo": [
+     62.503,
+     60.055,
+     56.544,
+     50.066,
+     42.601
+    ],
+    "n": [
+     1115,
+     1113,
+     1116,
+     1113,
+     1113
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.18,
+    "Nordeste": -0.524,
+    "Norte": -0.062,
+    "Sudeste": -0.426,
+    "Sul": -0.136
+   },
+   "pontuacao": 33.92,
+   "tags": [
+    "dentro_uf",
+    "alerta"
+   ],
+   "alerta_pt": "instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.570 municípios, onde População urbana é maior, % dos votos válidos de Lula — 1º turno 2022 tende a ser menor (r = −0,38, IC95% −0,40 a −0,36). Média no quintil mais baixo do preditor: 62,5; no mais alto: 42,6 (diferença −19,9 pp, IC95% por UF −27,7 a −11,4). Dentro das UFs, r = −0,32; p ≈ 1,0×10⁻³ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,570 municipalities, where Urban population is higher, lula's % of valid votes — 1st round 2022 tends to be lower (r = −0.38, 95% CI −0.40 to −0.36). Mean in the lowest predictor quintile: 62.5; in the highest: 42.6 (difference −19.9 pp, state-cluster bootstrap 95% CI −27.7 to −11.4). Within states, r = −0.32; p ≈ 1.0×10⁻³ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: unstable across regions (comparable in only 2 of 5 regions)."
+  },
+  {
+   "id": "a37",
+   "alvo": "res26_d2622_t2_lula",
+   "preditor": "censo_pct_esgoto_adeq",
+   "n": 5570,
+   "pearson": 0.3349,
+   "ci": [
+    0.3114,
+    0.358
+   ],
+   "spearman": 0.3478,
+   "r_ponderado": 0.5168,
+   "r_dentro_uf": 0.2978,
+   "r_sem_extremos": 0.3357,
+   "r_sem_uf": [
+    0.3027,
+    0.3617
+   ],
+   "p_log10": -145.34,
+   "p_cluster_log10": -4.58,
+   "q_bh": 3.401983134086671e-145,
+   "q_bh_log10": -144.47,
+   "q_bonf_log10": -142.46,
+   "q_cluster_bh_log10": -3.73,
+   "efeito_pp": {
+    "q1": -3.53,
+    "q5": -0.82,
+    "dif": 2.71,
+    "dif_ic": [
+     1.92,
+     3.68
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     0.5,
+     6.45,
+     32.3,
+     60.8,
+     87.8
+    ],
+    "alvo": [
+     -3.532,
+     -2.787,
+     -2.22,
+     -1.509,
+     -0.821
+    ],
+    "n": [
+     1120,
+     1108,
+     1116,
+     1112,
+     1114
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.144,
+    "Nordeste": 0.307,
+    "Norte": 0.223,
+    "Sudeste": 0.265,
+    "Sul": 0.478
+   },
+   "pontuacao": 33.64,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Domicílios com esgoto adequado (rede + fossa ligada à rede) é maior, variação do % de Lula (2026−2022, pp) — 2º turno tende a ser maior (r = 0,33, IC95% 0,31 a 0,36). Média no quintil mais baixo do preditor: −3,5; no mais alto: −0,8 (diferença +2,7 pp, IC95% por UF +1,9 a +3,7). Dentro das UFs, r = 0,30; p ≈ 2,6×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Dwellings with adequate sewage is higher, change in Lula's % (2026−2022, pp) — 2nd round tends to be higher (r = 0.33, 95% CI 0.31 to 0.36). Mean in the lowest predictor quintile: −3.5; in the highest: −0.8 (difference +2.7 pp, state-cluster bootstrap 95% CI +1.9 to +3.7). Within states, r = 0.30; p ≈ 2.6×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a38",
+   "alvo": "res22_t2_plula",
+   "preditor": "censo_mor_dom",
+   "n": 5570,
+   "pearson": 0.3752,
+   "ci": [
+    0.3524,
+    0.3975
+   ],
+   "spearman": 0.459,
+   "r_ponderado": 0.3389,
+   "r_dentro_uf": 0.1613,
+   "r_sem_extremos": 0.4156,
+   "r_sem_uf": [
+    0.3301,
+    0.3934
+   ],
+   "p_log10": -184.94,
+   "p_cluster_log10": -3.32,
+   "q_bh": 1.5569411248013798e-184,
+   "q_bh_log10": -183.81,
+   "q_bonf_log10": -182.06,
+   "q_cluster_bh_log10": -2.7,
+   "efeito_pp": {
+    "q1": 46.34,
+    "q5": 69.69,
+    "dif": 23.35,
+    "dif_ic": [
+     15.51,
+     29.39
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     2.6,
+     2.7,
+     2.8,
+     2.9,
+     3.2
+    ],
+    "alvo": [
+     46.34,
+     48.329,
+     54.715,
+     64.628,
+     69.693
+    ],
+    "n": [
+     1342,
+     1126,
+     1022,
+     1191,
+     889
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.13,
+    "Nordeste": 0.073,
+    "Norte": 0.432,
+    "Sudeste": 0.209,
+    "Sul": -0.156
+   },
+   "pontuacao": 33.47,
+   "tags": [
+    "alerta"
+   ],
+   "alerta_pt": "instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.570 municípios, onde Média de moradores por domicílio é maior, % dos votos válidos de Lula — 2º turno 2022 tende a ser maior (r = 0,38, IC95% 0,35 a 0,40). Média no quintil mais baixo do preditor: 46,3; no mais alto: 69,7 (diferença +23,4 pp, IC95% por UF +15,5 a +29,4). Dentro das UFs, r = 0,16; p ≈ 4,8×10⁻⁴ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,570 municipalities, where Average residents per dwelling is higher, lula's % of valid votes — 2nd round 2022 tends to be higher (r = 0.38, 95% CI 0.35 to 0.40). Mean in the lowest predictor quintile: 46.3; in the highest: 69.7 (difference +23.4 pp, state-cluster bootstrap 95% CI +15.5 to +29.4). Within states, r = 0.16; p ≈ 4.8×10⁻⁴ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: unstable across regions (comparable in only 2 of 5 regions)."
+  },
+  {
+   "id": "a39",
+   "alvo": "res26_d21_lula",
+   "preditor": "censo_pct_instr_superior",
+   "n": 5570,
+   "pearson": 0.3346,
+   "ci": [
+    0.3111,
+    0.3577
+   ],
+   "spearman": 0.35,
+   "r_ponderado": 0.542,
+   "r_dentro_uf": 0.269,
+   "r_sem_extremos": 0.3394,
+   "r_sem_uf": [
+    0.2846,
+    0.3607
+   ],
+   "p_log10": -145.07,
+   "p_cluster_log10": -3.95,
+   "q_bh": 6.290434300343032e-145,
+   "q_bh_log10": -144.2,
+   "q_bonf_log10": -142.18,
+   "q_cluster_bh_log10": -3.19,
+   "efeito_pp": {
+    "q1": 4.46,
+    "q5": 6.09,
+    "dif": 1.63,
+    "dif_ic": [
+     0.75,
+     2.34
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     5.2,
+     7.2,
+     9.3,
+     11.6,
+     15.8
+    ],
+    "alvo": [
+     4.458,
+     5.001,
+     5.282,
+     5.678,
+     6.092
+    ],
+    "n": [
+     1125,
+     1126,
+     1079,
+     1119,
+     1121
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": -0.055,
+    "Nordeste": 0.272,
+    "Norte": 0.244,
+    "Sudeste": 0.353,
+    "Sul": 0.171
+   },
+   "pontuacao": 32.94,
+   "tags": [
+    "robusto",
+    "dentro_uf"
+   ],
+   "alerta_pt": "",
+   "alerta_en": "",
+   "texto_pt": "Entre 5.570 municípios, onde Instrução 18+: superior completo é maior, variação do % de Lula (2º−1º turno, pp) — 2026 tende a ser maior (r = 0,33, IC95% 0,31 a 0,36). Média no quintil mais baixo do preditor: 4,5; no mais alto: 6,1 (diferença +1,6 pp, IC95% por UF +0,8 a +2,3). Dentro das UFs, r = 0,27; p ≈ 1,1×10⁻⁴ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos.",
+   "texto_en": "Across 5,570 municipalities, where Education 18+: tertiary completed is higher, change in Lula's % (2nd−1st round, pp) — 2026 tends to be higher (r = 0.33, 95% CI 0.31 to 0.36). Mean in the lowest predictor quintile: 4.5; in the highest: 6.1 (difference +1.6 pp, state-cluster bootstrap 95% CI +0.8 to +2.3). Within states, r = 0.27; p ≈ 1.1×10⁻⁴ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals."
+  },
+  {
+   "id": "a40",
+   "alvo": "res22_d21_abst",
+   "preditor": "pib_pct_adm_publica_2021",
+   "n": 5569,
+   "pearson": 0.3787,
+   "ci": [
+    0.356,
+    0.401
+   ],
+   "spearman": 0.3611,
+   "r_ponderado": 0.3625,
+   "r_dentro_uf": 0.2072,
+   "r_sem_extremos": 0.3702,
+   "r_sem_uf": [
+    0.3559,
+    0.4021
+   ],
+   "p_log10": -188.73,
+   "p_cluster_log10": -4.6,
+   "q_bh": 3.0206479176723357e-188,
+   "q_bh_log10": -187.52,
+   "q_bonf_log10": -185.84,
+   "q_cluster_bh_log10": -3.74,
+   "efeito_pp": {
+    "q1": -0.75,
+    "q5": 1.25,
+    "dif": 2.0,
+    "dif_ic": [
+     1.33,
+     2.99
+    ]
+   },
+   "quintis": {
+    "preditor": [
+     10.8,
+     17.7,
+     26.8,
+     40.1,
+     56.0
+    ],
+    "alvo": [
+     -0.747,
+     -0.606,
+     -0.318,
+     0.179,
+     1.251
+    ],
+    "n": [
+     1105,
+     1122,
+     1118,
+     1113,
+     1111
+    ]
+   },
+   "regioes": {
+    "Centro-Oeste": 0.311,
+    "Nordeste": 0.186,
+    "Norte": 0.452,
+    "Sudeste": 0.119,
+    "Sul": 0.117
+   },
+   "pontuacao": 32.25,
+   "tags": [
+    "dentro_uf",
+    "alerta"
+   ],
+   "alerta_pt": "instável entre regiões (relação comparável em apenas 2 de 5 regiões)",
+   "alerta_en": "unstable across regions (comparable in only 2 of 5 regions)",
+   "texto_pt": "Entre 5.569 municípios, onde % administração pública no valor adicionado (2021) é maior, variação da abstenção (2º−1º turno, pp) — 2022 tende a ser maior (r = 0,38, IC95% 0,36 a 0,40). Média no quintil mais baixo do preditor: −0,7; no mais alto: 1,3 (diferença +2,0 pp, IC95% por UF +1,3 a +3,0). Dentro das UFs, r = 0,21; p ≈ 2,5×10⁻⁵ com erro-padrão robusto a UFs. Associação ecológica entre municípios — não implica causalidade nem descreve indivíduos. ALERTA: instável entre regiões (relação comparável em apenas 2 de 5 regiões).",
+   "texto_en": "Across 5,569 municipalities, where % public administration in value added (2021) is higher, change in abstention (2nd−1st round, pp) — 2022 tends to be higher (r = 0.38, 95% CI 0.36 to 0.40). Mean in the lowest predictor quintile: −0.7; in the highest: 1.3 (difference +2.0 pp, state-cluster bootstrap 95% CI +1.3 to +3.0). Within states, r = 0.21; p ≈ 2.5×10⁻⁵ with state-clustered robust SE. Ecological association between municipalities — not causal and not about individuals. WARNING: unstable across regions (comparable in only 2 of 5 regions)."
+  }
+ ],
+ "estadual": [
+  {
+   "alvo": "res26_t1_plula",
+   "preditor": "pnadc_subutil_3t22",
+   "n": 27,
+   "pearson": 0.924,
+   "ci": [
+    0.838,
+    0.965
+   ],
+   "spearman": 0.892,
+   "r_ponderado": 0.953,
+   "p_log10": -11.21,
+   "q_bh_log10": -9.01,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (3º tri 2022) vs. % dos votos válidos de Lula — 1º turno 2026; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2022 Q3) vs. Lula's % of valid votes — 1st round 2026; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res26_t2_plula",
+   "preditor": "pnadc_subutil_3t22",
+   "n": 27,
+   "pearson": 0.919,
+   "ci": [
+    0.828,
+    0.963
+   ],
+   "spearman": 0.899,
+   "r_ponderado": 0.952,
+   "p_log10": -10.87,
+   "q_bh_log10": -8.97,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (3º tri 2022) vs. % dos votos válidos de Lula — 2º turno 2026; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2022 Q3) vs. Lula's % of valid votes — 2nd round 2026; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res22_t2_plula",
+   "preditor": "pnadc_subutil_3t22",
+   "n": 27,
+   "pearson": 0.888,
+   "ci": [
+    0.767,
+    0.948
+   ],
+   "spearman": 0.862,
+   "r_ponderado": 0.932,
+   "p_log10": -9.19,
+   "q_bh_log10": -7.46,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (3º tri 2022) vs. % dos votos válidos de Lula — 2º turno 2022; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2022 Q3) vs. Lula's % of valid votes — 2nd round 2022; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res22_t1_plula",
+   "preditor": "pnadc_subutil_3t22",
+   "n": 27,
+   "pearson": 0.883,
+   "ci": [
+    0.756,
+    0.946
+   ],
+   "spearman": 0.842,
+   "r_ponderado": 0.923,
+   "p_log10": -8.95,
+   "q_bh_log10": -7.35,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (3º tri 2022) vs. % dos votos válidos de Lula — 1º turno 2022; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2022 Q3) vs. Lula's % of valid votes — 1st round 2022; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res26_t1_plula",
+   "preditor": "pnadc_subutil_ult",
+   "n": 27,
+   "pearson": 0.829,
+   "ci": [
+    0.656,
+    0.92
+   ],
+   "spearman": 0.824,
+   "r_ponderado": 0.925,
+   "p_log10": -7.04,
+   "q_bh_log10": -5.54,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (2º tri 2026) vs. % dos votos válidos de Lula — 1º turno 2026; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2026 Q2) vs. Lula's % of valid votes — 1st round 2026; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res26_t2_plula",
+   "preditor": "pnadc_subutil_ult",
+   "n": 27,
+   "pearson": 0.817,
+   "ci": [
+    0.634,
+    0.913
+   ],
+   "spearman": 0.825,
+   "r_ponderado": 0.919,
+   "p_log10": -6.7,
+   "q_bh_log10": -5.27,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (2º tri 2026) vs. % dos votos válidos de Lula — 2º turno 2026; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2026 Q2) vs. Lula's % of valid votes — 2nd round 2026; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res22_t2_plula",
+   "preditor": "pnadc_subutil_ult",
+   "n": 27,
+   "pearson": 0.782,
+   "ci": [
+    0.572,
+    0.896
+   ],
+   "spearman": 0.788,
+   "r_ponderado": 0.903,
+   "p_log10": -5.83,
+   "q_bh_log10": -4.48,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (2º tri 2026) vs. % dos votos válidos de Lula — 2º turno 2022; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2026 Q2) vs. Lula's % of valid votes — 2nd round 2022; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res22_t1_plula",
+   "preditor": "pnadc_subutil_ult",
+   "n": 27,
+   "pearson": 0.779,
+   "ci": [
+    0.567,
+    0.894
+   ],
+   "spearman": 0.777,
+   "r_ponderado": 0.899,
+   "p_log10": -5.78,
+   "q_bh_log10": -4.48,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: subutilização da força de trabalho na UF (2º tri 2026) vs. % dos votos válidos de Lula — 1º turno 2022; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state labor underutilization (2026 Q2) vs. Lula's % of valid votes — 1st round 2022; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res26_d2622_t2_abst",
+   "preditor": "pnadc_pct_baixa_instr_2025",
+   "n": 27,
+   "pearson": -0.737,
+   "ci": [
+    -0.873,
+    -0.496
+   ],
+   "spearman": -0.757,
+   "r_ponderado": -0.657,
+   "p_log10": -4.93,
+   "q_bh_log10": -3.68,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: % sem instrução ou fundamental incompleto na UF (2025) vs. Variação da abstenção (2026−2022, pp) — 2º turno; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state % no schooling or incomplete primary (2025) vs. Change in abstention (2026−2022, pp) — 2nd round; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res26_d2622_t1_abst",
+   "preditor": "pnadc_informal_ult",
+   "n": 27,
+   "pearson": -0.7,
+   "ci": [
+    -0.853,
+    -0.436
+   ],
+   "spearman": -0.735,
+   "r_ponderado": -0.858,
+   "p_log10": -4.32,
+   "q_bh_log10": -3.22,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: taxa de informalidade na UF (2º tri 2026) vs. Variação da abstenção (2026−2022, pp) — 1º turno; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state informality rate (2026 Q2) vs. Change in abstention (2026−2022, pp) — 1st round; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res26_d2622_t1_abst",
+   "preditor": "pnadc_informal_3t22",
+   "n": 27,
+   "pearson": -0.7,
+   "ci": [
+    -0.853,
+    -0.435
+   ],
+   "spearman": -0.733,
+   "r_ponderado": -0.851,
+   "p_log10": -4.31,
+   "q_bh_log10": -3.22,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: taxa de informalidade na UF (3º tri 2022) vs. Variação da abstenção (2026−2022, pp) — 1º turno; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state informality rate (2022 Q3) vs. Change in abstention (2026−2022, pp) — 1st round; weak evidence, descriptive only."
+  },
+  {
+   "alvo": "res26_d2622_t2_abst",
+   "preditor": "pnadc_pct_superior_2025",
+   "n": 27,
+   "pearson": 0.679,
+   "ci": [
+    0.402,
+    0.842
+   ],
+   "spearman": 0.737,
+   "r_ponderado": 0.697,
+   "p_log10": -4.0,
+   "q_bh_log10": -3.03,
+   "nota_pt": "Contexto estadual (n = 27 UFs, não municípios): PNADC: % com superior completo na UF (2025) vs. Variação da abstenção (2026−2022, pp) — 2º turno; evidência fraca, só descritiva.",
+   "nota_en": "State-level context (n = 27 states, not municipalities): PNADC: state % with tertiary degree (2025) vs. Change in abstention (2026−2022, pp) — 2nd round; weak evidence, descriptive only."
+  }
+ ],
+ "sem_achado": [
+  {
+   "k": "res26_t1_abst",
+   "motivo_pt": "nenhuma relação passou nos critérios (q<0,05 também com p por clusters de UF, |r|≥0,3)",
+   "motivo_en": "no relationship met the criteria (q<0.05 also with state-clustered p, |r|≥0.3)"
+  },
+  {
+   "k": "res22_d21_lula",
+   "motivo_pt": "nenhuma relação passou nos critérios (q<0,05 também com p por clusters de UF, |r|≥0,3)",
+   "motivo_en": "no relationship met the criteria (q<0.05 also with state-clustered p, |r|≥0.3)"
+  },
+  {
+   "k": "res26_d2622_t1_abst",
+   "motivo_pt": "nenhuma relação passou nos critérios (q<0,05 também com p por clusters de UF, |r|≥0,3)",
+   "motivo_en": "no relationship met the criteria (q<0.05 also with state-clustered p, |r|≥0.3)"
+  },
+  {
+   "k": "res26_d2622_t2_abst",
+   "motivo_pt": "nenhuma relação passou nos critérios (q<0,05 também com p por clusters de UF, |r|≥0,3)",
+   "motivo_en": "no relationship met the criteria (q<0.05 also with state-clustered p, |r|≥0.3)"
+  }
+ ]
+}

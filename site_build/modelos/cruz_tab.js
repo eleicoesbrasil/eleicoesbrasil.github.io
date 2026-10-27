@@ -1,7 +1,26 @@
 <script>
 /* Aba "Cruzamento": cruza variáveis externas por município em gráficos de barras (cliente, arrays tipados).
    Dados: dados/ext/municipios.json (contrato em dados_externos/CONTRATO_DADOS.md), carregado sob demanda.
-   API: window.__cruzInit (ao abrir a aba). Textos dinâmicos via S(pt,en) com window.__LANG; estáticos via i18n_extra_cruz.py. */
+   API: window.__cruzInit (ao abrir a aba). Textos dinâmicos via S(pt,en) com window.__LANG; estáticos via i18n_extra_cruz.py.
+   Estatística (p-valores, IC, ANOVA, Kruskal, Welch+Holm, FDR): window.__stats (modelos/global_stats.js).
+
+   API de deep link: window.__cruzApply(cfg) -> Promise<{ok:boolean, avisos:string[], erro?:string}>
+     Abre a aba Cruzamento (como o clique na aba), carrega os dados se preciso (aplica quando prontos), configura a UI e atualiza.
+     cfg = {
+       grupoPor:  {tipo:'quantis', k:'<var>', n:5}        // faixas por quantis de k (n = 3,4,5,10,20; padrão 5)
+                | {tipo:'faixas', k:'<var>', cortes:[10,50,200]}   // cortes manuais
+                | {tipo:'var', k:'<var>'}                  // variável categórica (ou numérica já em categorias)
+                | {tipo:'regiao'} | {tipo:'uf'} | {tipo:'porte_pop'} | {tipo:'porte_apt'} | {tipo:'nenhum'},
+                // opcional em grupoPor de quantis: pesoFaixas:true (faixas com o mesmo peso total)
+       grupoPor2: (opcional, mesmo formato; com 2º agrupamento só a 1ª medida é usada),
+       medidas:   [{k:'<var>', agg:'wmean'|'mean'|'wmedian'|'median'|'sum'|'ratio', den:'<var>' (ratio), mul:1|100|1000}, ...]   // 1 a 3; agg padrão 'wmean'
+       peso:      '<var>'   (opcional; padrão: eleitores aptos),
+       filtros:   {regioes:['Nordeste',...], ufs:['BA',...], porte:0..6, faixas:[{k:'<var>', min:n, max:n}]}  (opcional),
+       escala:    'val'|'pct'|'idx' (opcional), ordem: 'nat'|'vd'|'va'|'lab'|'nd' (opcional), top: 0|5|10|15|20 (opcional),
+       layout:    'grp'|'stk' (opcional), ic: true|false (opcional)
+     }
+     Exemplo (aba Achados): __cruzApply({grupoPor:{tipo:'quantis',k:'censo_renda_mediana',n:5}, medidas:[{k:'res26_t2_pct_lula',agg:'wmean'}]})
+     Variáveis inexistentes geram aviso (ou erro, se for o agrupamento ou todas as medidas) e o estado anterior é mantido. */
 (function(){
 var root=document.getElementById('cz-root');if(!root)return;
 function $(i){return document.getElementById(i);}
@@ -270,11 +289,11 @@ function copyCsv(){var t=buildCsv(),msg=$('cz-csv-msg'),box=$('cz-csv-box'),ta=$
  var fb=function(){var ok=false;try{ta.hidden=false;box.hidden=false;ta.focus();ta.select();ok=document.execCommand('copy');}catch(e){}done(ok);};
  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){done(true);},fb);}else fb();}
 /* ---------------- correlação ---------------- */
-function corr(x,y,w,sel_){var n=0,sw=0,mx=0,my=0,i,wi;
- for(i=0;i<N;i++){if(!sel_[i])continue;wi=w?w[i]:1;n++;sw+=wi;mx+=wi*x[i];my+=wi*y[i];}
- if(n<3||sw<=0)return {r:NaN,n:n};mx/=sw;my/=sw;var sxx=0,syy=0,sxy=0;
+function corr(x,y,w,sel_){var n=0,sw=0,sw2=0,mx=0,my=0,i,wi;
+ for(i=0;i<N;i++){if(!sel_[i])continue;wi=w?w[i]:1;n++;sw+=wi;sw2+=wi*wi;mx+=wi*x[i];my+=wi*y[i];}
+ if(n<3||sw<=0)return {r:NaN,n:n,neff:n};mx/=sw;my/=sw;var sxx=0,syy=0,sxy=0;
  for(i=0;i<N;i++){if(!sel_[i])continue;wi=w?w[i]:1;var dx=x[i]-mx,dy=y[i]-my;sxx+=wi*dx*dx;syy+=wi*dy*dy;sxy+=wi*dx*dy;}
- return {r:(sxx>0&&syy>0)?sxy/Math.sqrt(sxx*syy):NaN,n:n};}
+ return {r:(sxx>0&&syy>0)?sxy/Math.sqrt(sxx*syy):NaN,n:n,neff:sw*sw/sw2};}
 function rankArr(x,o,sel_,out){var pos=0,t=0,L=o.length;
  while(t<L){var i=o[t];if(!sel_[i]){t++;continue;}var v=x[i],u=t,cnt=0,ids=[];
   while(u<L){var k=o[u];if(!sel_[k]){u++;continue;}if(x[k]!==v)break;ids.push(k);cnt++;u++;}
@@ -283,11 +302,21 @@ function rankArr(x,o,sel_,out){var pos=0,t=0,L=o.length;
 function pairSel(x,y,mask,w){var s=new Uint8Array(N),i;for(i=0;i<N;i++)s[i]=(mask[i]&&x[i]===x[i]&&y[i]===y[i]&&(!w||w[i]>0))?1:0;return s;}
 function corr4(x,y,ox,oy,mask,W){var res={},s=pairSel(x,y,mask,null),rx=new Float64Array(N),ry=new Float64Array(N);
  var p=corr(x,y,null,s);res.p=p.r;res.n=p.n;rankArr(x,ox,s,rx);rankArr(y,oy,s,ry);res.s=corr(rx,ry,null,s).r;
- if(W){var sw=pairSel(x,y,mask,W);res.nw=0;res.pw=corr(x,y,W,sw).r;rankArr(x,ox,sw,rx);rankArr(y,oy,sw,ry);res.sw=corr(rx,ry,W,sw).r;}
+ if(W){var sw=pairSel(x,y,mask,W),cw=corr(x,y,W,sw);res.nw=cw.n;res.neffw=cw.neff;res.pw=cw.r;rankArr(x,ox,sw,rx);rankArr(y,oy,sw,ry);res.sw=corr(rx,ry,W,sw).r;}
  return res;}
 function eta2(G,x,mask){var K=G.K,n=new Float64Array(K),s=new Float64Array(K),i,tn=0,ts=0,ts2=0;
  for(i=0;i<N;i++){if(!mask[i]||G.g[i]<0||!(x[i]===x[i]))continue;n[G.g[i]]++;s[G.g[i]]+=x[i];tn++;ts+=x[i];ts2+=x[i]*x[i];}
  if(tn<3)return NaN;var m=ts/tn,sst=ts2-tn*m*m,ssb=0;for(var g=0;g<K;g++)if(n[g])ssb+=n[g]*Math.pow(s[g]/n[g]-m,2);return sst>0?ssb/sst:NaN;}
+/* ---------- estatística (p, IC, FDR) ---------- */
+function ST_(){return window.__stats||null;}
+function ciTxt(ci){return S('IC 95%','95% CI')+' ['+fr(ci[0])+'; '+fr(ci[1])+']';}
+function rDet(r,n,tipo,eff){var s_=ST_();if(!s_||!isFinite(r)||!(n>3))return '';var pc=s_.pCorr(r,n,tipo),ci=s_.ciCorr(r,n);
+ return s_.fmtP(pc,window.__LANG)+' · '+(eff?S('n efetivo = ','effective n = ')+nf(n,0):'n = '+nf(n,0))+' · '+ciTxt(ci)+' · r² = '+nf(r*r,3);}
+function qTxt(lq){if(lq==null||!isFinite(lq))return '';if(lq<-300)return 'q < 1e-300';
+ if(lq<-3){var e=Math.floor(lq),m=Math.pow(10,lq-e),sp='⁰¹²³⁴⁵⁶⁷⁸⁹';return 'q ≈ '+nf(m,1)+'×10'+String(e).replace('-','⁻').replace(/\d/g,function(d){return sp[d];});}
+ return 'q = '+nf(Math.pow(10,lq),4);}
+function sigQ(lq){return !ST_()||(lq!=null&&lq<Math.log10(.05));}
+function cardH(b,l,d){return '<div><b>'+b+'</b><span>'+l+'</span>'+(d?'<span class="cz-s">'+esc(d)+'</span>':'')+'</div>';}
 function corrPanel(){
  var cards=$('cz-cor-cards'),mx=$('cz-mx');cards.innerHTML='';mx.innerHTML='';
  if(!M||M.empty||!M.meas.length){cards.innerHTML='<div><span>'+esc(S('Escolha uma medida para ver as correlações.','Pick a measure to see the correlations.'))+'</span></div>';return;}
@@ -295,9 +324,10 @@ function corrPanel(){
  var xk=C.g.v;
  if(G&&G.num){
   var x=G.num,xo=ord(xk[0]==='@'?null:xk,x),c=corr4(x,y,xo,yo,mask,W);
-  h+='<div><b>'+fr(c.p)+'</b><span>Pearson · n='+nf(c.n,0)+'</span></div><div><b>'+fr(c.s)+'</b><span>Spearman</span></div>';
-  if(W)h+='<div><b>'+fr(c.pw)+'</b><span>'+esc(S('Pearson ponderado','Weighted Pearson'))+'</span></div><div><b>'+fr(c.sw)+'</b><span>'+esc(S('Spearman ponderado','Weighted Spearman'))+'</span></div>';
+  h+=cardH(fr(c.p),'Pearson · n='+nf(c.n,0),rDet(c.p,c.n,'pearson'))+cardH(fr(c.s),'Spearman',rDet(c.s,c.n,'spearman'));
+  if(W)h+=cardH(fr(c.pw),esc(S('Pearson ponderado','Weighted Pearson')),rDet(c.pw,c.neffw,'pearson',true))+cardH(fr(c.sw),esc(S('Spearman ponderado','Weighted Spearman')),rDet(c.sw,c.neffw,'spearman',true));
   h+='<div class="cz-note" style="grid-column:1/-1;border:0;background:none;padding:0"><span>'+esc(S('Entre “','Between “')+vn(xk)+S('” e “','” and “')+mname(m0)+'”.'+S(' Municípios com os dois valores.',' Municipalities with both values.'))+'</span></div>';
+  h+='<div class="cz-note cz-s" style="grid-column:1/-1"><span>'+esc(S('Cuidado com o p-valor: municípios vizinhos se parecem (autocorrelação espacial), então o p ingênuo é otimista e o IC estreito demais. Correlação entre municípios (ecológica) não vale para indivíduos, e não indica causa. Com n grande quase tudo é “significativo”: avalie o tamanho do efeito (r, r²). Nas versões ponderadas, p e IC usam o n efetivo de Kish.','Careful with the p-value: neighboring municipalities resemble each other (spatial autocorrelation), so the naive p is optimistic and the CI too narrow. A correlation across municipalities (ecological) does not apply to individuals and does not indicate cause. With a large n almost everything is “significant”: judge the effect size (r, r²). In the weighted versions, p and CI use Kish’s effective n.'))+'</span></div>';
   arrs.push(x);nms.push(vn(xk));}
  else h+='<div style="grid-column:1/-1"><span>'+esc(S('A variável de agrupamento não é numérica; a associação é medida pela variância explicada (η²) e pelo ranking abaixo.','The grouping variable is not numeric; association is shown as explained variance (η²) and in the ranking below.'))+'</span></div>';
  if(G&&!G.none){var e=eta2(G,y,mask);h+='<div><b>'+(isFinite(e)?nf(e*100,1)+'%':'–')+'</b><span>'+esc(S('Variância da medida entre municípios explicada pelos grupos (η²)','Variance of the measure across municipalities explained by the groups (η²)'))+'</span></div>';}
@@ -307,6 +337,36 @@ function corrPanel(){
   for(var i=0;i<arrs.length;i++){t+='<tr><th>'+esc(trunc(nms[i],26))+'</th>';for(var j=0;j<arrs.length;j++){var r=i===j?1:corr(arrs[i],arrs[j],null,pairSel(arrs[i],arrs[j],mask,null)).r;
    var al=isFinite(r)?Math.min(.75,Math.abs(r)*.75):0;t+='<td style="background:color-mix(in srgb,'+(r>=0?'var(--cz-1)':'var(--cz-5)')+' '+Math.round(al*100)+'%,var(--surface))">'+fr(r)+'</td>';}t+='</tr>';}
   mx.innerHTML='<div class="cz-lab" style="margin:6px 0 4px">'+esc(S('Matriz de Pearson entre as variáveis em uso','Pearson matrix among the variables in use'))+'</div>'+t+'</table>';}}
+/* ---------- testes entre grupos (barras): ANOVA, Kruskal-Wallis, Welch + Holm ---------- */
+function gname(r){return r.t+(r.l2?' '+r.l2:'');}
+function statPanel(){var box=$('cz-st'),hd=$('cz-st-h'),ex=$('cz-st-x'),s_=ST_();if(!box)return;
+ hd.textContent=S('Os grupos realmente diferem? Testes sobre os municípios','Do the groups really differ? Tests on municipalities');
+ var off=function(t){ex.textContent=t||'';box.innerHTML='';};
+ if(!s_)return off('');
+ if(!M||M.empty||!M.meas.length||!M.G1||M.G1.none||M.rows.length<2)return off(S('Escolha um agrupamento com pelo menos 2 grupos para ver ANOVA, Kruskal-Wallis e comparação entre a maior e a menor barra.','Pick a grouping with at least 2 groups to see ANOVA, Kruskal-Wallis and the comparison between the highest and lowest bar.'));
+ var m0=M.meas[0],y=measArr(m0),G=M.G1,mask=M.mask,rows=M.rows,ix={},arr=[],i;
+ rows.forEach(function(r,j){ix[r.r]=j;arr.push([]);});
+ for(i=0;i<N;i++){if(!mask[i])continue;var g=G.g[i];if(g<0||ix[g]===undefined)continue;var v=y[i];if(v===v)arr[ix[g]].push(v);}
+ var use=[];rows.forEach(function(r,j){if(arr[j].length>=2)use.push({r:r,a:arr[j],j:j});});
+ if(use.length<2)return off(S('Menos de 2 grupos com pelo menos 2 municípios: sem testes.','Fewer than 2 groups with at least 2 municipalities: no tests.'));
+ var gs=use.map(function(u){return u.a;}),an=s_.anova(gs),kw=s_.kruskal(gs),K=use.length,mm=K*(K-1)/2;
+ use.forEach(function(u){var a=u.a,n=a.length,m=0,k;for(k=0;k<n;k++)m+=a[k];m/=n;var q=0;for(k=0;k<n;k++)q+=(a[k]-m)*(a[k]-m);u.n=n;u.m=m;u.v=q/(n-1);});
+ var pairs=[],lps=[],a_,b_;
+ for(a_=0;a_<K;a_++)for(b_=a_+1;b_<K;b_++){var w=s_.welchS(use[a_].m,use[a_].v,use[a_].n,use[b_].m,use[b_].v,use[b_].n);pairs.push({a:a_,b:b_,w:w});lps.push(w.log10p);}
+ var lh=s_.holmLog(lps),nsig=0;pairs.forEach(function(p,j){p.lh=lh[j];if(lh[j]<Math.log10(.05))nsig++;});
+ /* maior e menor barra (valor exibido; com 2º agrupamento, média simples do grupo) */
+ var bv=function(u){var se=M.series[0],c=se&&!M.G2?se.cells[u.r.r].raw:u.m;return isFinite(c)?c:u.m;};
+ var hi=0,lo=0;use.forEach(function(u,j){if(bv(u)>bv(use[hi]))hi=j;if(bv(u)<bv(use[lo]))lo=j;});
+ var pr=null;pairs.forEach(function(p){if((p.a===hi&&p.b===lo)||(p.a===lo&&p.b===hi))pr=p;});
+ var d=mdec(m0),h='',dc_=Math.max(d,1);
+ h+=cardH('F = '+nf(an.F,2),'ANOVA',S('gl '+an.df1+' e '+nf(an.df2,0)+' · ','df '+an.df1+' and '+nf(an.df2,0)+' · ')+s_.fmtP(an,window.__LANG)+' · η² = '+nf(an.eta2*100,1)+'% '+S('(tamanho de efeito: parte da variância entre municípios que os grupos explicam)','(effect size: share of the variance across municipalities explained by the groups)'));
+ h+=cardH('H = '+nf(kw.H,2),'Kruskal-Wallis',S('gl '+kw.df+' · ','df '+kw.df+' · ')+s_.fmtP(kw,window.__LANG)+S(' · versão por postos, menos sensível a valores extremos',' · rank-based version, less sensitive to extremes'));
+ if(pr){var A=use[hi],B=use[lo],sw_=pr.a===hi?pr.w:null,ww=s_.welchS(A.m,A.v,A.n,B.m,B.v,B.n);
+  h+=cardH(S('Δ ','Δ ')+fv(ww.diff,dc_),S('Maior × menor barra (Welch)','Highest × lowest bar (Welch)'),gname(A.r)+' (n='+nf(A.n,0)+') '+S('×','vs')+' '+gname(B.r)+' (n='+nf(B.n,0)+') · t = '+nf(ww.t,2)+', '+S('gl ','df ')+nf(ww.df,1)+' · '+S('p bruto: ','raw ')+s_.fmtP(ww,window.__LANG)+' · '+S('p com Holm ('+nf(mm,0)+' pares): ','Holm-adjusted ('+nf(mm,0)+' pairs): ')+s_.fmtP(pr.lh,window.__LANG)+' · '+S(nf(nsig,0)+' de '+nf(mm,0)+' pares diferem após Holm (α = 0,05)',nf(nsig,0)+' of '+nf(mm,0)+' pairs differ after Holm (α = 0.05)'));}
+ box.innerHTML=h;
+ var small=use.filter(function(u){return u.n<30;}).length;
+ ex.textContent=S('Os testes comparam os valores dos municípios de cada grupo (média simples, sem peso), não as barras ponderadas; a diferença Δ está na unidade da medida. A comparação entre as barras extremas é post hoc (escolhidas depois de ver os dados), por isso o p é corrigido por Holm entre todos os '+nf(mm,0)+' pares. Municípios vizinhos não são independentes e o grupo é um recorte ecológico: o p é otimista e não indica causa.'+(small?' '+small+' grupo(s) com menos de 30 municípios: testes pouco confiáveis.':'')+(M.G2?' Com 2º agrupamento, os testes usam só o 1º agrupamento (categorias do 2º juntas).':'')+(m0.a==='sum'?' Para “soma”, o teste compara o valor de cada município.':''),
+  'The tests compare the municipality-level values within each group (simple mean, unweighted), not the weighted bars; Δ is in the measure’s unit. The comparison between the extreme bars is post hoc (chosen after seeing the data), so p is Holm-corrected across all '+nf(mm,0)+' pairs. Neighboring municipalities are not independent and the group is an ecological slice: p is optimistic and does not indicate cause.'+(small?' '+small+' group(s) with fewer than 30 municipalities: tests are unreliable.':'')+(M.G2?' With a 2nd grouping, the tests use only the 1st grouping (2nd categories pooled).':'')+(m0.a==='sum'?' For “sum”, the test compares each municipality’s value.':''));}
 /* ranking de correlações (assíncrono, em fatias) */
 function rankStart(){
  var st=$('cz-rk-st');if(!M||M.empty||!M.meas.length){RK.res=[];RK.tok++;$('cz-rk-name').textContent='';drawRank();return;}
@@ -316,29 +376,40 @@ function rankStart(){
  var rx=new Float64Array(N),ry=new Float64Array(N);
  function slice(){if(tokk!==RK.tok)return;var ts=performance.now();
   while(idx<list.length&&performance.now()-ts<14){var k=list[idx++],x=num(k),s=pairSel(x,y,mask,W),cn=0;for(var q=0;q<N;q++)cn+=s[q];if(cn<20)continue;
-   var p=corr(x,y,W,s).r;if(!isFinite(p))continue;var xo=ord(k);rankArr(x,xo,s,rx);rankArr(y,yo,s,ry);var sp=corr(rx,ry,W,s).r;res.push({k:k,r:p,rho:sp,n:cn});}
+   var p=corr(x,y,W,s).r;if(!isFinite(p))continue;var xo=ord(k);rankArr(x,xo,s,rx);rankArr(y,yo,s,ry);var sp=corr(rx,ry,W,s).r,ne=cn;
+   if(W){var sw_=0,sw2_=0;for(q=0;q<N;q++)if(s[q]){sw_+=W[q];sw2_+=W[q]*W[q];}ne=sw_*sw_/sw2_;}
+   res.push({k:k,r:p,rho:sp,n:cn,neff:ne});}
   RK.res=res;st.textContent=idx<list.length?S('Calculando… ','Computing… ')+idx+'/'+list.length:'';
   if(idx<list.length){if(idx%30<3||true)drawRank();setTimeout(slice,0);}else{drawRank();}}
  st.textContent=S('Calculando… ','Computing… ')+'0/'+list.length;setTimeout(slice,0);}
+function rkFamN(){var done=!$('cz-rk-st').textContent;return done?RK.res.length:Math.max(RK.total||0,RK.res.length);}
+function rkStats(){var s_=ST_();if(!s_)return;var res=RK.res;
+ res.forEach(function(r){if(r.lp===undefined)r.lp=s_.pCorr(r.r,r.neff||r.n).log10p;});
+ var lq=s_.fdrLog(res.map(function(r){return r.lp;}),rkFamN());res.forEach(function(r,j){r.lq=lq[j];});}
+function rkFam(){var e=$('cz-rk-fam');if(!e)return;if(!RK.res.length||!ST_()){e.textContent='';return;}
+ var ns=RK.res.filter(function(r){return !sigQ(r.lq);}).length,done=RK.res.length>=0&&!$('cz-rk-st').textContent;
+ e.textContent=S('Família de '+nf(rkFamN(),0)+' correlações testadas contra a medida'+(done?'':' (em cálculo)')+'. Correção de Benjamini–Hochberg: q < 0,05 em destaque; ○ e linha esmaecida = não significativa ('+nf(ns,0)+' de '+nf(RK.res.length,0)+'). O ranking é ordenado por |r|, não por p. Municípios vizinhos não são independentes: o p é otimista.',
+  'Family of '+nf(rkFamN(),0)+' correlations tested against the measure'+(done?'':' (computing)')+'. Benjamini–Hochberg correction: q < 0.05 highlighted; ○ and faded row = not significant ('+nf(ns,0)+' of '+nf(RK.res.length,0)+'). The ranking is sorted by |r|, not by p. Neighboring municipalities are not independent: p is optimistic.');}
 function drawRank(){
+ rkStats();rkFam();
  var svg=$('cz-rk'),W=svgW(svg),mob=MQ(),res=RK.res.slice().sort(function(a,b){return Math.abs(b.r)-Math.abs(a.r);}).slice(0,C.rkN);
  if(!res.length){svg.setAttribute('viewBox','0 0 '+W+' 100');svg.setAttribute('height',100);svg.innerHTML='<text class="m" x="'+W/2+'" y="54" text-anchor="middle" style="font-size:14px">'+esc(RK.tok&&M&&!M.empty?S('Calculando…','Computing…'):S('Escolha uma medida.','Pick a measure.'))+'</text>';return;}
  var rowH=mob?46:40,padT=22,H=padT+res.length*rowH+6,x0=8,x1=W-8,X=function(v){return x0+(x1-x0)*(v+1)/2;},s='';
  [-1,-.5,0,.5,1].forEach(function(t){s+='<line x1="'+X(t)+'" x2="'+X(t)+'" y1="'+(padT-4)+'" y2="'+(H-4)+'" stroke="'+(t===0?'var(--mute)':'var(--line)')+'"/><text class="m" x="'+Math.max(14,Math.min(W-14,X(t)))+'" y="'+(padT-8)+'" text-anchor="middle">'+nf(t,t%1?1:0)+'</text>';});
  var ch=Math.floor((W-16)/(mob?6.9:7.4));
- res.forEach(function(r,i){var y0=padT+i*rowH,isS=selR.key===r.k,p=r.r>=0;
-  s+='<g data-k="'+esc(r.k)+'"><rect class="hit'+(isS?' sel':'')+'" x="1" y="'+y0+'" width="'+(W-2)+'" height="'+rowH+'" rx="4"/>';
+ res.forEach(function(r,i){var y0=padT+i*rowH,isS=selR.key===r.k,p=r.r>=0,nsg=!sigQ(r.lq);
+  s+='<g data-k="'+esc(r.k)+'"'+(nsg?' opacity=".42"':'')+'><rect class="hit'+(isS?' sel':'')+'" x="1" y="'+y0+'" width="'+(W-2)+'" height="'+rowH+'" rx="4"/>';
   s+='<text class="l" x="6" y="'+(y0+14)+'" text-anchor="start" style="font-size:'+(mob?12.5:13)+'px">'+esc(trunc(vn(r.k),Math.min(ch-18,48)))+'</text>';
   var col=p?'var(--cz-1)':'var(--cz-5)';
   s+='<rect x="'+Math.min(X(0),X(r.r))+'" y="'+(y0+19)+'" width="'+Math.max(1,Math.abs(X(r.r)-X(0)))+'" height="9" rx="1.5" fill="'+col+'"/>';
   s+='<rect x="'+Math.min(X(0),X(r.rho))+'" y="'+(y0+30)+'" width="'+Math.max(1,Math.abs(X(r.rho)-X(0)))+'" height="7" rx="1.5" fill="none" stroke="'+col+'" stroke-width="1.5"/>';
-  s+='<text class="m" x="'+(W-6)+'" y="'+(y0+14)+'" text-anchor="end" style="font-size:12px">'+fr(r.r)+' · '+fr(r.rho)+'</text></g>';});
+  s+='<text class="m" x="'+(W-6)+'" y="'+(y0+14)+'" text-anchor="end" style="font-size:12px'+(nsg?'':';font-weight:700')+'">'+(nsg?'○ ':'')+fr(r.r)+' · '+fr(r.rho)+'</text></g>';});
  svg.setAttribute('viewBox','0 0 '+W+' '+H);svg.setAttribute('height',H);svg.innerHTML=s;refreshRCard();}
 function refreshRCard(){var c=$('cz-rcard'),list=rkList(),i=-1;list.forEach(function(r,j){if(r.k===selR.key)i=j;});
  if(i<0){c.classList.add('cz-empty');c.querySelector('.cz-sub3').textContent=S('Toque numa linha (ou use ◀ ▶) para ver Pearson, Spearman, n e usar a variável.','Tap a row (or use ◀ ▶) to see Pearson, Spearman, n and use the variable.');return;}
  var r=list[i],v=V_(r.k);c.classList.remove('cz-empty');c.querySelector('.cz-ttl').textContent=vn(r.k);
  c.querySelector('.cz-sub3').textContent=vgrp(v)+' · '+fonteOf(v)+(v.ano?' · '+v.ano:'')+'  ('+(i+1)+'/'+list.length+')';
- c.querySelector('.cz-rows').innerHTML='<div class="cz-r"><span class="l">Pearson</span><span class="v">'+fr(r.r)+'</span></div><div class="cz-r"><span class="l">Spearman</span><span class="v">'+fr(r.rho)+'</span></div><div class="cz-r sm"><span class="l">'+esc(S('Municípios com os dois valores: ','Municipalities with both values: ')+nf(r.n,0)+(C.rkW?S(' · ponderado',' · weighted'):''))+'</span></div>'+(vnote(v)?'<div class="cz-r sm"><span class="l">'+esc(vnote(v))+'</span></div>':'');}
+ c.querySelector('.cz-rows').innerHTML='<div class="cz-r"><span class="l">Pearson</span><span class="v">'+fr(r.r)+'</span></div><div class="cz-r"><span class="l">Spearman</span><span class="v">'+fr(r.rho)+'</span></div><div class="cz-r sm"><span class="l">'+esc(S('Municípios com os dois valores: ','Municipalities with both values: ')+nf(r.n,0)+(C.rkW?S(' · ponderado',' · weighted'):''))+'</span></div>'+(ST_()?'<div class="cz-r sm"><span class="l">'+esc(rDet(r.r,r.neff||r.n,'pearson',C.rkW)+' · '+qTxt(r.lq)+' ('+(sigQ(r.lq)?S('significativa após FDR','significant after FDR'):S('não significativa após FDR','not significant after FDR'))+', '+S('família de ','family of ')+nf(rkFamN(),0)+')')+'</span></div>':'')+(vnote(v)?'<div class="cz-r sm"><span class="l">'+esc(vnote(v))+'</span></div>':'');}
 function rkList(){return RK.res.slice().sort(function(a,b){return Math.abs(b.r)-Math.abs(a.r);}).slice(0,C.rkN);}
 /* ---------------- seletor de variáveis ---------------- */
 var PK={cb:null,items:[],cur:null,q:'',timer:0,lastFocus:null};
@@ -419,7 +490,7 @@ function update(){if(!D)return;M=build();
  var f=C.flt,nf_=f.reg.length+f.uf.length+(f.porte!==''?1:0)+f.rng.filter(function(r){return r.v;}).length;
  $('cz-count').textContent=nf(M.cntMask,0)+S(' de ',' of ')+nf(N,0)+S(' municípios no recorte',' municipalities in the selection')+(nf_?S(' ('+nf_+' filtro(s))',' ('+nf_+' filter(s))'):'');
  $('cz-warn').innerHTML=M.warn.map(function(w){return '<p>'+esc(w)+'</p>';}).join('');
- draw();corrPanel();clearTimeout(timer);timer=setTimeout(rankStart,180);}
+ draw();corrPanel();statPanel();clearTimeout(timer);timer=setTimeout(rankStart,180);}
 function sched(){clearTimeout(sched.t);sched.t=setTimeout(update,25);}
 function flag(k){root.dataset.ready=k;}
 /* ---------------- eventos ---------------- */
@@ -477,14 +548,63 @@ function defaults(){
  if(!m){for(var i=0;i<V.length;i++)if(V[i].tipo!=='cat'&&V[i].papel==='resultado'){m=V[i].k;break;}}
  if(!m)for(i=0;i<V.length;i++)if(V[i].tipo!=='cat'){m=V[i].k;break;}
  C.meas=[{v:m,a:'wmean',den:null,mul:100}];C.g={v:'@reg',m:'q5',cuts:'',wq:false};}
-function ready(d){D=d;V=d.vars||[];N=d.n||(d.ibge||[]).length;V.forEach(function(v,i){KI[v.k]=i;});initRegions();defaults();
- $('cz-main').hidden=false;msg('');bindAll();syncUI();flag('1');update();}
+function mkStatUI(){if($('cz-st'))return;var main=$('cz-main'),h3=main.querySelector('h3.cz-h3');
+ var st=document.createElement('style');st.id='cz-pv-css';st.textContent='#cz-root .cz-cards .cz-s,#cz-root .cz-cards>div>.cz-s{display:block;margin-top:4px;font-size:12.5px;line-height:1.35;overflow-wrap:anywhere}#cz-root .cz-note.cz-s{border:1px solid var(--warn);border-radius:8px;padding:8px 12px;font-size:13px;line-height:1.4;background:var(--surface);color:var(--fg)}#cz-root .cz-note.cz-s span{font-size:13px;color:var(--fg)}@media(max-width:700px){#cz-root #cz-st{grid-template-columns:minmax(0,1fr)}}#cz-root #cz-st-x,#cz-root #cz-rk-fam{font-size:13px;color:var(--mute);margin:0;max-width:90ch;line-height:1.4}';
+ document.head.appendChild(st);
+ var hd=document.createElement('h3');hd.className='cz-h3';hd.id='cz-st-h';var bx=document.createElement('div');bx.className='cz-cards';bx.id='cz-st';var ex=document.createElement('p');ex.id='cz-st-x';
+ h3.parentNode.insertBefore(hd,h3);h3.parentNode.insertBefore(bx,h3);h3.parentNode.insertBefore(ex,h3);
+ var fam_=document.createElement('p');fam_.id='cz-rk-fam';var rs=$('cz-rk-st');rs.parentNode.insertBefore(fam_,rs.nextSibling);}
+function ready(d){D=d;V=d.vars||[];mkStatUI();N=d.n||(d.ibge||[]).length;V.forEach(function(v,i){KI[v.k]=i;});initRegions();defaults();
+ $('cz-main').hidden=false;msg('');bindAll();syncUI();flag('1');update();
+ if(PEND){var p=PEND;PEND=null;p.res(applyCfg(p.cfg));}}
+/* ---------------- deep link: window.__cruzApply(cfg) (veja o topo do arquivo) ---------------- */
+var PEND=null;
+var AGS={wmean:1,mean:1,wmedian:1,median:1,sum:1,ratio:1};
+function specOf(g,av,lbl){
+ if(!g)return null;var t=g.tipo||'var',sp;
+ if(t==='nenhum'||t==='none')return {v:'@none',m:'q5',cuts:'',wq:false};
+ if(t==='regiao'||t==='reg')return {v:'@reg',m:'q5',cuts:'',wq:false};
+ if(t==='uf')return {v:'@uf',m:'q5',cuts:'',wq:false};
+ if(t==='porte_pop'||t==='porte_apt'){var k0='@'+t;if(!(t==='porte_pop'?popVar():aptVar())){av.push(S('Porte indisponível nos dados.','Size grouping unavailable in the data.'));return null;}return {v:k0,m:'q5',cuts:'',wq:false};}
+ if(!g.k||KI[g.k]===undefined){av.push(S('Variável de '+lbl+' inexistente: ','Unknown '+lbl+' variable: ')+g.k);return null;}
+ if(t==='quantis'&&isNum(g.k)){var n=+g.n||5,okn=[3,4,5,10,20],best=okn[0];okn.forEach(function(q){if(Math.abs(q-n)<Math.abs(best-n))best=q;});
+  if(best!==n)av.push(S('Número de faixas ajustado de '+n+' para '+best+'.','Number of brackets adjusted from '+n+' to '+best+'.'));
+  return {v:g.k,m:'q'+best,cuts:'',wq:!!g.pesoFaixas};}
+ if(t==='faixas'&&isNum(g.k)){return {v:g.k,m:'man',cuts:(g.cortes||[]).join('; '),wq:false};}
+ return {v:g.k,m:'q5',cuts:'',wq:false};}
+function applyCfg(cfg){var av=[],res={ok:false,avisos:av};
+ if(!cfg||typeof cfg!=='object'){res.erro='cfg inválido';return res;}
+ var g1=specOf(cfg.grupoPor,av,S('agrupamento','grouping'));
+ if(!g1||g1.v==='@none'){res.erro=S('grupoPor ausente ou inválido.','grupoPor missing or invalid.');return res;}
+ var meds=[];(cfg.medidas||[]).slice(0,3).forEach(function(m){if(!m||!m.k||!isNum(m.k)){av.push(S('Medida ignorada (inexistente ou não numérica): ','Measure ignored (missing or non-numeric): ')+(m&&m.k));return;}
+  var a=AGS[m.agg]?m.agg:'wmean',o={v:m.k,a:a,den:null,mul:m.mul||100};
+  if(a==='ratio'){if(!m.den||!isNum(m.den)){av.push(S('Razão sem denominador válido: usando média ponderada.','Ratio without a valid denominator: using weighted mean.'));o.a='wmean';}else o.den=m.den;}
+  meds.push(o);});
+ if(!meds.length){res.erro=S('Nenhuma medida válida.','No valid measure.');return res;}
+ var g2=cfg.grupoPor2?specOf(cfg.grupoPor2,av,S('2º agrupamento','2nd grouping')):null;
+ C.g=g1;C.g2=g2||{v:'@none',m:'q5',cuts:''};C.meas=meds;C.lay=cfg.layout==='stk'&&g2?'stk':'grp';
+ if(cfg.peso&&isNum(cfg.peso))C.w=cfg.peso;else if(cfg.peso)av.push(S('Peso inexistente: mantido o padrão.','Unknown weight: default kept.'));
+ C.sc=({val:1,pct:1,idx:1})[cfg.escala]?cfg.escala:'val';C.ord=({nat:1,vd:1,va:1,lab:1,nd:1})[cfg.ordem]?cfg.ordem:'nat';C.top=[0,5,10,15,20].indexOf(+cfg.top)>=0?+cfg.top:0;C.ci=cfg.ic===false?false:true;
+ var f=cfg.filtros||{},fl={reg:[],uf:[],porte:'',rng:[]};
+ (f.regioes||f.reg||[]).forEach(function(r){if(RGc.labels.indexOf(r)>=0)fl.reg.push(r);else av.push(S('Região desconhecida: ','Unknown region: ')+r);});
+ (f.ufs||f.uf||[]).forEach(function(u){if(UFc.labels.indexOf(u)>=0)fl.uf.push(u);else av.push(S('UF desconhecida: ','Unknown state: ')+u);});
+ if(f.porte!==undefined&&f.porte!==null&&f.porte!=='')fl.porte=String(f.porte);
+ (f.faixas||[]).forEach(function(r){if(r&&r.k&&isNum(r.k))fl.rng.push({v:r.k,min:isFinite(r.min)?+r.min:null,max:isFinite(r.max)?+r.max:null});else av.push(S('Filtro ignorado: ','Filter ignored: ')+(r&&r.k));});
+ C.flt=fl;sel.key=null;selR.key=null;syncUI();update();
+ var fd=$('cz-flt');if(fd&&(fl.reg.length||fl.uf.length||fl.rng.length||fl.porte!==''))fd.open=true;
+ res.ok=true;return res;}
+window.__cruzApply=function(cfg){
+ try{var tb=document.getElementById('t-cruzamento');if(tb)tb.click();else if(window.__show)window.__show('cruzamento');}catch(e){}
+ return new Promise(function(resolve){
+  if(D){var r=applyCfg(cfg);try{root.scrollIntoView({block:'start'});}catch(e){}resolve(r);return;}
+  if(PEND)PEND.res({ok:false,avisos:[],erro:'substituído por outra chamada'});
+  PEND={cfg:cfg,res:resolve};if(root.dataset.ready==='err'||(!loadTried&&window.__cruzInit))window.__cruzInit();});};
 window.__cruzInit=function(){
  if(D){if(dirtyLang){dirtyLang=false;syncUI();}update();return;}
  if(loadTried)return;loadTried=true;msg(S('Carregando os dados por município (uma vez só)…','Loading municipality-level data (once)…'));
  var get=function(u){return fetch(u).then(function(r){if(!r.ok)throw 0;return r.json();});};
  get(base()+'ext/municipios.json').catch(function(){return get('dados/ext/municipios.json');}).then(function(d){
-  if(!d||!d.vars||!d.vars.length)throw 0;ready(d);}).catch(function(){loadTried=false;flag('err');msg(S('Os dados externos por município ainda não foram publicados. Quando o arquivo dados/ext/municipios.json existir, esta aba funcionará automaticamente.','The external municipality-level data have not been published yet. When the file dados/ext/municipios.json exists, this tab will work automatically.'),true);});};
+  if(!d||!d.vars||!d.vars.length)throw 0;ready(d);}).catch(function(){loadTried=false;flag('err');if(PEND){var pp=PEND;PEND=null;pp.res({ok:false,avisos:[],erro:'dados indisponíveis'});}msg(S('Os dados externos por município ainda não foram publicados. Quando o arquivo dados/ext/municipios.json existir, esta aba funcionará automaticamente.','The external municipality-level data have not been published yet. When the file dados/ext/municipios.json exists, this tab will work automatically.'),true);});};
 var rr=window.__rerender;window.__rerender=function(){if(rr)rr.apply(this,arguments);if(!D){if(loadTried===false&&root.dataset.ready==='err'){/* mantém mensagem */}return;}
  var vis=!$('p-cruzamento').hidden;if(vis){syncUI();update();}else dirtyLang=true;
  if(!$('cz-pick').hidden)renderPick();};

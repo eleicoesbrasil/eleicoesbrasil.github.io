@@ -1,0 +1,54 @@
+/* ===== achados_tab: aba Achados (cartões de relações entre municípios) ===== */
+:root{--ach-1:#2f6fb0;--ach-2:#d27a1f;--ach-ok:#2b7a4b;--ach-bad:#a3262f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ach-1:#6aa3e0;--ach-2:#eb9d4c;--ach-ok:#5cc08a;--ach-bad:#ee7b83}}
+:root[data-theme="dark"]{--ach-1:#6aa3e0;--ach-2:#eb9d4c;--ach-ok:#5cc08a;--ach-bad:#ee7b83}
+#ach-root{display:flex;flex-direction:column;gap:14px;min-width:0}
+#ach-root>*{min-width:0}
+#ach-root [hidden]{display:none!important}
+#ach-root .ach-lab{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);display:block;margin-bottom:4px}
+#ach-root .ach-status{font-size:14px;color:var(--mute);padding:10px 12px;border:1px dashed var(--line);border-radius:6px}
+#ach-root .ach-how{border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+#ach-root .ach-how summary{min-height:44px;padding:10px 14px;cursor:pointer;font:600 14.5px var(--body);display:flex;align-items:center}
+#ach-root .ach-howb{padding:0 14px 8px;font-size:14px}
+#ach-root .ach-howb p{margin:0 0 10px;max-width:72ch}
+#ach-root .ach-meth{color:var(--mute);font-size:13px}
+#ach-root .ach-panel{display:flex;flex-direction:column;gap:10px}
+#ach-root .ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#ach-root .ach-f{display:block;min-width:0}
+#ach-root select,#ach-root input[type=search]{width:100%;min-height:44px;font:500 14.5px var(--body);border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);padding:6px 10px;box-sizing:border-box}
+#ach-root .ach-btn,#ach-root .ach-chip{font:600 14.5px var(--body);min-height:44px;padding:6px 16px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);cursor:pointer;-webkit-tap-highlight-color:transparent;box-sizing:border-box}
+#ach-root .ach-chip{border-radius:999px;align-self:flex-start}
+#ach-root .ach-chip[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+#ach-root .ach-btn:active,#ach-root .ach-chip:active{background:var(--line)}
+#ach-root select:focus-visible,#ach-root input:focus-visible,#ach-root button:focus-visible,#ach-root summary:focus-visible{outline:2px solid var(--flavio);outline-offset:1px}
+#ach-root .ach-count{margin:0;color:var(--mute);font-size:14px}
+#ach-root .ach-list{display:grid;grid-template-columns:1fr;gap:14px}
+#ach-root .ach-card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+#ach-root .ach-top{display:flex;gap:10px;align-items:flex-start}
+#ach-root .ach-rk{flex:none;font:600 13px var(--mono);color:var(--mute);padding-top:3px}
+#ach-root .ach-txt{margin:0;font-size:15.5px;line-height:1.4;font-weight:500;overflow-wrap:anywhere}
+#ach-root .ach-meta{margin:0;font-size:13px;color:var(--mute);overflow-wrap:anywhere}
+#ach-root .ach-seals{display:flex;flex-wrap:wrap;gap:6px}
+#ach-root .ach-seal{font:600 12.5px var(--body);padding:3px 10px;border-radius:999px;border:1px solid currentColor}
+#ach-root .ach-seal.ok{color:var(--ach-ok)}#ach-root .ach-seal.bad{color:var(--ach-bad)}#ach-root .ach-seal.warn{color:var(--warn)}
+#ach-root .ach-alert{margin:0;font-size:13.5px;color:var(--warn);border-left:3px solid var(--warn);padding:2px 0 2px 10px}
+#ach-root .ach-eff{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;font-family:var(--mono)}
+#ach-root .ach-eff b{font-size:22px;font-weight:500}
+#ach-root .ach-eff span{font-size:13px;color:var(--mute)}
+#ach-root .ach-dl{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin:0}
+#ach-root .ach-dl div{min-width:0}
+#ach-root .ach-dl dt{font-size:12px;color:var(--mute);margin:0}
+#ach-root .ach-dl dd{margin:0;font:500 14px var(--mono);overflow-wrap:anywhere}
+#ach-root .ach-fig{margin:0;min-width:0}
+#ach-root .ach-cap{font-size:12.5px;color:var(--mute);margin:0 0 2px}
+#ach-root svg.ach-sv{display:block;width:100%;height:auto;max-width:100%}
+#ach-root .ach-sv text{fill:var(--mute);font:12.5px var(--body)}
+#ach-root .ach-sv text.v{fill:var(--fg);font-weight:600}
+#ach-root .ach-sv text.h{fill:var(--fg);font-weight:600;font-size:13.5px}
+#ach-root .ach-sv .ax{stroke:var(--line);stroke-width:1}
+#ach-root .ach-sv .b1{fill:var(--ach-1)}#ach-root .ach-sv .b2{fill:var(--ach-2)}
+#ach-root .ach-acts{display:flex;flex-wrap:wrap;gap:8px}
+#ach-root .ach-more{display:flex;justify-content:center}
+#ach-root .ach-tmp{position:absolute;left:-99999px;top:0;width:360px;visibility:hidden}
+@media (min-width:700px){#ach-root .ach-grid{grid-template-columns:repeat(4,1fr)}#ach-root .ach-list{grid-template-columns:1fr 1fr}#ach-root .ach-fw{max-width:420px}}
+@media (min-width:1100px){#ach-root .ach-list{grid-template-columns:1fr 1fr 1fr}}

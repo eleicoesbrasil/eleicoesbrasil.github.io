@@ -21,7 +21,21 @@ function fill(sel_,def){var s=$(sel_),g='',og=null;D.vars.forEach(function(v,i){
 function rank(a){var ix=a.map(function(v,i){return [v,i];}).sort(function(p,q){return p[0]-q[0];}),r=new Array(a.length),i=0,j;while(i<ix.length){j=i;while(j+1<ix.length&&ix[j+1][0]===ix[i][0])j++;for(var k=i;k<=j;k++)r[ix[k][1]]=(i+j)/2+1;i=j+1;}return r;}
 function pear(a,b){var n=a.length,ma=0,mb=0,i;for(i=0;i<n;i++){ma+=a[i];mb+=b[i];}ma/=n;mb/=n;var sa=0,sb=0,sc=0;for(i=0;i<n;i++){sa+=(a[i]-ma)*(a[i]-ma);sb+=(b[i]-mb)*(b[i]-mb);sc+=(a[i]-ma)*(b[i]-mb);}return sa&&sb?sc/Math.sqrt(sa*sb):0;}
 function ri(r){return (r>=0?'+':'−')+dc(Math.abs(r),3);}
-function cards(items){$('ac-r').innerHTML=items.map(function(c){return '<div><b>'+c[0]+'</b><span>'+c[1]+'</span></div>';}).join('');}
+function cards(items){$('ac-r').innerHTML=items.map(function(c){return '<div><b>'+c[0]+'</b><span>'+c[1]+'</span>'+(c[2]?'<span class="ac-s">'+c[2]+'</span>':'')+'</div>';}).join('');}
+/* ---- p-valores, IC e FDR (window.__stats, modelos/global_stats.js) ---- */
+function ST(){return window.__stats||null;}
+function stt(r,n,tipo){var s_=ST();if(!s_||!isFinite(r)||!(n>3))return null;return {pc:s_.pCorr(r,n,tipo),ci:s_.ciCorr(r,n),n:n};}
+var SUPD='⁰¹²³⁴⁵⁶⁷⁸⁹';
+function qTxt(q){if(q<-300)return 'q < 1e-300';if(q<-3){var e=Math.floor(q),m=Math.pow(10,q-e);return 'q ≈ '+dc(m,1)+'×10'+String(e).replace('-','⁻').replace(/\d/g,function(d){return SUPD[d];});}return 'q = '+dc(Math.pow(10,q),4);}
+function det(t,q){if(!t)return '';var s_=ST(),o=s_.fmtP(t.pc,window.__LANG)+' · n='+fm(t.n)+' · '+S('IC 95%','95% CI')+' ['+ri(t.ci[0])+'; '+ri(t.ci[1])+']';
+ if(q!=null&&isFinite(q))o+=' · '+qTxt(q)+' (FDR)';
+ return o;}
+var FAM={};
+function fam(x){ if(FAM[x]&&FAM[x].n===D.n)return FAM[x];var s_=ST(),lp=[],ids=[],i;
+ for(i=0;i<D.vars.length;i++){if(i===x)continue;ids.push(i);lp.push(s_?s_.pCorr(D.rP[x][i],D.n).log10p:NaN);}
+ var lq=s_?s_.fdrLog(lp,lp.length):[],q={},p={};ids.forEach(function(v,j){q[v]=lq[j];p[v]=lp[j];});
+ return FAM[x]={n:D.n,m:ids.length,q:q,lp:p};}
+function sig(q){return !ST()||(q!=null&&q<Math.log10(.05));}
 function nice(lo,hi){var sp=hi-lo||1,st=Math.pow(10,Math.floor(Math.log10(sp/4))),m=sp/4/st;st*=m>5?10:m>2?5:m>1?2:1;var t=[],v=Math.ceil(lo/st)*st;for(;v<=hi+1e-9;v+=st)t.push(Math.abs(v)<1e-12?0:v);return t;}
 function yi(){return +$('ac-y').value;}
 function xi(){return mode==='f'?0:+$('ac-x').value;}
@@ -53,7 +67,8 @@ function drawF(){
  sv.innerHTML=s;
  $('ac-leg').innerHTML='<span><i style="background:var(--flavio);opacity:.4"></i>'+S('Distribuição na faixa (95% central)','Distribution within the bracket (central 95%)')+'</span><span><i style="background:var(--fg);opacity:.75"></i>'+S('Entre 25% e 75% · traço claro: mediana','25%–75% range · light mark: median')+'</span><span><i style="background:var(--lula)"></i>'+S('Média da faixa (linha)','Bracket mean (line)')+'</span>';
  var mx_=B.mean.map(function(a){return a[0];}),pr=pear(mx_,means),sp=pear(rank(mx_),rank(means));
- cards([[ri(D.rP[0][y]),S('Pearson, todas as '+fm(D.n)+' seções (variação da abstenção × variável Y)','Pearson, all '+fm(D.n)+' sections (abstention change × Y variable)')],[ri(D.rS[0][y]),S('Spearman, todas as seções','Spearman, all sections')],[ri(pr),S('Pearson entre as médias das '+N+' faixas','Pearson between the means of the '+N+' brackets')],[ri(sp),S('Spearman entre as médias das faixas','Spearman between the bracket means')]]);
+ var F0=fam(0),r0=D.rP[0][y],tp=stt(r0,D.n,'pearson'),ts=stt(D.rS[0][y],D.n,'spearman'),tb=stt(pr,N,'pearson'),tsb=stt(sp,N,'spearman'),qy=y===0?null:F0.q[y];
+ cards([[ri(r0),S('Pearson, todas as '+fm(D.n)+' seções (variação da abstenção × variável Y)','Pearson, all '+fm(D.n)+' sections (abstention change × Y variable)'),y===0?'':det(tp,qy)+' · r² = '+dc(r0*r0,3)],[ri(D.rS[0][y]),S('Spearman, todas as seções','Spearman, all sections'),y===0?'':det(ts)],[ri(pr),S('Pearson entre as médias das '+N+' faixas','Pearson between the means of the '+N+' brackets'),det(tb)+S(' · poucos pontos (faixas), não é teste sobre seções',' · few points (brackets), not a test on sections')],[ri(sp),S('Spearman entre as médias das faixas','Spearman between the bracket means'),det(tsb)],[S('Atenção','Caution'),S('Leitura dos p-valores','Reading the p-values'),S('Com '+fm(D.n)+' seções quase tudo é “significativo”: olhe o tamanho do efeito (r, r²). Seções vizinhas não são independentes (autocorrelação espacial), então o p é otimista; correlação entre seções não é comportamento individual.','With '+fm(D.n)+' sections almost everything is “significant”: look at the effect size (r, r²). Neighboring sections are not independent (spatial autocorrelation), so p is optimistic; correlation across sections is not individual behavior.')]]);
  info();
 }
 function infoF(){var nb=$('ac-nb').value,B=D.bins[nb],y=yi(),k=sel;if(k<0){$('ac-info').textContent=S('Toque numa faixa (ou use ◀ ▶) para ler os valores.','Tap a bracket (or use ◀ ▶) to read the values.');return;}
@@ -78,7 +93,8 @@ function drawS(){
  if(pick!==null){g.strokeStyle=col('--fg');g.lineWidth=2;g.beginPath();g.arc(SX(X[pick]),SY(Yv[pick]),7,0,6.3);g.stroke();}
  g.restore();SC={SX:SX,SY:SY,X:X,Y:Yv,w:w,h:h,m:m,xl:xl,xh:xh,yl:yl,yh:yh,x:x,y:y,y0:y0,y1:y1};
  $('ac-leg').innerHTML='<span><i style="background:var(--flavio);opacity:.5;border-radius:50%"></i>'+S('Seções (amostra de '+fm(n)+')','Sections (sample of '+fm(n)+')')+'</span><span><i style="background:var(--lula)"></i>'+S('Reta de ajuste (mínimos quadrados, todas as seções)','Fitted line (least squares, all sections)')+'</span>';
- cards([[ri(D.rP[x][y]),S('Pearson, todas as '+fm(D.n)+' seções','Pearson, all '+fm(D.n)+' sections')],[ri(D.rS[x][y]),S('Spearman, todas as seções','Spearman, all sections')],[dc(D.rP[x][y]*D.rP[x][y],3),S('r² (Pearson ao quadrado)','r² (Pearson squared)')],[(bsl>=0?'+':'−')+dc(Math.abs(bsl),4),S('inclinação: variação em Y por unidade de X','slope: change in Y per unit of X')]]);
+ var Fx=fam(x),sm=x===y;
+ cards([[ri(D.rP[x][y]),S('Pearson, todas as '+fm(D.n)+' seções','Pearson, all '+fm(D.n)+' sections'),sm?'':det(stt(D.rP[x][y],D.n,'pearson'),Fx.q[y])],[ri(D.rS[x][y]),S('Spearman, todas as seções','Spearman, all sections'),sm?'':det(stt(D.rS[x][y],D.n,'spearman'))],[dc(D.rP[x][y]*D.rP[x][y],3),S('r² (Pearson ao quadrado)','r² (Pearson squared)'),S('tamanho de efeito: fração da variância compartilhada. Seções vizinhas não são independentes: o p é otimista.','effect size: share of shared variance. Neighboring sections are not independent: p is optimistic.')],[(bsl>=0?'+':'−')+dc(Math.abs(bsl),4),S('inclinação: variação em Y por unidade de X','slope: change in Y per unit of X')]]);
  info();
 }
 
@@ -97,21 +113,30 @@ function infoS(){ if(pick===null){$('ac-info').textContent=S('Toque num ponto pa
  var x=xi(),y=yi();$('ac-info').innerHTML='<strong>'+S('Seção da amostra','Sample section')+'</strong><br>'+LV(x)+': '+fv(SC.X[pick],x)+' · '+LV(y)+': '+fv(SC.Y[pick],y);}
 function info(){ if(mode==='f')infoF();else infoS(); }
 /* ---------- correlograma (barras) ---------- */
-function drawC(){var x=xi(),sv=$('ac-cor'),W=(nar()||sv._ptNarrow)?Math.max(240,Math.round(sv.getBoundingClientRect().width)||340):1000,rowh=(sv._ptNarrow&&sv._ptH&&!nar())?(sv._ptH-30)/(D.vars.length-1):(nar()?38:30),fs=nar()?12:13,y=yi(),
+function drawC(){var x=xi(),sv=$('ac-cor'),W=(nar()||sv._ptNarrow)?Math.max(240,Math.round(sv.getBoundingClientRect().width)||340):1000,rowh=(sv._ptNarrow&&sv._ptH&&!nar())?(sv._ptH-30)/(D.vars.length-1):(nar()?44:30),fs=nar()?12:13,y=yi(),
  order=D.vars.map(function(v,i){return i;}).filter(function(i){return i!==x;}).sort(function(a,b){return Math.abs(D.rP[x][b])-Math.abs(D.rP[x][a]);}),H=order.length*rowh+30,s='',mid=W/2,half=(W-30)/2;
  $('ac-xn').textContent=LV(x);sv.setAttribute('viewBox','0 0 '+W+' '+H);
  s+='<line x1="'+mid+'" x2="'+mid+'" y1="0" y2="'+(H-24)+'" stroke="var(--line)"/><text class="m" font-size="'+fs+'" x="'+(mid-half+4)+'" y="'+(H-8)+'" text-anchor="start">−1</text><text class="m" font-size="'+fs+'" x="'+mid+'" y="'+(H-8)+'" text-anchor="middle">0</text><text class="m" font-size="'+fs+'" x="'+(mid+half-4)+'" y="'+(H-8)+'" text-anchor="end">+1</text>';
- order.forEach(function(i,k){var top=k*rowh,rp=D.rP[x][i],rs=D.rS[x][i],lab=LV(i),suf=D.vars[i].g==='2º turno'?S(' (2º)',' (2nd)'):D.vars[i].g==='1º turno'?S(' (1º)',' (1st)'):'';var cap=Math.floor((W-(nar()?124:150))/(nar()?6.2:6.8))-suf.length;if(lab.length>cap)lab=lab.slice(0,cap-1)+'…';lab+=suf;
-  s+='<g class="ac-row" data-y="'+i+'"><rect class="hl" x="0" y="'+top+'" width="'+W+'" height="'+rowh+'" fill="var(--fg)" opacity="'+(i===y?.1:0)+'"/><text class="m" font-size="'+fs+'" x="4" y="'+(top+13)+'">'+lab+'</text>'+
+ var FM=fam(x),nns=0;
+ order.forEach(function(i,k){var top=k*rowh,rp=D.rP[x][i],rs=D.rS[x][i],ns=!sig(FM.q[i]),lab=LV(i),nsc=(ns&&nns++),suf=D.vars[i].g==='2º turno'?S(' (2º)',' (2nd)'):D.vars[i].g==='1º turno'?S(' (1º)',' (1st)'):'';var cap=Math.floor((W-(nar()?124:150))/(nar()?6.2:6.8))-suf.length;if(lab.length>cap)lab=lab.slice(0,cap-1)+'…';lab+=suf;
+  s+='<g class="ac-row" data-y="'+i+'"'+(ns?' opacity=".45"':'')+'><rect class="hl" x="0" y="'+top+'" width="'+W+'" height="'+rowh+'" fill="var(--fg)" opacity="'+(i===y?.1:0)+'"/><text class="m" font-size="'+fs+'" x="4" y="'+(top+13)+'">'+lab+'</text>'+
   '<rect x="'+(rp>=0?mid:mid+rp*half)+'" y="'+(top+rowh*.6)+'" width="'+Math.abs(rp)*half+'" height="'+(rowh*.28)+'" fill="'+(rp>=0?'var(--lula)':'var(--flavio)')+'" opacity=".85"/>'+
   '<rect x="'+(rs>=0?mid:mid+rs*half)+'" y="'+(top+rowh*.6)+'" width="'+Math.abs(rs)*half+'" height="'+(rowh*.28)+'" fill="none" stroke="var(--fg)" stroke-width="1.5"/>'+
-  '<text class="m" font-size="'+fs+'" x="'+(W-4)+'" y="'+(top+13)+'" text-anchor="end">'+ri(rp)+' · '+ri(rs)+'</text></g>';});
- sv.innerHTML=s;}
+  '<text class="m" font-size="'+fs+'" x="'+(W-4)+'" y="'+(top+13)+'" text-anchor="end">'+(ns?'○ ':'')+ri(rp)+' · '+ri(rs)+'</text></g>';});
+ sv.innerHTML=s;
+ var fe=$('ac-fdr');if(fe)fe.textContent=S('Família de '+FM.m+' testes (uma variável contra as outras '+FM.m+'; n='+fm(D.n)+'). Correção de Benjamini–Hochberg: ○ e barra esmaecida = não significativa com q ≥ 0,05 ('+nns+' de '+FM.m+'). Com n tão grande, “significativo” não significa “forte”: veja r e r².','Family of '+FM.m+' tests (one variable against the other '+FM.m+'; n='+fm(D.n)+'). Benjamini–Hochberg correction: ○ and faded bar = not significant at q ≥ 0.05 ('+nns+' of '+FM.m+'). With such a large n, “significant” does not mean “strong”: see r and r².');
+ var rc=$('ac-rcard');if(rc){var yy=y;if(yy===x)yy=order[0];var rr=D.rP[x][yy],t1=stt(rr,D.n,'pearson');
+  rc.innerHTML='<b>'+LV(yy)+'</b><br>Pearson '+ri(rr)+' · Spearman '+ri(D.rS[x][yy])+' · r² = '+dc(rr*rr,3)+'<br>'+det(t1,FM.q[yy])+'<br>'+(sig(FM.q[yy])?S('Significativa após FDR (q < 0,05).','Significant after FDR (q < 0.05).'):S('Não significativa após FDR (q ≥ 0,05).','Not significant after FDR (q ≥ 0.05).'));}}
 function draw(){ if(!D)return;
  var f=mode==='f';$('ac-svg').style.display=f?'':'none';$('ac-cv').style.display=f?'none':'';$('ac-l-x').hidden=f;$('ac-l-nb').hidden=!f;$('ac-prev').hidden=$('ac-next').hidden=!f;
  if(f)drawF();else drawS();drawC();}
 function hitF(ev){var sv=$('ac-svg'),r=sv.getBoundingClientRect(),W=sv.viewBox.baseVal.width,N=D.bins[$('ac-nb').value].n.length,m={l:nar()?50:72,r:nar()?8:20},k=Math.floor(((ev.clientX-r.left)*W/r.width-m.l)/((W-m.l-m.r)/N));return k>=0&&k<N?k:-1;}
-function init(){ fill('ac-y',IDX.dpL);fill('ac-x',0);
+function mkExtras(){var cor=$('ac-cor');if(!cor||$('ac-fdr'))return;
+ var st=document.createElement('style');st.textContent='#ac-sec .ac-r .ac-s{display:block;margin-top:4px;font-size:12.5px;line-height:1.35;overflow-wrap:anywhere}#ac-sec #ac-fdr{margin:4px 0}#ac-sec #ac-rcard{border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);padding:8px 10px;font-size:14px;line-height:1.45;margin:8px 0;overflow-wrap:anywhere}';
+ cor.parentNode.insertBefore(st,cor);
+ var p=document.createElement('p');p.className='small';p.id='ac-fdr';cor.parentNode.insertBefore(p,cor);
+ var c=document.createElement('div');c.id='ac-rcard';c.setAttribute('role','status');c.setAttribute('aria-live','polite');cor.parentNode.insertBefore(c,cor.nextSibling);}
+function init(){ mkExtras();fill('ac-y',IDX.dpL);fill('ac-x',0);
  ['ac-y','ac-x','ac-nb','ac-trim'].forEach(function(i){$(i).addEventListener('change',function(){pick=null;if(i==='ac-nb')sel=-1;draw();});});
  $('ac-m-f').onclick=function(){mode='f';$('ac-m-f').setAttribute('aria-pressed','true');$('ac-m-s').setAttribute('aria-pressed','false');draw();};
  $('ac-m-s').onclick=function(){mode='s';$('ac-m-s').setAttribute('aria-pressed','true');$('ac-m-f').setAttribute('aria-pressed','false');draw();};
