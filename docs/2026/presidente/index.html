@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{margin:0}img,svg,canvas{max-width:100%}[hidden]{display:none!important}</style>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>html{-webkit-text-size-adjust:100%;text-size-adjust:100%}body{margin:0}img,svg,canvas{max-width:100%}[hidden]{display:none!important}.back{display:inline-block;font-size:13px;color:var(--mute);margin-bottom:8px;text-decoration:none}</style>
 <title>Painel 2º Turno 2026</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
@@ -514,13 +514,20 @@ a.back{display:inline-flex!important;align-items:center;min-height:36px}
 @media (min-width:700px){#ach-root .ach-grid{grid-template-columns:repeat(4,1fr)}#ach-root .ach-list{grid-template-columns:1fr 1fr}#ach-root .ach-fw{max-width:420px}}
 @media (min-width:1100px){#ach-root .ach-list{grid-template-columns:1fr 1fr 1fr}}
 
+#ach-root .ach-qt{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0 0;font-variant-numeric:tabular-nums}
+#ach-root .ach-qt caption{text-align:left;font-weight:600;color:var(--fg);padding:2px 0 3px}
+#ach-root .ach-qt th,#ach-root .ach-qt td{padding:2px 4px;text-align:right;border-top:1px solid var(--line)}
+#ach-root .ach-qt thead th{font-weight:500;color:var(--mute);border-top:0}
+#ach-root .ach-qt tbody th{text-align:left;font-weight:600}
+
 .back{display:inline-block;font-size:13px;color:var(--mute);margin-bottom:8px;text-decoration:none}</style>
 </head><body>
 <main>
 <header>
 <a class="back" href="../../">← Eleições Brasil</a>
+<a class="back" href="../../">← Eleições Brasil</a>
 <div class="lang" role="group" aria-label="Idioma / Language"><button id="lg-pt" title="Português" aria-label="Português"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#009b3a"/><polygon points="14,2 26,10 14,18 2,10" fill="#ffdf00"/><circle cx="14" cy="10" r="4.2" fill="#002776"/><path d="M10 9.2c3-.9 6.2-.5 8.3 1.2" stroke="#fff" stroke-width=".8" fill="none"/></svg></button><button id="lg-en" title="English" aria-label="English"><svg viewBox="0 0 28 20" width="28" height="20"><rect width="28" height="20" fill="#012169"/><path d="M0 0L28 20M28 0L0 20" stroke="#fff" stroke-width="3.4"/><path d="M0 0L28 20M28 0L0 20" stroke="#c8102e" stroke-width="1.6"/><path d="M14 0V20M0 10H28" stroke="#fff" stroke-width="6"/><path d="M14 0V20M0 10H28" stroke="#c8102e" stroke-width="3.4"/></svg></button></div>
-<div class="lab">Segundo turno · 25/10/2026 · apuração fechada (499.248 de 499.248 seções) · 17:02 Brasília</div>
+<div class="lab">Segundo turno · 25/10/2026 · apuração fechada (499.248 de 499.248 seções) · 21:48 Brasília</div>
 <h1>Para onde foram os votos entre o primeiro e o segundo turno</h1>
 <p class="sub">Descrição do que aconteceu, com os totais oficiais do TSE por município. O primeiro turno vem do arquivo de votação por seção; o segundo, dos totais municipais publicados na apuração. Nada aqui é projeção.</p>
 </header>
@@ -2475,7 +2482,12 @@ function chartSvg(a,head,cls){
   P.push('<text class="v" text-anchor="'+(r>=0?'start':'end')+'" x="'+(r>=0?cx+w+4:cx-w-4).toFixed(1)+'" y="'+(y+14)+'">'+fr(r)+'</text>');});
  var Ht=ry+ks.length*20+8;
  return '<svg class="ach-sv'+(cls?' '+cls:'')+'" viewBox="0 0 '+W+' '+Ht+'" width="'+W+'" height="'+Ht+'" role="img" aria-label="'+esc(S('Quintis e regiões: ','Quintiles and regions: ')+alab(a.alvo)+' ~ '+vlab(a.preditor))+'" xmlns="http://www.w3.org/2000/svg">'+P.join('')+'</svg>';}
-function cmp(v){var a=Math.abs(v);if(a>=1e6)return nf(v/1e6,1)+'M';if(a>=1e4)return nf(v/1e3,0)+'k';if(a>=1000)return nf(v,0);return nf(v,a>=100?0:a>=10?1:2,0);}
+function cmp(v){var a=Math.abs(v);if(a>=1e6)return nf(v/1e6,1)+'M';if(a>=1e4)return nf(v/1e3,0)+'k';if(a>=1000)return nf(v/1e3,1)+'k';return nf(v,a>=100?0:a>=10?1:2,0);}
+/* legenda dos quintis: faixa do preditor, mediana, n e média do alvo em cada grupo */
+function quintLeg(a,u){var q=a.quintis||{},fx=q.faixa,md=q.preditor,n=q.n,ya=q.alvo;if(!fx||!md||!n||!ya)return '';
+ var lab=ppU(a.alvo),r='';
+ for(var i=0;i<5;i++)r+='<tr><th scope="row">Q'+(i+1)+'</th><td>'+cmp(fx[i][0])+' – '+cmp(fx[i][1])+'</td><td>'+cmp(md[i])+'</td><td>'+nf(n[i],0)+'</td><td>'+fs(ya[i],1)+'</td></tr>';
+ return '<table class="ach-qt"><caption>'+esc(S('Quem está em cada quintil','What each quintile contains'))+(u?' · '+esc(S('preditor em ','predictor in ')+u):'')+'</caption><thead><tr><th></th><th>'+esc(S('Faixa do preditor','Predictor range'))+'</th><th>'+esc(S('Mediana','Median'))+'</th><th>'+esc(S('Municípios','Municipalities'))+'</th><th>'+esc(S('Média do alvo','Target mean'))+(lab?' (pp)':'')+'</th></tr></thead><tbody>'+r+'</tbody></table>';}
 /* ---------- cartões ---------- */
 function canApply(){return typeof window.__cruzApply==='function';}
 function card(a,i){
@@ -2493,7 +2505,7 @@ function card(a,i){
   +'<div><dt>'+esc(S('p robusto a clusters (UF)','Cluster-robust p (state)'))+'</dt><dd>'+esc(fmtLog(a.p_cluster_log10,'p'))+'</dd></div>'
   +'<div><dt>'+esc(S('q (Benjamini–Hochberg)','q (Benjamini–Hochberg)'))+'</dt><dd>'+esc(fmtQ(a.q_bh))+'</dd></div>'
   +'<div><dt>n</dt><dd>'+nf(a.n||0,0)+' '+esc(S('municípios','municipalities'))+'</dd></div></dl>';
- h+='<figure class="ach-fig"><p class="ach-cap">'+esc(S('Barras: média do alvo em cada quintil do preditor (Q1 menor, Q5 maior). Abaixo, mediana do preditor'+(u?' ('+u+')':'')+'.','Bars: target mean in each predictor quintile (Q1 lowest, Q5 highest). Below, predictor median'+(u?' ('+u+')':'')+'.'))+'</p>'+chartSvg(a,false)+'</figure>';
+ h+='<figure class="ach-fig"><p class="ach-cap">'+esc(S('Os municípios são ordenados pelo preditor e divididos em 5 grupos de tamanho igual (quintis): Q1 = 20% com os menores valores, Q5 = 20% com os maiores. Número sobre a barra: média do alvo no grupo. Número abaixo de Qn: mediana do preditor'+(u?' ('+u+')':'')+'.','Municipalities are sorted by the predictor and split into 5 equal-sized groups (quintiles): Q1 = the 20% with the lowest values, Q5 = the 20% with the highest. Number on the bar: target mean in the group. Number under Qn: predictor median'+(u?' ('+u+')':'')+'.'))+'</p>'+chartSvg(a,false)+quintLeg(a,u)+'</figure>';
  h+='<div class="ach-acts">'+(canApply()?'<button type="button" class="ach-btn" data-act="cruz" data-i="'+esc(a.id)+'">'+esc(S('Abrir no Cruzamento','Open in Cross-tab'))+'</button>':'')
   +(window.__plotTools&&window.__plotTools.svgFor?'<button type="button" class="ach-btn" data-act="svg" data-i="'+esc(a.id)+'">'+esc(S('Baixar SVG do cartão','Download card SVG'))+'</button>':'')+'</div></article>';
  return h;}

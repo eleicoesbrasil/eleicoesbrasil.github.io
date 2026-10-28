@@ -69,7 +69,12 @@ function chartSvg(a,head,cls){
   P.push('<text class="v" text-anchor="'+(r>=0?'start':'end')+'" x="'+(r>=0?cx+w+4:cx-w-4).toFixed(1)+'" y="'+(y+14)+'">'+fr(r)+'</text>');});
  var Ht=ry+ks.length*20+8;
  return '<svg class="ach-sv'+(cls?' '+cls:'')+'" viewBox="0 0 '+W+' '+Ht+'" width="'+W+'" height="'+Ht+'" role="img" aria-label="'+esc(S('Quintis e regiões: ','Quintiles and regions: ')+alab(a.alvo)+' ~ '+vlab(a.preditor))+'" xmlns="http://www.w3.org/2000/svg">'+P.join('')+'</svg>';}
-function cmp(v){var a=Math.abs(v);if(a>=1e6)return nf(v/1e6,1)+'M';if(a>=1e4)return nf(v/1e3,0)+'k';if(a>=1000)return nf(v,0);return nf(v,a>=100?0:a>=10?1:2,0);}
+function cmp(v){var a=Math.abs(v);if(a>=1e6)return nf(v/1e6,1)+'M';if(a>=1e4)return nf(v/1e3,0)+'k';if(a>=1000)return nf(v/1e3,1)+'k';return nf(v,a>=100?0:a>=10?1:2,0);}
+/* legenda dos quintis: faixa do preditor, mediana, n e média do alvo em cada grupo */
+function quintLeg(a,u){var q=a.quintis||{},fx=q.faixa,md=q.preditor,n=q.n,ya=q.alvo;if(!fx||!md||!n||!ya)return '';
+ var lab=ppU(a.alvo),r='';
+ for(var i=0;i<5;i++)r+='<tr><th scope="row">Q'+(i+1)+'</th><td>'+cmp(fx[i][0])+' – '+cmp(fx[i][1])+'</td><td>'+cmp(md[i])+'</td><td>'+nf(n[i],0)+'</td><td>'+fs(ya[i],1)+'</td></tr>';
+ return '<table class="ach-qt"><caption>'+esc(S('Quem está em cada quintil','What each quintile contains'))+(u?' · '+esc(S('preditor em ','predictor in ')+u):'')+'</caption><thead><tr><th></th><th>'+esc(S('Faixa do preditor','Predictor range'))+'</th><th>'+esc(S('Mediana','Median'))+'</th><th>'+esc(S('Municípios','Municipalities'))+'</th><th>'+esc(S('Média do alvo','Target mean'))+(lab?' (pp)':'')+'</th></tr></thead><tbody>'+r+'</tbody></table>';}
 /* ---------- cartões ---------- */
 function canApply(){return typeof window.__cruzApply==='function';}
 function card(a,i){
@@ -87,7 +92,7 @@ function card(a,i){
   +'<div><dt>'+esc(S('p robusto a clusters (UF)','Cluster-robust p (state)'))+'</dt><dd>'+esc(fmtLog(a.p_cluster_log10,'p'))+'</dd></div>'
   +'<div><dt>'+esc(S('q (Benjamini–Hochberg)','q (Benjamini–Hochberg)'))+'</dt><dd>'+esc(fmtQ(a.q_bh))+'</dd></div>'
   +'<div><dt>n</dt><dd>'+nf(a.n||0,0)+' '+esc(S('municípios','municipalities'))+'</dd></div></dl>';
- h+='<figure class="ach-fig"><p class="ach-cap">'+esc(S('Barras: média do alvo em cada quintil do preditor (Q1 menor, Q5 maior). Abaixo, mediana do preditor'+(u?' ('+u+')':'')+'.','Bars: target mean in each predictor quintile (Q1 lowest, Q5 highest). Below, predictor median'+(u?' ('+u+')':'')+'.'))+'</p>'+chartSvg(a,false)+'</figure>';
+ h+='<figure class="ach-fig"><p class="ach-cap">'+esc(S('Os municípios são ordenados pelo preditor e divididos em 5 grupos de tamanho igual (quintis): Q1 = 20% com os menores valores, Q5 = 20% com os maiores. Número sobre a barra: média do alvo no grupo. Número abaixo de Qn: mediana do preditor'+(u?' ('+u+')':'')+'.','Municipalities are sorted by the predictor and split into 5 equal-sized groups (quintiles): Q1 = the 20% with the lowest values, Q5 = the 20% with the highest. Number on the bar: target mean in the group. Number under Qn: predictor median'+(u?' ('+u+')':'')+'.'))+'</p>'+chartSvg(a,false)+quintLeg(a,u)+'</figure>';
  h+='<div class="ach-acts">'+(canApply()?'<button type="button" class="ach-btn" data-act="cruz" data-i="'+esc(a.id)+'">'+esc(S('Abrir no Cruzamento','Open in Cross-tab'))+'</button>':'')
   +(window.__plotTools&&window.__plotTools.svgFor?'<button type="button" class="ach-btn" data-act="svg" data-i="'+esc(a.id)+'">'+esc(S('Baixar SVG do cartão','Download card SVG'))+'</button>':'')+'</div></article>';
  return h;}

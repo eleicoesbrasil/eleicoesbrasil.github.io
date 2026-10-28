@@ -13,7 +13,7 @@ TABS = ["fluxo", "abstencao", "fechamento", "mapa", "secoes", "cruzamento", "ach
 # nomes próprios e termos que ficam iguais nos dois idiomas
 ALLOW = re.compile(r"(Flávio|Bolsonaro|Lula|Brasília|Eleições Brasil|São Paulo|Pará|Paraná|Amapá|Ceará|Piauí|Maranhão|Goiás|Rondônia|Paraíba|Espírito Santo|"
                    r"Mato Grosso|Amazônia|Tocantins|Distrito Federal|Zanin|Bahia|Pernambuco|Alagoas|Sergipe|Acre|Roraima|Rio Grande|Minas Gerais|Santa Catarina|"
-                   r"Centro-Oeste|Nordeste|Sudeste|Norte|Sul|Pearson|Spearman|Candomblé|Bolsa Fam[ií]lia|Fam[ií]lias|TSE|BU|CSV|Parquet|DuckDB|GitHub|Python|Português|©)", re.I)
+                   r"Centro-Oeste|Nordeste|Sudeste|Norte|Sul|Pearson|Spearman|Candomblé|Bolsa Fam[ií]lia|Fam[ií]lias|TSE|BU|CSV|Parquet|DuckDB|GitHub|Python|Português|©|Auxílio Brasil|'Emenda [^']*'|Portal da Transparência|Pé-de-Meia|MÚLTIPLO|Código Munic\w+ IBGE|Valor Pago)", re.I)
 PT_WORDS = re.compile(r"\b(seção|seções|votos|voto|eleitores|eleitor|abstenção|município|municípios|estado|estados|região|turno|urnas?|fechadas?|"
                       r"para|com|sem|dos|das|uma|não|até|após|depois|mais|menos|dados|escolha|toque|selecione|carregando|variação|média|mediana|"
                       r"faixa|faixas|ordenar|colunas|mostrar|fechar|aplicar|copiar|baixar|aptos|brancos|nulos|válidos|comparecimento|resultado|horário|"

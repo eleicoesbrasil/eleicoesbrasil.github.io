@@ -52,3 +52,9 @@
 #ach-root .ach-tmp{position:absolute;left:-99999px;top:0;width:360px;visibility:hidden}
 @media (min-width:700px){#ach-root .ach-grid{grid-template-columns:repeat(4,1fr)}#ach-root .ach-list{grid-template-columns:1fr 1fr}#ach-root .ach-fw{max-width:420px}}
 @media (min-width:1100px){#ach-root .ach-list{grid-template-columns:1fr 1fr 1fr}}
+
+#ach-root .ach-qt{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0 0;font-variant-numeric:tabular-nums}
+#ach-root .ach-qt caption{text-align:left;font-weight:600;color:var(--fg);padding:2px 0 3px}
+#ach-root .ach-qt th,#ach-root .ach-qt td{padding:2px 4px;text-align:right;border-top:1px solid var(--line)}
+#ach-root .ach-qt thead th{font-weight:500;color:var(--mute);border-top:0}
+#ach-root .ach-qt tbody th{text-align:left;font-weight:600}

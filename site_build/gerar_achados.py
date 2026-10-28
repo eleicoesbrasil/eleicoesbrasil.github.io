@@ -145,6 +145,7 @@ def quintis(x, y, g, ng, rng_idx):
         return None
     mx = [float(np.median(x[q == i])) for i in range(5)]
     my = [float(y[q == i].mean()) for i in range(5)]
+    fx = [[float(x[q == i].min()), float(x[q == i].max())] for i in range(5)]
     # bootstrap: reamostra UFs (clusters) com reposicao; quintis fixos da amostra completa
     S = np.zeros((ng, 2)); N = np.zeros((ng, 2))
     for j, qq in enumerate((0, 4)):
@@ -158,7 +159,7 @@ def quintis(x, y, g, ng, rng_idx):
         d = ss[:, 1] / nn[:, 1] - ss[:, 0] / nn[:, 0]
     d = d[np.isfinite(d)]
     ic = (float(np.percentile(d, 2.5)), float(np.percentile(d, 97.5))) if len(d) > 100 else (np.nan, np.nan)
-    return dict(q=q, med=mx, alvo=my, n=[int(c) for c in cnt], dif=my[4] - my[0], ic=ic)
+    return dict(q=q, med=mx, faixa=fx, alvo=my, n=[int(c) for c in cnt], dif=my[4] - my[0], ic=ic)
 
 
 def par(x, y, w, g, ng, reg, regs, rng):
@@ -439,7 +440,7 @@ def main():
             q_bonf_log10=lim(round(row["q_bonf_log10"], 2)), q_cluster_bh_log10=lim(round(row["q_cluster_bh_log10"], 2)),
             efeito_pp=dict(q1=lim(round(row["q1"], 2)), q5=lim(round(row["q5"], 2)), dif=lim(round(dif, 2)),
                            dif_ic=[lim(round(row["dif_lo"], 2)), lim(round(row["dif_hi"], 2))]),
-            quintis=dict(preditor=[lim(round(v, 4)) for v in qd["med"]], alvo=[lim(round(v, 3)) for v in qd["alvo"]], n=qd["n"]),
+            quintis=dict(preditor=[lim(round(v, 4)) for v in qd["med"]], faixa=[[lim(round(a, 4)), lim(round(b, 4))] for a, b in qd["faixa"]], alvo=[lim(round(v, 3)) for v in qd["alvo"]], n=qd["n"]),
             regioes={rg: lim(round(row["r_" + rg], 3)) for rg in regs},
             pontuacao=lim(round(row["pontuacao"], 2)), tags=tags,
             alerta_pt="; ".join(al_pt), alerta_en="; ".join(al_en), texto_pt=txt_pt, texto_en=txt_en))
