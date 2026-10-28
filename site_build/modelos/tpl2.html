@@ -79,11 +79,11 @@ ul.rep{margin:6px 0 0;padding-left:20px;max-width:80ch}ul.rep li{margin:6px 0}pr
 <button role="tab" id="t-fluxo" data-p="fluxo">Fluxo de votos</button>
 <button role="tab" id="t-abstencao" data-p="abstencao">Abstenção</button>
 <button role="tab" id="t-fechamento" data-p="fechamento">Fechamento das urnas</button>
+<button role="tab" id="t-relacoes" data-p="relacoes">Relações</button>
 <button role="tab" id="t-mapa" data-p="mapa">Mapa de calor</button>
 <button role="tab" id="t-secoes" data-p="secoes">Mapa por seção</button>
 <button role="tab" id="t-cruzamento" data-p="cruzamento">Cruzamento</button>
 <button role="tab" id="t-achados" data-p="achados">Achados</button>
-<button role="tab" id="t-relacoes" data-p="relacoes">Relações</button>
 <button role="tab" id="t-replicar" data-p="replicar">Como replicar</button>
 </nav>
 
@@ -388,7 +388,7 @@ function sg2(x){return (x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(2).replace('.'
 gFill();drawG();drawAS();
 window.__rerender=function(){drawCov();cardsF();gFill();drawG();drawAS();cardsA();tf.render();ta.render();drawBins();if(window.__closeInit)window.__closeInit();var m=$('p-mapa');if(m&&!m.hidden&&window.__heatInit)window.__heatInit();};
 // ---------- abas
-var T=['fluxo','abstencao','fechamento','mapa','secoes','cruzamento','achados','relacoes','replicar'];
+var T=['fluxo','abstencao','fechamento','relacoes','mapa','secoes','cruzamento','achados','replicar'];
 function show(n){if(T.indexOf(n)<0)n='fluxo';T.forEach(function(t){$('p-'+t).hidden=t!==n;$('t-'+t).setAttribute('aria-selected',t===n?'true':'false');});
  try{history.replaceState(null,'','#'+n);}catch(e){} if(n==='mapa'&&window.__heatInit)window.__heatInit(); if(n==='fechamento'&&window.__closeInit)window.__closeInit(); if(n==='secoes'&&window.__secInit)window.__secInit(); if(n==='cruzamento'&&window.__cruzInit)window.__cruzInit(); if(n==='achados'&&window.__achInit)window.__achInit(); if(n==='relacoes'&&window.__relInit)window.__relInit();}
 T.forEach(function(t){$('t-'+t).addEventListener('click',function(){show(t);});});

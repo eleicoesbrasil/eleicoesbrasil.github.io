@@ -10,6 +10,7 @@
    <button type="button" data-sc="d2622" aria-pressed="false">2026 vs 2022</button>
   </div>
   <button type="button" class="rel-chip" id="rel-cor" aria-pressed="true">Cor por região</button>
+  <label class="rel-f rel-reg"><span class="rel-lab">Região</span><select id="rel-reg"></select></label>
  </div>
  <div id="rel-leg" class="rel-leg" aria-hidden="true"></div>
  <p id="rel-scope-note" class="rel-note"></p>
@@ -18,9 +19,15 @@
   <h3>Monte o seu gráfico</h3>
   <p class="rel-note">Escolha duas coisas para comparar entre os municípios. Aqui mostramos a tendência e a força, mas sem os testes de significância dos destaques.</p>
   <div class="rel-fgrid">
-   <label class="rel-f"><span class="rel-lab">Eixo horizontal (X)</span><select id="rel-x"></select></label>
-   <label class="rel-f"><span class="rel-lab">Eixo vertical (Y)</span><select id="rel-y"></select></label>
+   <div class="rel-f"><label class="rel-lab" for="rel-x">Eixo horizontal (X)</label><div class="rel-cb" id="rel-x-cb"><input id="rel-x" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="rel-x-list" autocomplete="off"><ul id="rel-x-list" role="listbox" hidden></ul></div></div>
+   <div class="rel-f"><label class="rel-lab" for="rel-y">Eixo vertical (Y)</label><div class="rel-cb" id="rel-y-cb"><input id="rel-y" type="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="rel-y-list" autocomplete="off"><ul id="rel-y-list" role="listbox" hidden></ul></div></div>
   </div>
+  <div class="rel-fctl">
+   <label class="rel-lab" for="rel-w">Largura do gráfico <span id="rel-wv">100%</span></label>
+   <input type="range" id="rel-w" min="30" max="100" step="5" value="100">
+   <button type="button" class="rel-chip" id="rel-sq" aria-pressed="false">Área quadrada</button>
+  </div>
+  <div id="rel-free-leg" class="rel-leg" aria-hidden="true"></div>
   <div id="rel-free-card"></div>
  </section>
 </div>

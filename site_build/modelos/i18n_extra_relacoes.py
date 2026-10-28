@@ -13,4 +13,7 @@ EX_EXTRA = {
   'Pick two things to compare across municipalities. Here we show the trend and strength, but without the significance tests used for the highlights.',
  'Eixo horizontal (X)': 'Horizontal axis (X)',
  'Eixo vertical (Y)': 'Vertical axis (Y)',
+ 'Região': 'Region',
+ 'Largura do gráfico': 'Chart width',
+ 'Área quadrada': 'Square plot area',
 }
