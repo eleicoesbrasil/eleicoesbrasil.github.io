@@ -1,0 +1,40 @@
+/* ===== relacoes_tab: aba Relações (gráficos XY simples) ===== */
+#rel-root{display:flex;flex-direction:column;gap:14px;min-width:0}
+#rel-root>*,#rel-main>*{min-width:0}
+#rel-main{display:flex;flex-direction:column;gap:12px}
+#rel-root [hidden]{display:none!important}
+#rel-root .rel-status{font-size:14px;color:var(--mute);padding:10px 12px;border:1px dashed var(--line);border-radius:6px}
+#rel-root .rel-status.err{color:var(--ach-bad,#a3262f)}
+#rel-root .rel-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+#rel-root .rel-seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+#rel-root .rel-seg button{min-height:44px;padding:0 16px;border:0;background:var(--surface);color:var(--fg);font:600 14px var(--body);cursor:pointer}
+#rel-root .rel-seg button+button{border-left:1px solid var(--line)}
+#rel-root .rel-seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+#rel-root .rel-chip{min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--fg);font:500 13.5px var(--body);cursor:pointer}
+#rel-root .rel-chip[aria-pressed="true"]{border-color:var(--fg)}
+#rel-root .rel-leg{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--mute)}
+#rel-root .rel-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+#rel-root .rel-note{font-size:13px;color:var(--mute);margin:0}
+#rel-root .rel-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:14px}
+#rel-root .rel-card{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+#rel-root .rel-frase{font:600 16px/1.35 var(--body);margin:0}
+#rel-root .rel-meta{font-size:12.5px;color:var(--mute);margin:0}
+#rel-root .rel-plot{position:relative;width:100%}
+#rel-root .rel-plot canvas{display:block;width:100%;height:260px;touch-action:pan-y;cursor:crosshair}
+#rel-root .rel-hint{font-size:13px;min-height:2.6em;margin:0;color:var(--fg)}
+#rel-root .rel-seals{display:flex;flex-wrap:wrap;gap:6px}
+#rel-root .rel-seal{font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+#rel-root .rel-seal.forte{background:var(--ach-ok,#2b7a4b);color:#fff;border-color:transparent}
+#rel-root .rel-seal.moderada{border-color:var(--ach-1,#2f6fb0);color:var(--ach-1,#2f6fb0)}
+#rel-root .rel-seal.fraca{color:var(--mute)}
+#rel-root .rel-seal.warn{border-color:var(--ach-2,#d27a1f);color:var(--ach-2,#d27a1f)}
+#rel-root .rel-det summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font:600 13.5px var(--body)}
+#rel-root .rel-dl{display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:13px;margin:0 0 6px;font-variant-numeric:tabular-nums}
+#rel-root .rel-dl dt{color:var(--mute)}
+#rel-root .rel-dl dd{margin:0;text-align:right}
+#rel-root .rel-caveat{font-size:12.5px;color:var(--mute);margin:0}
+#rel-root .rel-free{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+#rel-root .rel-free h3{margin:0;font-size:18px}
+#rel-root .rel-fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px}
+#rel-root .rel-f select{width:100%;min-height:44px}
+#rel-root .rel-lab{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);display:block;margin-bottom:4px}

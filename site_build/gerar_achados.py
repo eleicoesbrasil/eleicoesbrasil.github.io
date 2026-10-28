@@ -445,6 +445,42 @@ def main():
             pontuacao=lim(round(row["pontuacao"], 2)), tags=tags,
             alerta_pt="; ".join(al_pt), alerta_en="; ".join(al_en), texto_pt=txt_pt, texto_en=txt_en))
 
+    # ---- destaques simples por escopo de eleicao (aba "Relacoes") ----
+    def escopo_de(a):
+        return "d2622" if a.startswith("res26_d2622") else ("2026" if a.startswith("res26_") else "2022")
+    def forca_de(r):
+        ar = abs(r)
+        return "forte" if ar > 0.6 else ("moderada" if ar >= 0.3 else "fraca")
+    REL_POR_ESCOPO, REL_POR_ALVO = 12, 3
+    rel = {"2026": [], "2022": [], "d2622": []}
+    for _, row in cand.iterrows():
+        a, k = row["alvo"], row["preditor"]; sc = escopo_de(a); lst = rel[sc]
+        if len(lst) >= REL_POR_ESCOPO or sum(1 for e in lst if e["alvo"] == a) >= REL_POR_ALVO:
+            continue
+        if any(e["preditor"] == k or C.loc[k, e["preditor"]] > LIM_SIB for e in lst):
+            continue
+        xa, ya = df[k].values, df[a].values; m = np.isfinite(xa) & np.isfinite(ya)
+        slope = float(np.polyfit(xa[m], ya[m], 1)[0]); icpt = float(ya[m].mean() - slope * xa[m].mean())
+        r = row["pearson"]; vp, _va = vars_[k], None; ap_pt, ap_en = rotulo_alvo(a)
+        mais_pt, mais_en = ("maior", "higher") if r > 0 else ("menor", "lower")
+        rin = row["r_dentro_uf"]
+        lst.append(dict(
+            id=f"r_{sc}_{len(lst)+1}", escopo=sc, alvo=a, preditor=k, n=int(m.sum()), pearson=lim(round(r, 4)),
+            spearman=lim(round(row["spearman"], 4)), r_dentro_uf=lim(round(rin, 4)),
+            p_cluster_log10=lim(round(row["p_cluster_log10"], 2)), q_bh_log10=lim(round(row["q_bh_log10"], 2)),
+            forca=forca_de(r), alerta=bool(not np.isfinite(rin) or np.sign(rin) != np.sign(r) or abs(rin) < 0.5 * abs(r)),
+            slope=slope, intercept=icpt,
+            frase_pt=f"Onde {vp['pt']} é maior, {ap_pt[0].lower()+ap_pt[1:]} tende a ser {mais_pt}.",
+            frase_en=f"Where {vp['en']} is higher, {ap_en[0].lower()+ap_en[1:]} tends to be {mais_en}."))
+    for sc, lst in rel.items():
+        assert lst, f"relacoes: escopo {sc} sem pares"
+        assert len({e["preditor"] for e in lst}) == len(lst), f"relacoes: preditor repetido em {sc}"
+    with open(os.path.join(RAIZ, "docs", "dados", "relacoes.json"), "w", encoding="utf-8") as fh:
+        json.dump(dict(gerado=datetime.date.today().isoformat(), escopos=rel,
+                       alvos=[dict(k=a, pt=rotulo_alvo(a)[0], en=rotulo_alvo(a)[1]) for a, _ in alvos]),
+                  fh, ensure_ascii=False, separators=(",", ":"))
+    print("relacoes:", {sc: len(v) for sc, v in rel.items()})
+
     # estaduais (n=UFs): so os mais fortes, claramente separados
     estad_out = []
     if len(E):

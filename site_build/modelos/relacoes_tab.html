@@ -1,0 +1,27 @@
+<section id="rel-root" data-ready="">
+<h2>Relações: o que anda junto entre os municípios</h2>
+<p class="sub">Cada ponto é um município. Quando os pontos sobem ou descem juntos, formam uma tendência (a reta). Abaixo, as relações mais fortes que encontramos entre o voto e as características das cidades. Correlação não prova causa, e são municípios, não eleitores. Os dados do 2º turno de 2026 ainda são provisórios.</p>
+<div id="rel-status" class="rel-status" role="status" aria-live="polite">Carregando as relações…</div>
+<div id="rel-main" hidden>
+ <div class="rel-bar">
+  <div class="rel-seg" role="group" aria-label="Eleição">
+   <button type="button" data-sc="2026" aria-pressed="true">2026</button>
+   <button type="button" data-sc="2022" aria-pressed="false">2022</button>
+   <button type="button" data-sc="d2622" aria-pressed="false">2026 vs 2022</button>
+  </div>
+  <button type="button" class="rel-chip" id="rel-cor" aria-pressed="true">Cor por região</button>
+ </div>
+ <div id="rel-leg" class="rel-leg" aria-hidden="true"></div>
+ <p id="rel-scope-note" class="rel-note"></p>
+ <div id="rel-list" class="rel-list"></div>
+ <section class="rel-free" id="rel-free">
+  <h3>Monte o seu gráfico</h3>
+  <p class="rel-note">Escolha duas coisas para comparar entre os municípios. Aqui mostramos a tendência e a força, mas sem os testes de significância dos destaques.</p>
+  <div class="rel-fgrid">
+   <label class="rel-f"><span class="rel-lab">Eixo horizontal (X)</span><select id="rel-x"></select></label>
+   <label class="rel-f"><span class="rel-lab">Eixo vertical (Y)</span><select id="rel-y"></select></label>
+  </div>
+  <div id="rel-free-card"></div>
+ </section>
+</div>
+</section>

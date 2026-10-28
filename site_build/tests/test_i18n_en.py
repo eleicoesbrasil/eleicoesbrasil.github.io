@@ -9,7 +9,7 @@ fora da lista de nomes próprios (ALLOW). Ajuste ALLOW/PT_WORDS ao incluir novos
 import argparse, functools, glob, http.server, os, re, socketserver, sys, threading
 from playwright.sync_api import sync_playwright
 
-TABS = ["fluxo", "abstencao", "fechamento", "mapa", "secoes", "cruzamento", "achados", "replicar"]
+TABS = ["fluxo", "abstencao", "fechamento", "mapa", "secoes", "cruzamento", "achados", "relacoes", "replicar"]
 # nomes próprios e termos que ficam iguais nos dois idiomas
 ALLOW = re.compile(r"(Flávio|Bolsonaro|Lula|Brasília|Eleições Brasil|São Paulo|Pará|Paraná|Amapá|Ceará|Piauí|Maranhão|Goiás|Rondônia|Paraíba|Espírito Santo|"
                    r"Mato Grosso|Amazônia|Tocantins|Distrito Federal|Zanin|Bahia|Pernambuco|Alagoas|Sergipe|Acre|Roraima|Rio Grande|Minas Gerais|Santa Catarina|"
@@ -70,6 +70,8 @@ def main():
                 pg.wait_for_function("document.querySelector('#cz-root') && document.querySelector('#cz-root').dataset.ready", timeout=15000); pg.wait_for_timeout(800)
             if tab == "achados":   # carga sob demanda: espera achados.json (ou o aviso de erro)
                 pg.wait_for_function("document.querySelector('#ach-root') && document.querySelector('#ach-root').dataset.ready", timeout=15000); pg.wait_for_timeout(800)
+            if tab == "relacoes":   # carga sob demanda: espera relacoes.json + municipios.json
+                pg.wait_for_function("document.querySelector('#rel-root') && document.querySelector('#rel-root').dataset.ready", timeout=30000); pg.wait_for_timeout(1200)
             texts = pg.evaluate(JS)
             if tab == "cruzamento" and pg.query_selector("#cz-g-btn") and pg.is_visible("#cz-g-btn"):
                 pg.click("#cz-g-btn"); pg.wait_for_timeout(500); texts += pg.evaluate(JS)

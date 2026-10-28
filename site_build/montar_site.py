@@ -33,7 +33,7 @@ else:
     CL='null'; closejs='<script>window.__closeInit=function(){};</script>'
     fech='<section><h2>Fechamento das urnas</h2><p class="sub">Esta aba depende dos arquivos de urna do TSE (boletins com horário de abertura e fechamento). Eles estão sendo baixados e ainda não há UFs completas para analisar.</p></section>'
 t=open(f'{M}/tpl2.html').read().replace('__ABSSIZE__',open(f'{D}/abst_size.json').read() if os.path.exists(f'{D}/abst_size.json') else 'null').replace('__COV__',open(f'{D}/cobertura.json').read() if os.path.exists(f'{D}/cobertura.json') else 'null')
-t=(t.replace('__FLUXO__',json.dumps(fluxo,ensure_ascii=False,separators=(',',':'))).replace('__BINS__',json.dumps(bins,separators=(',',':'))).replace('__CLOSE__',CL)
+t=(t.replace('__RELACOES__',open(f'{M}/relacoes_tab.html').read()+open(f'{M}/relacoes_tab.js').read()).replace('__FLUXO__',json.dumps(fluxo,ensure_ascii=False,separators=(',',':'))).replace('__BINS__',json.dumps(bins,separators=(',',':'))).replace('__CLOSE__',CL)
     .replace('__HORA__',time.strftime('%H:%M',time.localtime(time.time()-4*3600))).replace('__NSEC__',f"{nsec:,}".replace(',','.'))
     .replace('__REPLICAR__',open(f'{M}/replicar_tab.html').read()).replace('__SECOES__',open(f'{M}/secoes_tab.html').read()).replace('__SECOESJS__',open(f'{M}/secoes_tab.js').read()).replace('__CRUZ__',open(f'{M}/cruz_tab.html').read()).replace('__CRUZJS__',open(f'{M}/cruz_tab.js').read()).replace('__ACHADOS__',open(f'{M}/achados_tab.html').read()).replace('__ACHADOSJS__',open(f'{M}/achados_tab.js').read()).replace('__FECH__',fech).replace('__HEAT__',heat_html).replace('__HEATJS__',heat_js).replace('__CLOSEJS__',closejs))
 import subprocess
@@ -48,6 +48,7 @@ from envelope import envolver
 import glob as _g
 t=t.replace('/*__CRUZCSS__*/',open(f'{M}/cruz_tab.css').read())
 t=t.replace('/*__ACHADOSCSS__*/',open(f'{M}/achados_tab.css').read())
+t=t.replace('/*__RELACOESCSS__*/',open(f'{M}/relacoes_tab.css').read())
 t=t.replace('/*__MOBILE_CSS__*/',''.join(open(f).read()+'\n' for f in sorted(_g.glob(f'{M}/global_*.css'))+sorted(_g.glob(f'{M}/mobile_*.css')))).replace('__MOBILEJS__',''.join('<script>'+open(f).read()+'</script>\n' for f in sorted(_g.glob(f'{M}/global_*.js'))+sorted(_g.glob(f'{M}/mobile_*.js'))))
 t=envolver(t)
 os.makedirs(os.path.dirname(OUT) or '.',exist_ok=True); open(OUT,'w').write(t)
